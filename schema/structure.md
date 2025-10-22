@@ -1,4 +1,4 @@
-| 🔢 Sekce            | 🔍 Obsah                                                                       |
+| 🔢 Section            | 🔍 Content                                                                       |
 | ------------------- | ------------------------------------------------------------------------------ |
 | 🏠 **Homepage**     | • Recent blocks<br>• Recent transactions<br>• ... etc                              |
 | 📦 **Blocks**       | • List<br>• Detail                                                             |
@@ -9,4 +9,4 @@
 | 🗳️ **DReps**       | • List<br>• Detail                                                             |
 | 📬 **Address**      | • List<br>• Detail                                                             |
 | 🔐 **Stake**        | • List<br>• Detail                                                             |
-| 🧰 **Misc**         | • Address Inspector<br>• Datum Inspector<br>• Installation & Contribution Docs |
+| 🧰 **Misc**         | • Address Inspector<br>• Datum Inspector<br>• UPLC decoder<br>• Installation & Contribution Docs |
