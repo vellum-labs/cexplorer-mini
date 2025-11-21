@@ -127,4 +127,13 @@ Lightweight global numbers, always up-to-date.
 - License (MIT)  
 - Small thank-you to Project Catalyst Fund 14 for funding the project
 
-We are excited to deliver a clean, fast and 100% self-contained Cardano explorer that anyone can run on a laptop or small server in seconds!
+
+## 11. Stake (`/stake/:stakeKey`)
+- Stake key (bech32 + hex)
+- Total controlled stake (active + rewards)
+- Current rewards balance
+- Delegated pool (ticker + pool ID) or “not delegated”
+- List of all associated payment addresses (with current balance)
+- Rewards history – last 20 epochs (epoch → amount + type)
+
+If any data is not available in a reasonable format with a reasonable loading time on preprod env, we reserve the right to omit such data.
