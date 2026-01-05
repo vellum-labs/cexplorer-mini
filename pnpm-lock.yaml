@@ -13,10 +13,16 @@ importers:
         version: 1.144.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vellumlabs/cexplorer-sdk':
         specifier: ^1.1.13
-        version: 1.1.13(5a07f69f64574be0f8704419b798d07b)
+        version: 1.1.13(b33c1b0a554e37263fb79c065c0863de)
       autoprefixer:
         specifier: ^10.4.23
         version: 10.4.23(postcss@8.5.6)
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+      immer:
+        specifier: 10.1.1
+        version: 10.1.1
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@18.3.1)
@@ -35,6 +41,9 @@ importers:
       tailwindcss:
         specifier: 3.4.4
         version: 3.4.4
+      zustand:
+        specifier: 4.5.2
+        version: 4.5.2(@types/react@18.3.27)(immer@10.1.1)(react@18.3.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.1
@@ -1717,8 +1726,8 @@ packages:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
 
-  immer@10.2.0:
-    resolution: {integrity: sha512-d/+XTN3zfODyjr89gM3mPq1WNX2B8pYsu7eORitdwyA2sBubnTl3laYlBk4sXY5FUa5qTZGBDPJICVbvqzjlbw==}
+  immer@10.1.1:
+    resolution: {integrity: sha512-s2MPrmjovJcoMaHtx6K11Ra7oD05NT97w1IC5zpMkT6Atjr7H8LjaDd81iIxUYpMKSRRNMJE703M1Fhr/TctHw==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -2359,6 +2368,11 @@ packages:
       '@types/react':
         optional: true
 
+  use-sync-external-store@1.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   use-sync-external-store@1.6.0:
     resolution: {integrity: sha512-Pp6GSwGP/NrPIrxVFAIkOQeyw8lFenOHijQWkUTrDvrF4ALqylP2C/KCkeS9dpUM3KvYRQhna5vt7IL95+ZQ9w==}
     peerDependencies:
@@ -2447,8 +2461,8 @@ packages:
   zod@4.3.5:
     resolution: {integrity: sha512-k7Nwx6vuWx1IJ9Bjuf4Zt1PEllcwe7cls3VNzm4CQ1/hgtFUK2bRNG3rvnpPUhFjmqJKAKtjV576KnUkHocg/g==}
 
-  zustand@4.5.7:
-    resolution: {integrity: sha512-CHOUy7mu3lbD6o6LJLfllpjkzhHXSBlX8B9+qPddUsIfeF5S/UZ5q0kmCsnRqT1UHFQZchNFDDzMbQsuesHWlw==}
+  zustand@4.5.2:
+    resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
@@ -3571,7 +3585,7 @@ snapshots:
       '@typescript-eslint/types': 8.51.0
       eslint-visitor-keys: 4.2.1
 
-  '@vellumlabs/cexplorer-sdk@1.1.13(5a07f69f64574be0f8704419b798d07b)':
+  '@vellumlabs/cexplorer-sdk@1.1.13(b33c1b0a554e37263fb79c065c0863de)':
     dependencies:
       '@date-fns/tz': 1.4.1
       '@emurgo/cip14-js': 3.0.1
@@ -3592,7 +3606,7 @@ snapshots:
       embla-carousel-autoplay: 8.6.0(embla-carousel@8.6.0)
       embla-carousel-react: 8.6.0(react@18.3.1)
       html-react-parser: 5.2.11(@types/react@18.3.27)(react@18.3.1)
-      immer: 10.2.0
+      immer: 10.1.1
       lucide-react: 0.562.0(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
@@ -3601,7 +3615,7 @@ snapshots:
       react-window: 1.8.11(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       sonner: 1.7.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge: 2.6.0
-      zustand: 4.5.7(@types/react@18.3.27)(immer@10.2.0)(react@18.3.1)
+      zustand: 4.5.2(@types/react@18.3.27)(immer@10.1.1)(react@18.3.1)
 
   '@vitejs/plugin-react@5.1.2(vite@7.3.0(@types/node@24.10.4)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -4090,7 +4104,7 @@ snapshots:
 
   ignore@7.0.5: {}
 
-  immer@10.2.0: {}
+  immer@10.1.1: {}
 
   import-fresh@3.3.1:
     dependencies:
@@ -4664,6 +4678,10 @@ snapshots:
     optionalDependencies:
       '@types/react': 18.3.27
 
+  use-sync-external-store@1.2.0(react@18.3.1):
+    dependencies:
+      react: 18.3.1
+
   use-sync-external-store@1.6.0(react@18.3.1):
     dependencies:
       react: 18.3.1
@@ -4709,10 +4727,10 @@ snapshots:
 
   zod@4.3.5: {}
 
-  zustand@4.5.7(@types/react@18.3.27)(immer@10.2.0)(react@18.3.1):
+  zustand@4.5.2(@types/react@18.3.27)(immer@10.1.1)(react@18.3.1):
     dependencies:
-      use-sync-external-store: 1.6.0(react@18.3.1)
+      use-sync-external-store: 1.2.0(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.27
-      immer: 10.2.0
+      immer: 10.1.1
       react: 18.3.1
