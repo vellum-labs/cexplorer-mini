@@ -6,7 +6,7 @@ import {
   TableSettingsDropdown,
 } from "@vellumlabs/cexplorer-sdk";
 
-type Column<T> = {
+export type Column<T> = {
   key: string;
   title: ReactNode;
   standByRanking?: boolean;
