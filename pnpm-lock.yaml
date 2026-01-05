@@ -12,8 +12,8 @@ importers:
         specifier: 1.144.0
         version: 1.144.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vellumlabs/cexplorer-sdk':
-        specifier: ^1.1.11
-        version: 1.1.11(5a07f69f64574be0f8704419b798d07b)
+        specifier: ^1.1.13
+        version: 1.1.13(5a07f69f64574be0f8704419b798d07b)
       autoprefixer:
         specifier: ^10.4.23
         version: 10.4.23(postcss@8.5.6)
@@ -29,6 +29,9 @@ importers:
       react-dom:
         specifier: ^18.0.0
         version: 18.3.1(react@18.3.1)
+      react-helmet:
+        specifier: ^6.1.0
+        version: 6.1.0(react@18.3.1)
       tailwindcss:
         specifier: 3.4.4
         version: 3.4.4
@@ -48,6 +51,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.0.0
         version: 18.3.7(@types/react@18.3.27)
+      '@types/react-helmet':
+        specifier: ^6.1.11
+        version: 6.1.11
       '@vitejs/plugin-react':
         specifier: ^5.1.1
         version: 5.1.2(vite@7.3.0(@types/node@24.10.4)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2))
@@ -1154,6 +1160,9 @@ packages:
     peerDependencies:
       '@types/react': ^18.0.0
 
+  '@types/react-helmet@6.1.11':
+    resolution: {integrity: sha512-0QcdGLddTERotCXo3VFlUSWO3ztraw8nZ6e3zJSgG7apwV5xt+pJUS8ewPBqT4NYB1optGLprNQzFleIY84u/g==}
+
   '@types/react@18.3.27':
     resolution: {integrity: sha512-cisd7gxkzjBKU2GgdYrTdtQx1SORymWyaAFhaxQPK9bYO9ot3Y5OikQRvY0VYQtvwjeQnizCINJAenh/V7MK2w==}
 
@@ -1219,8 +1228,8 @@ packages:
     resolution: {integrity: sha512-mM/JRQOzhVN1ykejrvwnBRV3+7yTKK8tVANVN3o1O0t0v7o+jqdVu9crPy5Y9dov15TJk/FTIgoUGHrTOVL3Zg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@vellumlabs/cexplorer-sdk@1.1.11':
-    resolution: {integrity: sha512-hPHwqRBGbBf46N5YSpjT4C2HEeUHJkmtpNChZ1bp2ffOmgpWwuljQlvw2tJ8HcvzO4fiHKypiEVX9zR2o7TkCw==}
+  '@vellumlabs/cexplorer-sdk@1.1.13':
+    resolution: {integrity: sha512-21A8fG1buqE+UodpJB/FgNhlcfoZvlebp++ay/HZ78O8Ux4q/YiQBBKIZCjkpc1fnuMlxXU3Hqc8MlU3h19zsA==}
     peerDependencies:
       '@date-fns/tz': ^1.4.1
       '@emurgo/cip14-js': ^3.0.1
@@ -3460,6 +3469,10 @@ snapshots:
     dependencies:
       '@types/react': 18.3.27
 
+  '@types/react-helmet@6.1.11':
+    dependencies:
+      '@types/react': 18.3.27
+
   '@types/react@18.3.27':
     dependencies:
       '@types/prop-types': 15.7.15
@@ -3558,7 +3571,7 @@ snapshots:
       '@typescript-eslint/types': 8.51.0
       eslint-visitor-keys: 4.2.1
 
-  '@vellumlabs/cexplorer-sdk@1.1.11(5a07f69f64574be0f8704419b798d07b)':
+  '@vellumlabs/cexplorer-sdk@1.1.13(5a07f69f64574be0f8704419b798d07b)':
     dependencies:
       '@date-fns/tz': 1.4.1
       '@emurgo/cip14-js': 3.0.1

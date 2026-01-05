@@ -1,0 +1,26 @@
+{
+  "homepage": {
+    "title": "Homepage | Cexplorer.io"
+  },
+  "transactionList": {
+    "title": "Transactions | Cexplorer.io"
+  },
+  "blockList": {
+    "title": "Blocks | Cexplorer.io"
+  },
+  "epochsList": {
+    "title": "Epochs | Cexplorer.io"
+  },
+  "poolList": {
+    "title": "Pools | Cexplorer.io"
+  },
+  "drepList": {
+    "title": "DRep | Cexplorer.io"
+  },
+  "assetsList": {
+    "title": "Assets | Cexplorer.io"
+  },
+  "addressList": {
+    "title": "Addresses | Cexplorer.io"
+  }
+}

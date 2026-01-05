@@ -9,9 +9,37 @@ export const navigationOptions: {
       label: "Transactions",
       href: "/tx",
     },
+    {
+      label: "Blocks",
+      href: "/block",
+    },
+    {
+      label: "Epochs",
+      href: "/epoch",
+    },
   ],
-  staking: [],
-  governance: [],
-  assets: [],
-  tools: [],
+  staking: [
+    {
+      label: "Stake pools",
+      href: "/pool",
+    },
+  ],
+  governance: [
+    {
+      label: "DReps",
+      href: "/drep",
+    },
+  ],
+  assets: [
+    {
+      label: "Assets",
+      href: "/asset",
+    },
+  ],
+  tools: [
+    {
+      label: "Addresses",
+      href: "/address",
+    },
+  ],
 };
