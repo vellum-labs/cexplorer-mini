@@ -48,3 +48,38 @@ export type BlockListColumns = {
   epoch_slot_no: boolean;
   size: boolean;
 };
+
+export interface PoolsListColumns {
+  pool: boolean;
+  stake: boolean;
+  blocks: boolean;
+  fees: boolean;
+  pledge: boolean;
+  luck: boolean;
+  rewards: boolean;
+  delegators: boolean;
+}
+
+export interface PoolsListTableOptions
+  extends Pick<TableOptionsCore<PoolsListColumns>, "isResponsive" | "rows"> {
+  columnsVisibility: PoolsListColumns;
+  columnsOrder: (keyof PoolsListColumns)[];
+}
+
+export interface DrepListTableColumns {
+  status: boolean;
+  drep_name: boolean;
+  voting_power: boolean;
+  registered: boolean;
+  metadata: boolean;
+  delegators: boolean;
+}
+
+export interface DrepListTableOptions
+  extends Pick<
+    TableOptionsCore<DrepListTableColumns>,
+    "isResponsive" | "rows"
+  > {
+  columnsVisibility: DrepListTableColumns;
+  columnsOrder: (keyof DrepListTableColumns)[];
+}
