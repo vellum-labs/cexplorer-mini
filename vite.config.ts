@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 
 import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
-import { visualizer } from "rollup-plugin-visualizer";
+// import { visualizer } from "rollup-plugin-visualizer";
 
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -18,11 +18,11 @@ export default defineConfig({
       autoCodeSplitting: false,
     }),
     react(),
-    visualizer({
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }),
+    // visualizer({
+    //   open: true,
+    //   gzipSize: true,
+    //   brotliSize: true,
+    // }),
   ],
   resolve: {
     alias: {
