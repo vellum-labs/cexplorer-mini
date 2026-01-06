@@ -7,8 +7,20 @@ import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 
 import "@vellumlabs/cexplorer-sdk/style.css";
+import "./styles/view-transitions.css";
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({
+  routeTree,
+  defaultViewTransition: {
+    types: ({ pathChanged }) => {
+      if (!pathChanged) {
+        return false;
+      }
+
+      return ["fade"];
+    },
+  },
+});
 
 declare module "@tanstack/react-router" {
   interface Register {

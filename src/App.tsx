@@ -8,7 +8,9 @@ export const App: FC = () => {
 
   useEffect(() => {
     if (theme) {
-      document.documentElement.setAttribute("data-theme", theme);
+      document.startViewTransition(() => {
+        document.documentElement.setAttribute("data-theme", theme);
+      });
     }
   }, [theme]);
 
