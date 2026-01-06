@@ -83,3 +83,36 @@ export interface DrepListTableOptions
   columnsVisibility: DrepListTableColumns;
   columnsOrder: (keyof DrepListTableColumns)[];
 }
+
+export interface AssetListTableColumns {
+  type: boolean;
+  asset: boolean;
+  policy_id: boolean;
+  supply: boolean;
+  minted: boolean;
+}
+
+export interface AssetListTableOptions
+  extends Pick<
+    TableOptionsCore<AssetListTableColumns>,
+    "isResponsive" | "rows"
+  > {
+  columnsVisibility: AssetListTableColumns;
+  columnsOrder: (keyof AssetListTableColumns)[];
+}
+
+export interface AddressListTableColumns {
+  account: boolean;
+  live_stake: boolean;
+  pool_delegation: boolean;
+  drep_delegation: boolean;
+}
+
+export interface AddressListTableOptions
+  extends Pick<
+    TableOptionsCore<AddressListTableColumns>,
+    "isResponsive" | "rows"
+  > {
+  columnsVisibility: AddressListTableColumns;
+  columnsOrder: (keyof AddressListTableColumns)[];
+}
