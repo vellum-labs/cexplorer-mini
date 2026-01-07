@@ -3,7 +3,6 @@ import { useState } from "react";
 import { FileJson } from "lucide-react";
 
 import { Modal } from "@vellumlabs/cexplorer-sdk";
-import { JsonDisplay } from "@vellumlabs/cexplorer-sdk";
 import { createPortal } from "react-dom";
 
 interface MetadataCellProps {
@@ -32,13 +31,14 @@ export const MetadataCell: FC<MetadataCellProps> = ({ metadata }) => {
             maxHeight='90vh'
             className='p-0'
           >
-            <JsonDisplay
+            {JSON.stringify(metadata)}
+            {/* <JsonDisplay
               data={metadata}
               isLoading={false}
               isError={false}
               search
               onClose={() => setOpen(false)}
-            />
+            /> */}
           </Modal>,
           document.body,
         )}
