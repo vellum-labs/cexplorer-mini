@@ -9,7 +9,11 @@ import { useTxListTableStore } from "@/stores/tables/txListTableStore";
 import { txListTableOptions } from "@/constants/tables/txListTableOptions";
 import { useTxList } from "@/hooks/useTxList";
 
-export const TxListPage: FC = () => {
+interface TxListPageProps {
+  tab?: boolean;
+}
+
+export const TxListPage: FC<TxListPageProps> = ({ tab = false }) => {
   const {
     columnsVisibility,
     rows,
@@ -26,9 +30,11 @@ export const TxListPage: FC = () => {
       metadataTitle='transactionList'
       title='Transactions'
       breadcrumbItems={[{ label: "Transactions" }]}
+      showHeader={!tab}
+      showMetadata={!tab}
     >
       <TableList
-        title='Recent network transactions'
+        title={tab ? "" : "Recent network transactions"}
         rows={rows}
         columns={columns.sort((a, b) => {
           return (

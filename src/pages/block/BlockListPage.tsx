@@ -9,7 +9,11 @@ import { blocksListTableOptions } from "@/constants/tables/blocksListTableOption
 import { useBlockListTableStore } from "@/stores/tables/blockListTableStore";
 import { useBlockList } from "@/hooks/useBlockList";
 
-export const BlockListPage: FC = () => {
+interface BlockListPageProps {
+  tab?: boolean;
+}
+
+export const BlockListPage: FC<BlockListPageProps> = ({ tab = false }) => {
   const {
     columnsOrder,
     columnsVisibility,
@@ -26,9 +30,11 @@ export const BlockListPage: FC = () => {
       metadataTitle='blockList'
       title='Blocks'
       breadcrumbItems={[{ label: "Blocks" }]}
+      showHeader={!tab}
+      showMetadata={!tab}
     >
       <TableList
-        title='All epochs'
+        title={tab ? "" : "All blocks"}
         rows={rows}
         columns={columns.sort((a, b) => {
           return (
