@@ -5,6 +5,9 @@
   "transactionList": {
     "title": "Transactions | Cexplorer.io"
   },
+  "transactionDetail": {
+    "title": "Tx %tx% detail | Cexplorer.io"
+  },
   "blockList": {
     "title": "Blocks | Cexplorer.io"
   },
@@ -13,6 +16,9 @@
   },
   "poolList": {
     "title": "Pools | Cexplorer.io"
+  },
+  "poolDetail": {
+    "title": "Pool %name% detail | Cexplorer.io"
   },
   "drepList": {
     "title": "DRep | Cexplorer.io"

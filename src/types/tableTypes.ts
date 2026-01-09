@@ -116,3 +116,14 @@ export interface AddressListTableOptions
   columnsVisibility: AddressListTableColumns;
   columnsOrder: (keyof AddressListTableColumns)[];
 }
+
+export type PoolRewardsColumns = {
+  epoch: boolean;
+  rewards: boolean;
+  active_stake: boolean;
+  epoch_stake: boolean;
+  roa: boolean;
+  luck: boolean;
+  blocks: boolean;
+  delegators: boolean;
+};
