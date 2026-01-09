@@ -5,8 +5,6 @@ import {
   formatString,
   PoolCell,
 } from "@vellumlabs/cexplorer-sdk";
-
-import { useAddressListTableStore } from "@/stores/tables/addressListTableStore";
 import { DrepNameCell } from "@/components/drep/DrepNameCell";
 
 interface UseAddressListReturn {
@@ -15,8 +13,6 @@ interface UseAddressListReturn {
 }
 
 export const useAddressList = (): UseAddressListReturn => {
-  const { columnsVisibility } = useAddressListTableStore();
-
   const items = Array.from({ length: 20 }, () => ({
     account:
       "addr1q8elqhkuvtyelgcedpup58r893awhg3l87a4rz5d5acatuj9y84nruafrmta2rewd5l46g8zxy4l49ly8kye79ddr3ksqal35g",
@@ -57,7 +53,7 @@ export const useAddressList = (): UseAddressListReturn => {
         );
       },
       title: <p>Account</p>,
-      visible: columnsVisibility.account,
+
       widthPx: 120,
     },
     {
@@ -78,7 +74,7 @@ export const useAddressList = (): UseAddressListReturn => {
           <span>Live Stake</span>
         </div>
       ),
-      visible: columnsVisibility.live_stake,
+
       widthPx: 80,
     },
     {
@@ -100,7 +96,7 @@ export const useAddressList = (): UseAddressListReturn => {
         );
       },
       title: <p>DRep Delegation</p>,
-      visible: columnsVisibility.drep_delegation,
+
       widthPx: 120,
     },
     {
@@ -120,7 +116,7 @@ export const useAddressList = (): UseAddressListReturn => {
         );
       },
       title: <p>Pool Delegation</p>,
-      visible: columnsVisibility.pool_delegation,
+
       widthPx: 120,
     },
   ];

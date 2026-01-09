@@ -8,9 +8,11 @@ import { useTxList } from "@/hooks/useTxList";
 import { useDrepList } from "@/hooks/useDrepList";
 
 export const Homepage: FC = () => {
-  const { columns: blockColumns, items: blockItems } = useBlockList();
-  const { columns: txColumns, items: txItems } = useTxList();
-  const { columns: drepColumns, items: drepItems } = useDrepList();
+  const [
+    { columns: blockColumns, items: blockItems },
+    { columns: txColumns, items: txItems },
+    { columns: drepColumns, items: drepItems },
+  ] = [useBlockList(), useTxList(), useDrepList()];
 
   const widgets = [
     {

@@ -4,26 +4,13 @@ import {
   AdaWithTooltip,
   EpochCell,
   formatNumber,
-  GlobalTable,
-  TableSettingsDropdown,
   Tooltip,
 } from "@vellumlabs/cexplorer-sdk";
 
-import { usePoolRewardsTableStore } from "@/stores/tables/poolRewardsTableStore";
 import { Network, Users } from "lucide-react";
-import { poolRewardsTableOptions } from "@/constants/tables/poolRewardsTableOptions";
-import type { PoolRewardsColumns } from "@/types/tableTypes";
+import { TableList } from "@/components/global/TableList";
 
 export const RewardsTab: FC = () => {
-  const {
-    columnsVisibility,
-    columnsOrder,
-    setColumsOrder,
-    setColumnVisibility,
-    rows,
-    setRows,
-  } = usePoolRewardsTableStore();
-
   const columns = [
     {
       key: "epoch",
@@ -31,7 +18,7 @@ export const RewardsTab: FC = () => {
         <EpochCell no={item.no} showPulseDot currentEpoch={601} />
       ),
       title: <p className='w-full text-right'>Epoch</p>,
-      visible: columnsVisibility.epoch,
+
       widthPx: 30,
     },
     {
@@ -53,7 +40,7 @@ export const RewardsTab: FC = () => {
         </div>
       ),
       title: <p className='w-full text-right'>Rewards</p>,
-      visible: columnsVisibility.rewards,
+
       widthPx: 50,
     },
     {
@@ -68,7 +55,7 @@ export const RewardsTab: FC = () => {
         );
       },
       title: <p className='w-full text-right'>Active Stake</p>,
-      visible: columnsVisibility.active_stake,
+
       widthPx: 50,
     },
     {
@@ -83,7 +70,7 @@ export const RewardsTab: FC = () => {
         );
       },
       title: <p className='w-full text-right'>Epoch Stake</p>,
-      visible: columnsVisibility.epoch_stake,
+
       widthPx: 50,
     },
     {
@@ -102,14 +89,14 @@ export const RewardsTab: FC = () => {
           </Tooltip>
         </div>
       ),
-      visible: columnsVisibility.roa,
+
       widthPx: 30,
     },
     {
       key: "luck",
       render: () => <div className='text-right'>{(45).toFixed(2)}%</div>,
       title: <p className='w-full text-right'>Luck</p>,
-      visible: columnsVisibility.luck,
+
       widthPx: 30,
     },
     {
@@ -120,60 +107,23 @@ export const RewardsTab: FC = () => {
           {`${formatNumber(1212)} / ${formatNumber(151515)}`}
         </div>
       ),
-      visible: columnsVisibility.blocks,
+
       widthPx: 55,
     },
     {
       key: "delegators",
       title: <p className='w-full text-right'>Delegators</p>,
       render: () => <div className='text-right'>456</div>,
-      visible: columnsVisibility.delegators,
+
       widthPx: 35,
     },
   ];
 
   return (
-    <div>
-      <h2 className='mb-1'>Rewards</h2>
-      <div className='flex flex-col items-end gap-2'>
-        <div className='flex items-center gap-1'>
-          <TableSettingsDropdown
-            rows={rows}
-            setRows={setRows}
-            columnsOptions={poolRewardsTableOptions.map(item => {
-              return {
-                label: item.name,
-                isVisible: columnsVisibility[item.key],
-                onClick: () =>
-                  setColumnVisibility(item.key, !columnsVisibility[item.key]),
-              };
-            })}
-          />
-        </div>
-        <GlobalTable
-          type='infinite'
-          currentPage={1}
-          totalItems={20}
-          itemsPerPage={rows}
-          rowHeight={69}
-          scrollable
-          query={
-            {
-              isLoading: false,
-
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } as any
-          }
-          items={[]}
-          columns={columns.sort((a, b) => {
-            return (
-              columnsOrder.indexOf(a.key as keyof PoolRewardsColumns) -
-              columnsOrder.indexOf(b.key as keyof PoolRewardsColumns)
-            );
-          })}
-          onOrderChange={setColumsOrder}
-        />
-      </div>
-    </div>
+    <TableList
+      columns={columns}
+      items={Array.from({ length: 20 }, () => ({ no: 560 }))}
+      storeKey='pool_detail_rewards_tab'
+    />
   );
 };

@@ -9,16 +9,12 @@ import {
   PulseDot,
 } from "@vellumlabs/cexplorer-sdk";
 
-import { useDrepListTableStore } from "@/stores/tables/drepListTableStore";
-
 interface UseDrepListReturn {
   items: Record<string, unknown>[];
   columns: Column<Record<string, unknown>>[];
 }
 
 export const useDrepList = (): UseDrepListReturn => {
-  const { columnsVisibility } = useDrepListTableStore();
-
   const items = Array.from({ length: 20 }, () => ({
     data: {
       url: "https://raw.githubusercontent.com/Emurgo/constitution-committee/11af02e3b66daa7106941a1b3000d9721862bc3c/YOROI.jsonld",
@@ -110,7 +106,7 @@ export const useDrepList = (): UseDrepListReturn => {
         );
       },
       title: <p>Status</p>,
-      visible: columnsVisibility.status,
+
       widthPx: 40,
     },
     {
@@ -123,7 +119,7 @@ export const useDrepList = (): UseDrepListReturn => {
         return <DrepNameCell item={item} />;
       },
       title: <p>DRep name</p>,
-      visible: columnsVisibility.drep_name,
+
       widthPx: 120,
     },
     {
@@ -144,7 +140,7 @@ export const useDrepList = (): UseDrepListReturn => {
           <span>Voting power</span>
         </div>
       ),
-      visible: columnsVisibility.voting_power,
+
       widthPx: 50,
     },
     {
@@ -161,7 +157,7 @@ export const useDrepList = (): UseDrepListReturn => {
           <span>Registered</span>
         </div>
       ),
-      visible: columnsVisibility.registered,
+
       widthPx: 60,
     },
     {
@@ -178,7 +174,7 @@ export const useDrepList = (): UseDrepListReturn => {
           <span>Delegators</span>
         </div>
       ),
-      visible: columnsVisibility.delegators,
+
       widthPx: 45,
     },
     {
@@ -191,13 +187,13 @@ export const useDrepList = (): UseDrepListReturn => {
         return <MetadataCell metadata={item.data} />;
       },
       title: <p className='w-full text-right'>DRep metadata</p>,
-      visible: columnsVisibility.metadata,
+
       widthPx: 50,
     },
   ];
 
   return {
     items,
-    columns,
+    columns: columns.map(item => ({ ...item, visible: true })),
   };
 };

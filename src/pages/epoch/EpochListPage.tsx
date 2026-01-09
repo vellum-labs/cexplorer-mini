@@ -1,5 +1,4 @@
 import type { FC } from "react";
-import type { EpochListColumns } from "@/types/tableTypes";
 
 import {
   AdaWithTooltip,
@@ -13,20 +12,9 @@ import {
 import { PageBase } from "@/components/global/PageBase";
 import { TableList } from "@/components/global/TableList";
 
-import { useEpochListTableStore } from "@/stores/tables/epochListTableStore";
-import { epochListTableOptions } from "@/constants/tables/epochListTableOptions";
 import { format } from "date-fns";
 
 export const EpochListPage: FC = () => {
-  const {
-    columnsOrder,
-    columnsVisibility,
-    rows,
-    setColumnVisibility,
-    setColumsOrder,
-    setRows,
-  } = useEpochListTableStore();
-
   const items = Array.from({ length: 20 }, () => ({
     no: 456,
     fees: 3155682484,
@@ -125,7 +113,6 @@ export const EpochListPage: FC = () => {
         );
       },
       title: <p>Epoch</p>,
-      visible: columnsVisibility.epoch,
       widthPx: 50,
     },
     {
@@ -145,7 +132,6 @@ export const EpochListPage: FC = () => {
         );
       },
       title: "Start Time",
-      visible: columnsVisibility.start_time,
       widthPx: 90,
     },
     {
@@ -165,7 +151,6 @@ export const EpochListPage: FC = () => {
         );
       },
       title: "End Time",
-      visible: columnsVisibility.end_time,
       widthPx: 90,
     },
     {
@@ -182,7 +167,6 @@ export const EpochListPage: FC = () => {
         );
       },
       title: <p className='w-full text-right'>Stake</p>,
-      visible: columnsVisibility.stake,
       widthPx: 50,
     },
     {
@@ -197,7 +181,6 @@ export const EpochListPage: FC = () => {
         );
       },
       title: <p className='w-full text-right'>Rewards</p>,
-      visible: columnsVisibility.rewards,
       widthPx: 50,
     },
     {
@@ -211,7 +194,6 @@ export const EpochListPage: FC = () => {
         </p>
       ),
       title: <p className='w-full text-right'>Blocks</p>,
-      visible: columnsVisibility.blocks,
       widthPx: 50,
     },
     {
@@ -222,7 +204,6 @@ export const EpochListPage: FC = () => {
         </p>
       ),
       title: <p className='w-full text-right'>TXs</p>,
-      visible: columnsVisibility.txs,
       widthPx: 50,
     },
     {
@@ -233,7 +214,6 @@ export const EpochListPage: FC = () => {
         </p>
       ),
       title: <p className='w-full text-right'>Output</p>,
-      visible: columnsVisibility.output,
       widthPx: 55,
     },
     {
@@ -252,20 +232,7 @@ export const EpochListPage: FC = () => {
           </div>
         );
       },
-      jsonFormat: item => {
-        if (!item?.fees) {
-          return "-";
-        }
-
-        const fees = lovelaceToAda(item?.fees);
-        const feesperTx = lovelaceToAda(
-          isNaN(item?.fees / item.tx_count) ? 0 : item?.fees / item.tx_count,
-        );
-
-        return `${fees}, ${feesperTx} per TX`;
-      },
       title: "Fees",
-      visible: columnsVisibility.fees,
       widthPx: 50,
     },
   ];
@@ -278,24 +245,9 @@ export const EpochListPage: FC = () => {
     >
       <TableList
         title='All epochs'
-        rows={rows}
-        columns={columns.sort((a, b) => {
-          return (
-            columnsOrder.indexOf(a.key as keyof EpochListColumns) -
-            columnsOrder.indexOf(b.key as keyof EpochListColumns)
-          );
-        })}
-        columnsOptions={epochListTableOptions.map(item => {
-          return {
-            label: item.name,
-            isVisible: columnsVisibility[item.key],
-            onClick: () =>
-              setColumnVisibility(item.key, !columnsVisibility[item.key]),
-          };
-        })}
+        columns={columns}
         items={items}
-        setColumsOrder={setColumsOrder}
-        setRows={setRows}
+        storeKey='epoch_list'
       />
     </PageBase>
   );

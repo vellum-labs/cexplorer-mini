@@ -1,11 +1,8 @@
 import type { FC } from "react";
-import type { PoolsListColumns } from "@/types/tableTypes";
 
 import { PageBase } from "@/components/global/PageBase";
 import { TableList } from "@/components/global/TableList";
 
-import { usePoolsListTableStore } from "@/stores/tables/poolsListTableStore";
-import { poolsListTableOptions } from "@/constants/tables/poolsListTableOptions";
 import {
   AdaWithTooltip,
   formatNumber,
@@ -13,15 +10,6 @@ import {
 } from "@vellumlabs/cexplorer-sdk";
 
 export const PoolListPage: FC = () => {
-  const {
-    columnsOrder,
-    columnsVisibility,
-    rows,
-    setColumnVisibility,
-    setColumsOrder,
-    setRows,
-  } = usePoolsListTableStore();
-
   const items = Array.from({ length: 20 }, () => ({
     stats: {
       recent: {
@@ -266,7 +254,6 @@ export const PoolListPage: FC = () => {
         />
       ),
       title: "Pool",
-      visible: columnsVisibility.pool,
       widthPx: 150,
     },
     {
@@ -285,7 +272,6 @@ export const PoolListPage: FC = () => {
           <span>Stake</span>
         </div>
       ),
-      visible: columnsVisibility.stake,
       widthPx: 60,
     },
 
@@ -308,7 +294,6 @@ export const PoolListPage: FC = () => {
           <span>Rewards</span>
         </div>
       ),
-      visible: columnsVisibility.rewards,
       widthPx: 80,
     },
     {
@@ -326,7 +311,6 @@ export const PoolListPage: FC = () => {
           <p className='text-right'>Luck</p>
         </div>
       ),
-      visible: columnsVisibility.luck,
       widthPx: 50,
     },
     {
@@ -350,7 +334,6 @@ export const PoolListPage: FC = () => {
           <p className='text-right'>Fees</p>
         </div>
       ),
-      visible: columnsVisibility.fees,
       widthPx: 50,
     },
     {
@@ -370,8 +353,6 @@ export const PoolListPage: FC = () => {
         );
       },
       title: <span className='w-full text-right'>Blocks</span>,
-
-      visible: columnsVisibility.blocks,
       widthPx: 100,
     },
     {
@@ -384,8 +365,6 @@ export const PoolListPage: FC = () => {
         );
       },
       title: <span>Pledge</span>,
-
-      visible: columnsVisibility.pledge,
       widthPx: 55,
     },
 
@@ -395,8 +374,6 @@ export const PoolListPage: FC = () => {
         return <p className='text-right'>{item.delegators}</p>;
       },
       title: <p className='text-right'>Delegators</p>,
-
-      visible: columnsVisibility.delegators,
       widthPx: 85,
     },
   ];
@@ -409,24 +386,9 @@ export const PoolListPage: FC = () => {
     >
       <TableList
         title='All stake pools'
-        rows={rows}
-        columns={columns.sort((a, b) => {
-          return (
-            columnsOrder.indexOf(a.key as keyof PoolsListColumns) -
-            columnsOrder.indexOf(b.key as keyof PoolsListColumns)
-          );
-        })}
-        columnsOptions={poolsListTableOptions.map(item => {
-          return {
-            label: item.name,
-            isVisible: columnsVisibility[item.key],
-            onClick: () =>
-              setColumnVisibility(item.key, !columnsVisibility[item.key]),
-          };
-        })}
+        columns={columns}
         items={items}
-        setColumsOrder={setColumsOrder}
-        setRows={setRows}
+        storeKey='pool_list'
       />
     </PageBase>
   );

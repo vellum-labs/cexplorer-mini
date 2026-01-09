@@ -10,16 +10,12 @@ import {
   SizeCell,
 } from "@vellumlabs/cexplorer-sdk";
 
-import { useBlockListTableStore } from "@/stores/tables/blockListTableStore";
-
 interface UseBlockListReturn {
   items: Record<string, unknown>[];
   columns: Column<Record<string, unknown>>[];
 }
 
 export const useBlockList = (): UseBlockListReturn => {
-  const { columnsVisibility } = useBlockListTableStore();
-
   const items = Array.from({ length: 20 }, () => ({
     hash: "68b0b8cb8e58970b8074b3ff3ff505351c3f0ea6eac14ec6bc8b99b671d874b4",
     pool: {
@@ -66,14 +62,14 @@ export const useBlockList = (): UseBlockListReturn => {
       key: "date",
       render: item => <DateCell time={item.time} className='text-nowrap' />,
       title: "Date",
-      visible: columnsVisibility.date,
+
       widthPx: 75,
     },
     {
       key: "block_no",
       render: item => <BlockCell hash={item.hash} no={item.block_no} />,
       title: <p className='w-full text-right'>Height</p>,
-      visible: columnsVisibility.block_no,
+
       widthPx: 75,
     },
     {
@@ -87,14 +83,14 @@ export const useBlockList = (): UseBlockListReturn => {
         />
       ),
       title: <p className='w-full text-left'>Hash</p>,
-      visible: columnsVisibility.hash,
+
       widthPx: 75,
     },
     {
       key: "epoch_no",
       render: item => <EpochCell no={item.epoch_no} />,
       title: <p className='w-full text-right'>Epoch</p>,
-      visible: columnsVisibility.epoch_no,
+
       widthPx: 70,
     },
     {
@@ -103,7 +99,7 @@ export const useBlockList = (): UseBlockListReturn => {
         <p className='text-right'>{formatNumber(item?.slot_no ?? 0)}</p>
       ),
       title: <p className='w-full text-right'>Slot</p>,
-      visible: columnsVisibility.slot_no,
+
       widthPx: 80,
     },
     {
@@ -115,7 +111,7 @@ export const useBlockList = (): UseBlockListReturn => {
         return <PoolCell key={String(item.slot_no)} poolInfo={item.pool} />;
       },
       title: <p>Minted by</p>,
-      visible: columnsVisibility.minted_by,
+
       widthPx: 140,
     },
     {
@@ -131,20 +127,20 @@ export const useBlockList = (): UseBlockListReturn => {
           }
         </div>
       ),
-      visible: columnsVisibility.size,
+
       widthPx: 90,
     },
     {
       key: "tx_count",
       render: item => <p className='text-right'>{item.tx_count}</p>,
       title: <p className='w-full text-right'>TXs</p>,
-      visible: columnsVisibility.tx_count,
+
       widthPx: 50,
     },
   ];
 
   return {
     items,
-    columns,
+    columns: columns.map(item => ({ ...item, visible: true })),
   };
 };

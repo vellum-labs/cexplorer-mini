@@ -1,10 +1,13 @@
 import type { FC, MouseEventHandler, ReactNode, RefObject } from "react";
 
 import {
+  getNodeText,
   GlobalTable,
   TableSearchInput,
   TableSettingsDropdown,
 } from "@vellumlabs/cexplorer-sdk";
+
+import { useTableStore } from "@/stores/tableStore";
 
 export type Column<T> = {
   key: string;
@@ -31,28 +34,38 @@ export type Column<T> = {
 };
 
 interface TableListProps {
-  title: string;
-  rows: number;
-  setRows: (rows: number) => void;
-  columnsOptions: {
-    label: ReactNode;
-    isVisible: boolean;
-    onClick?: () => void;
-  }[];
+  title?: string;
   items: Record<string, unknown>[] | undefined;
-  columns: Column<Record<string, unknown>>[];
-  setColumsOrder: ((columns: any[]) => void) | undefined;
+  columns: Omit<Column<Record<string, unknown>>, "visible">[];
+  storeKey: string;
 }
 
 export const TableList: FC<TableListProps> = ({
   title,
-  rows,
-  columnsOptions,
   items,
   columns,
-  setColumsOrder,
-  setRows,
+  storeKey,
 }) => {
+  const {
+    columnsOrder,
+    columnsVisibility,
+    rows,
+    setColumnVisibility,
+    setColumsOrder,
+    setRows,
+  } = useTableStore(storeKey, columns)();
+
+  const columnsOptions = columns.map(item => ({
+    label: getNodeText(item.title),
+    isVisible: columnsVisibility[item.key],
+    onClick: () => setColumnVisibility(item.key, !columnsVisibility[item.key]),
+  }));
+
+  const filteredColumns = columns.map(item => ({
+    ...item,
+    visible: columnsVisibility[item.key],
+  }));
+
   return (
     <section
       className={`flex w-full max-w-desktop flex-col py-3 ${!title ? "" : "px-mobile md:px-desktop"}`}
@@ -104,7 +117,12 @@ export const TableList: FC<TableListProps> = ({
           } as any
         }
         items={items}
-        columns={columns}
+        columns={filteredColumns.sort((a, b) => {
+          return (
+            columnsOrder.indexOf(a.key as string) -
+            columnsOrder.indexOf(b.key as string)
+          );
+        })}
         onOrderChange={setColumsOrder}
       />
     </section>

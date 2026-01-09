@@ -2,16 +2,12 @@ import type { Column } from "@/components/global/TableList";
 
 import { formatNumber } from "@vellumlabs/cexplorer-sdk";
 
-import { useAssetListTableStore } from "@/stores/tables/assetListTableStore";
-
 interface UseAssetListReturn {
   items: Record<string, unknown>[];
   columns: Column<Record<string, unknown>>[];
 }
 
 export const useAssetList = (): UseAssetListReturn => {
-  const { columnsVisibility } = useAssetListTableStore();
-
   const items = Array.from({ length: 20 }, (_, i) => ({
     type: i % 2 === 0 ? "NFT" : "FT",
     asset: `Asset ${i + 1}`,
@@ -31,7 +27,7 @@ export const useAssetList = (): UseAssetListReturn => {
         return <span>{item.type}</span>;
       },
       title: <p>Type</p>,
-      visible: columnsVisibility.type,
+
       widthPx: 40,
     },
     {
@@ -44,7 +40,7 @@ export const useAssetList = (): UseAssetListReturn => {
         return <span>{item.asset}</span>;
       },
       title: <p>Asset</p>,
-      visible: columnsVisibility.asset,
+
       widthPx: 80,
     },
     {
@@ -61,7 +57,7 @@ export const useAssetList = (): UseAssetListReturn => {
         );
       },
       title: <p>Policy ID</p>,
-      visible: columnsVisibility.policy_id,
+
       widthPx: 120,
     },
     {
@@ -78,7 +74,7 @@ export const useAssetList = (): UseAssetListReturn => {
           <span>Supply</span>
         </div>
       ),
-      visible: columnsVisibility.supply,
+
       widthPx: 60,
     },
     {
@@ -95,7 +91,7 @@ export const useAssetList = (): UseAssetListReturn => {
           <span>Minted</span>
         </div>
       ),
-      visible: columnsVisibility.minted,
+
       widthPx: 60,
     },
   ];
