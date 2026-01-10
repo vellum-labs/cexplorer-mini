@@ -37,7 +37,9 @@ interface TableListProps {
   title?: string;
   items: Record<string, unknown>[] | undefined;
   columns: Omit<Column<Record<string, unknown>>, "visible">[];
-  storeKey: string;
+  storeKey?: string;
+  withPadding?: boolean;
+  tableType?: "infinite" | "default";
 }
 
 export const TableList: FC<TableListProps> = ({
@@ -45,6 +47,8 @@ export const TableList: FC<TableListProps> = ({
   items,
   columns,
   storeKey,
+  withPadding = true,
+  tableType = "infinite",
 }) => {
   const {
     columnsOrder,
@@ -53,7 +57,7 @@ export const TableList: FC<TableListProps> = ({
     setColumnVisibility,
     setColumsOrder,
     setRows,
-  } = useTableStore(storeKey, columns)();
+  } = useTableStore(columns, storeKey)();
 
   const columnsOptions = columns.map(item => ({
     label: getNodeText(item.title),
@@ -68,13 +72,35 @@ export const TableList: FC<TableListProps> = ({
 
   return (
     <section
-      className={`flex w-full max-w-desktop flex-col py-3 ${!title ? "" : "px-mobile md:px-desktop"}`}
+      className={`flex w-full max-w-desktop flex-col py-3 ${!title || !withPadding ? "" : "px-mobile md:px-desktop"}`}
     >
       <div className='mb-2 flex w-full flex-col justify-between gap-1 md:flex-row md:items-center'>
         <div className='flex w-full flex-wrap items-center justify-between gap-1 sm:flex-nowrap'>
           <span className='font-semibold'>{title}</span>
-          <div className='flex justify-end max-[435px]:w-full md:hidden'>
-            <div className='flex items-center gap-1 md:hidden'>
+          {storeKey && (
+            <div className='flex justify-end max-[435px]:w-full md:hidden'>
+              <div className='flex items-center gap-1 md:hidden'>
+                <TableSettingsDropdown
+                  rows={rows}
+                  setRows={setRows}
+                  columnsOptions={columnsOptions}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {storeKey && (
+          <div className='flex gap-1'>
+            <TableSearchInput
+              placeholder='Search by tx hash...'
+              value=''
+              onchange={val => console.log(val)}
+              wrapperClassName='md:w-[320px] w-full'
+              showSearchIcon
+              showPrefixPopup={false}
+            />
+            <div className='hidden items-center gap-1 md:flex'>
               <TableSettingsDropdown
                 rows={rows}
                 setRows={setRows}
@@ -82,28 +108,10 @@ export const TableList: FC<TableListProps> = ({
               />
             </div>
           </div>
-        </div>
-
-        <div className='flex gap-1'>
-          <TableSearchInput
-            placeholder='Search by tx hash...'
-            value=''
-            onchange={val => console.log(val)}
-            wrapperClassName='md:w-[320px] w-full'
-            showSearchIcon
-            showPrefixPopup={false}
-          />
-          <div className='hidden items-center gap-1 md:flex'>
-            <TableSettingsDropdown
-              rows={rows}
-              setRows={setRows}
-              columnsOptions={columnsOptions}
-            />
-          </div>
-        </div>
+        )}
       </div>
       <GlobalTable
-        type='infinite'
+        type={tableType}
         currentPage={1}
         totalItems={20}
         itemsPerPage={rows}

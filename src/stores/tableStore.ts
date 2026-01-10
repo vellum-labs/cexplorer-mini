@@ -8,8 +8,8 @@ interface TableOptionsCore {
 }
 
 export const useTableStore = (
-  storeKey: string,
   columns: Column<Record<string, unknown>>[],
+  storeKey?: string,
 ) => {
   const columnsKeys = columns.map(item => item.key);
 
@@ -18,6 +18,17 @@ export const useTableStore = (
 
     return acc;
   }, {});
+
+  if (!storeKey) {
+    return () => ({
+      columnsVisibility,
+      rows: 20,
+      columnsOrder: columnsKeys,
+      setColumnVisibility: () => undefined,
+      setRows: () => undefined,
+      setColumsOrder: () => undefined,
+    });
+  }
 
   return handlePersistStore<
     TableOptionsCore,

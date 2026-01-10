@@ -4,6 +4,8 @@ import { PoolDetailOverview } from "@/components/pool/PoolDetailOverview";
 import { PageBase } from "@/components/global/PageBase";
 import { BlockListPage } from "../block/BlockListPage";
 import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
+import { DelegatorsTab } from "@/components/pool/tabs/DelegatorsTab";
+import { AboutTab } from "@/components/pool/tabs/AboutTab";
 
 import {
   formatString,
@@ -30,13 +32,13 @@ export const PoolDetailPage: FC = () => {
     {
       key: "delegators",
       label: "Delegators",
-      content: <></>,
+      content: <DelegatorsTab />,
       visible: true,
     },
     {
       key: "about",
       label: "About",
-      content: <></>,
+      content: <AboutTab />,
       visible: true,
     },
   ];

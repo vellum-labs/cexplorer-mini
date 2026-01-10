@@ -14,12 +14,12 @@ export const RewardsTab: FC = () => {
   const columns = [
     {
       key: "epoch",
-      render: item => (
-        <EpochCell no={item.no} showPulseDot currentEpoch={601} />
+      render: () => (
+        <EpochCell no={601} showPulseDot currentEpoch={601} justify='start' />
       ),
-      title: <p className='w-full text-right'>Epoch</p>,
+      title: <p className='w-full'>Epoch</p>,
 
-      widthPx: 30,
+      widthPx: 40,
     },
     {
       key: "rewards",
@@ -122,8 +122,8 @@ export const RewardsTab: FC = () => {
   return (
     <TableList
       columns={columns}
-      items={Array.from({ length: 20 }, () => ({ no: 560 }))}
       storeKey='pool_detail_rewards_tab'
+      items={Array.from({ length: 20 }, () => ({ rodo: true }))}
     />
   );
 };
