@@ -10,7 +10,11 @@ import {
 } from "@vellumlabs/cexplorer-sdk";
 import { Link } from "@tanstack/react-router";
 
-export const DelegatorsTab: FC = () => {
+interface DelegatorsTabProps {
+  type?: "pool" | "DRep";
+}
+
+export const DelegatorsTab: FC<DelegatorsTabProps> = ({ type = "pool" }) => {
   const columns = [
     {
       key: "date",
@@ -45,7 +49,7 @@ export const DelegatorsTab: FC = () => {
       widthPx: 90,
     },
     {
-      key: "pool_delegation",
+      key: `${type}_delegation`,
       render: () => {
         return (
           <div className='flex min-w-[40%] items-center gap-1'>
@@ -65,7 +69,7 @@ export const DelegatorsTab: FC = () => {
           </div>
         );
       },
-      title: <p>Previous pool</p>,
+      title: <p>Previous {type}</p>,
       widthPx: 180,
     },
     {

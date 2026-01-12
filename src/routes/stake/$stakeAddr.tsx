@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { StakeDetailPage } from "@/pages/stake/StakeDetailPage";
 
 export const Route = createFileRoute("/stake/$stakeAddr")({
-  component: RouteComponent,
+  component: StakeDetailPage,
 });
-
-function RouteComponent() {
-  return <div>Hello "/stake/$stakeAddr"!</div>;
-}
