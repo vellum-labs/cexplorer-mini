@@ -21,7 +21,13 @@ export const DrepNameCell: FC<DrepNameCellProps> = ({ item }) => {
     <div className='relative flex max-h-[75px] w-full items-center gap-1'>
       <div className={`flex w-[calc(100%-40px)] flex-col text-text-sm`}>
         {item?.data?.given_name && (
-          <Link to='/drep' className='w-fit text-primary'>
+          <Link
+            to='/drep/$hash'
+            params={{
+              hash: item.hash?.view ?? "",
+            }}
+            className='w-fit text-primary'
+          >
             {item?.data?.given_name.length > 50
               ? `${item?.data?.given_name.slice(0, 50)}...`
               : item?.data?.given_name}
@@ -33,7 +39,13 @@ export const DrepNameCell: FC<DrepNameCellProps> = ({ item }) => {
               item?.data?.given_name ? "text-text-xs" : "text-text-sm"
             } text-grayText`}
           >
-            <Link to='/drep' className='!text-inherit hover:!text-inherit'>
+            <Link
+              to='/drep/$hash'
+              params={{
+                hash: item?.hash?.view ?? "",
+              }}
+              className='!text-inherit hover:!text-inherit'
+            >
               {formatString(item?.hash?.view ?? "", "long")}
             </Link>
           </span>
