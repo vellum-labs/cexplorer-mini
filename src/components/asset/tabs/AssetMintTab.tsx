@@ -1,39 +1,17 @@
 import type { FC } from "react";
 import { DateCell } from "@vellumlabs/cexplorer-sdk";
-import { GlobalTable } from "@vellumlabs/cexplorer-sdk";
-import { useSearch } from "@tanstack/react-router";
-import { useState } from "react";
 import { Badge } from "@vellumlabs/cexplorer-sdk";
+import { TableList } from "@/components/global/TableList";
+import { HashCell } from "@/components/tx/HashCell";
 
-interface AssetMintTabProps {
-  name?: number;
-  policy?: string;
-  policyId?: string;
-}
-
-export const AssetMintTab: FC<AssetMintTabProps> = ({
-  name,
-  policy,
-  policyId,
-}) => {
-  const assetname = policy && name ? policy + name : undefined;
-  const { page } = useSearch({
-    from: policyId ? "/policy/$policyId" : "/asset/$fingerprint",
-  });
-
-  const [totalItems, setTotalItems] = useState(0);
-
-  const mintQuery = { data: { pages: [] }, isLoading: false };
-  const items = [];
-
+export const AssetMintTab: FC = () => {
   const columns = [
     {
-      key: "order",
-      render: () => <></>,
-      title: "#",
+      key: "asset_minted",
+      render: () => <DateCell time='2026-01-04T21:44:52' />,
+      title: "Asset Minted",
       visible: true,
-      standByRanking: true,
-      widthPx: 10,
+      widthPx: 60,
     },
     {
       key: "type",
@@ -48,54 +26,28 @@ export const AssetMintTab: FC<AssetMintTabProps> = ({
       widthPx: 50,
     },
     {
-      key: "asset",
-      render: () => {
-        return <span className='text-primary'>Asset</span>;
-      },
-      title: "Asset",
-      visible: true,
-      widthPx: 130,
-    },
-    {
-      key: "asset_minted",
-      render: (item: any) => <DateCell time={item?.tx?.time ?? ""} />,
-      title: "Asset Minted",
-      visible: true,
-      widthPx: 60,
-    },
-    {
-      key: "mint_quantity",
-      render: (item: any) => (
-        <p className='text-right'>
-          {item?.quantity ? item.quantity : "-"}
-        </p>
+      key: "tx",
+      render: () => (
+        <HashCell hash='31d561f459cb7d982b0910d4c35fb7ad6801e72536df674ead26318e6562e332' />
       ),
-      title: <p className='w-full text-right'>Mint Quantity</p>,
+      title: "Tx",
       visible: true,
       widthPx: 100,
     },
     {
-      key: "tx",
-      render: (item: any) => (
-        <span className='text-primary'>{item?.tx?.hash}</span>
-      ),
-      title: "Tx",
+      key: "mint_quantity",
+      render: () => <p className='text-right'>5</p>,
+      title: <p className='w-full text-right'>Mint Quantity</p>,
       visible: true,
       widthPx: 100,
     },
   ];
 
   return (
-    <GlobalTable
-      type='infinite'
-      currentPage={page ?? 1}
-      totalItems={totalItems}
-      itemsPerPage={10}
-      scrollable
-      query={mintQuery}
-      items={items}
+    <TableList
       columns={columns}
-      onOrderChange={() => {}}
+      items={Array.from({ length: 20 }, () => ({ todo: true }))}
+      storeKey='asset_mint_tab'
     />
   );
 };

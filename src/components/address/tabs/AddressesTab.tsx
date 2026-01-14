@@ -10,6 +10,7 @@ export const AddressesTab: FC = () => {
   return (
     <TableList
       title='All Addresses'
+      withPadding={false}
       columns={columns}
       items={items}
       storeKey='address_list'

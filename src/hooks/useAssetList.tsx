@@ -1,6 +1,7 @@
 import type { Column } from "@/components/global/TableList";
+import { Link } from "@tanstack/react-router";
 
-import { formatNumber } from "@vellumlabs/cexplorer-sdk";
+import { Badge, formatNumber, formatString } from "@vellumlabs/cexplorer-sdk";
 
 interface UseAssetListReturn {
   items: Record<string, unknown>[];
@@ -20,11 +21,11 @@ export const useAssetList = (): UseAssetListReturn => {
     {
       key: "type",
       render: item => {
-        if (!item?.type) {
-          return "-";
+        if (item?.type === "FT") {
+          return <Badge color='blue'>Token</Badge>;
         }
 
-        return <span>{item.type}</span>;
+        return <Badge color='yellow'>NFT</Badge>;
       },
       title: <p>Type</p>,
 
@@ -37,7 +38,20 @@ export const useAssetList = (): UseAssetListReturn => {
           return "-";
         }
 
-        return <span>{item.asset}</span>;
+        return (
+          <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
+            <Link
+              to='/asset/$fingerprint'
+              params={{ fingerprint: item?.asset }}
+              title={item?.asset}
+              className='text-primary'
+            >
+              <p className='break-words break-all'>
+                {formatString(item?.asset, "long")}
+              </p>
+            </Link>
+          </span>
+        );
       },
       title: <p>Asset</p>,
 
@@ -51,9 +65,9 @@ export const useAssetList = (): UseAssetListReturn => {
         }
 
         return (
-          <span className='truncate' title={item.policy_id as string}>
-            {item.policy_id}
-          </span>
+          <p className='break-words break-all text-grayTextPrimary text-text'>
+            {formatString(item?.policy_id, "long")}
+          </p>
         );
       },
       title: <p>Policy ID</p>,

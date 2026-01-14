@@ -1,12 +1,14 @@
+import type { FC } from "react";
+
 import { AddressDetailOverview } from "@/components/address/AddressDetailOverview";
 import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk";
 import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk";
 import { Tabs } from "@vellumlabs/cexplorer-sdk";
-import type { FC } from "react";
 import { TxListPage } from "../tx/TxListPage";
 import { formatString } from "@vellumlabs/cexplorer-sdk";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
+import { AddressesTab } from "@/components/address/tabs/AddressesTab";
 
 export const AddressDetailPage: FC = () => {
   const route = getRouteApi("/address/$address");
@@ -14,14 +16,13 @@ export const AddressDetailPage: FC = () => {
 
   const addressQuery = { data: { data: [] }, isLoading: false, isError: false };
 
-  const addressData = addressQuery.data?.data[0];
-  const assets = addressData?.asset ?? [];
-
   const tabs = [
     {
       key: "assets",
       label: "Assets",
-      content: <div className='p-4 text-grayTextPrimary'>Assets - Coming soon</div>,
+      content: (
+        <div className='p-4 text-grayTextPrimary'>Assets - Coming soon</div>
+      ),
       visible: true,
     },
     {
@@ -33,19 +34,23 @@ export const AddressDetailPage: FC = () => {
     {
       key: "utxos",
       label: "UTXOs",
-      content: <div className='p-4 text-grayTextPrimary'>UTXOs - Coming soon</div>,
+      content: (
+        <div className='p-4 text-grayTextPrimary'>UTXOs - Coming soon</div>
+      ),
       visible: true,
     },
     {
       key: "addresses",
       label: "Addresses",
-      content: <div className='p-4 text-grayTextPrimary'>Addresses - Coming soon</div>,
+      content: <AddressesTab />,
       visible: true,
     },
     {
       key: "rewards",
       label: "Rewards",
-      content: <div className='p-4 text-grayTextPrimary'>Rewards - Coming soon</div>,
+      content: (
+        <div className='p-4 text-grayTextPrimary'>Rewards - Coming soon</div>
+      ),
       visible: true,
     },
   ];

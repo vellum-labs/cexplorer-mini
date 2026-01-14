@@ -6,16 +6,20 @@ import {
   PoolCell,
 } from "@vellumlabs/cexplorer-sdk";
 import { DrepNameCell } from "@/components/drep/DrepNameCell";
+import { Link } from "@tanstack/react-router";
 
 interface UseAddressListReturn {
   items: Record<string, unknown>[];
   columns: Column<Record<string, unknown>>[];
 }
 
-export const useAddressList = (): UseAddressListReturn => {
+export const useAddressList = (
+  isStake: boolean = false,
+): UseAddressListReturn => {
   const items = Array.from({ length: 20 }, () => ({
-    account:
-      "addr1q8elqhkuvtyelgcedpup58r893awhg3l87a4rz5d5acatuj9y84nruafrmta2rewd5l46g8zxy4l49ly8kye79ddr3ksqal35g",
+    account: !isStake
+      ? "addr1q8elqhkuvtyelgcedpup58r893awhg3l87a4rz5d5acatuj9y84nruafrmta2rewd5l46g8zxy4l49ly8kye79ddr3ksqal35g"
+      : "stakeq8elqhkuvtyelgcedpup58r893awhg3l87a4rz5d5acatuj9y84nruafrmta2rewd5l46g8zxy4l49ly8kye79ddr3ksqal35g",
     live_stake: 10000000000,
     drep_delegation: {
       url: "https://raw.githubusercontent.com/Emurgo/constitution-committee/11af02e3b66daa7106941a1b3000d9721862bc3c/YOROI.jsonld",
@@ -47,9 +51,18 @@ export const useAddressList = (): UseAddressListReturn => {
         }
 
         return (
-          <span title={item.account as string}>
-            {formatString(item.account, "long")}
-          </span>
+          <Link
+            to={isStake ? "/stake/$stakeAddr" : "/address/$address"}
+            params={{
+              address: "todo",
+              stakeAddr: "todo",
+            }}
+            className='text-primary'
+          >
+            <span title={item.account as string}>
+              {formatString(item.account, "long")}
+            </span>
+          </Link>
         );
       },
       title: <p>Account</p>,
