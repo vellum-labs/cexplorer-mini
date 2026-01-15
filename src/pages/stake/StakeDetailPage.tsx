@@ -7,20 +7,22 @@ import { type FC } from "react";
 import { StakeDetailOverview } from "@/components/stake/StakeDetailOverview";
 import { TxListPage } from "../tx/TxListPage";
 import { PageBase } from "@/components/global/PageBase";
+import { AssetListPage } from "../asset/AssetListPage";
+import { AddressPage } from "../address/AddressPage";
+import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
+import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
 
 export const StakeDetailPage: FC = () => {
   const route = getRouteApi("/stake/$stakeAddr");
   const { stakeAddr: address } = route.useParams();
 
   const stakeQuery = { data: null, isLoading: false, isError: false };
-  const data = stakeQuery.data;
-  const assets = stakeQuery.data?.asset || [];
 
   const tabs = [
     {
       key: "assets",
       label: "Assets",
-      content: <div className='p-4 text-grayTextPrimary'>Assets - Coming soon</div>,
+      content: <AssetListPage tab />,
       visible: true,
     },
     {
@@ -32,25 +34,19 @@ export const StakeDetailPage: FC = () => {
     {
       key: "withdrawals",
       label: "Withdrawals",
-      content: <div className='p-4 text-grayTextPrimary'>Withdrawals - Coming soon</div>,
+      content: <WithdrawalsTab />,
       visible: true,
     },
     {
       key: "addresses",
       label: "Addresses",
-      content: <div className='p-4 text-grayTextPrimary'>Addresses - Coming soon</div>,
-      visible: true,
-    },
-    {
-      key: "delegations",
-      label: "Delegations",
-      content: <div className='p-4 text-grayTextPrimary'>Delegations - Coming soon</div>,
+      content: <AddressPage />,
       visible: true,
     },
     {
       key: "rewards",
       label: "Rewards",
-      content: <div className='p-4 text-grayTextPrimary'>Rewards - Coming soon</div>,
+      content: <RewardsTab />,
       visible: true,
     },
   ];

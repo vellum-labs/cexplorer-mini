@@ -9,6 +9,9 @@ import { formatString } from "@vellumlabs/cexplorer-sdk";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
 import { AddressesTab } from "@/components/address/tabs/AddressesTab";
+import { UtxoTab } from "@/components/address/tabs/UtxoTab";
+import { AssetListPage } from "../asset/AssetListPage";
+import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
 
 export const AddressDetailPage: FC = () => {
   const route = getRouteApi("/address/$address");
@@ -20,9 +23,7 @@ export const AddressDetailPage: FC = () => {
     {
       key: "assets",
       label: "Assets",
-      content: (
-        <div className='p-4 text-grayTextPrimary'>Assets - Coming soon</div>
-      ),
+      content: <AssetListPage tab />,
       visible: true,
     },
     {
@@ -34,9 +35,7 @@ export const AddressDetailPage: FC = () => {
     {
       key: "utxos",
       label: "UTXOs",
-      content: (
-        <div className='p-4 text-grayTextPrimary'>UTXOs - Coming soon</div>
-      ),
+      content: <UtxoTab />,
       visible: true,
     },
     {
@@ -48,9 +47,7 @@ export const AddressDetailPage: FC = () => {
     {
       key: "rewards",
       label: "Rewards",
-      content: (
-        <div className='p-4 text-grayTextPrimary'>Rewards - Coming soon</div>
-      ),
+      content: <RewardsTab />,
       visible: true,
     },
   ];
