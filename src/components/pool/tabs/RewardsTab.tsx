@@ -1,11 +1,9 @@
 import type { FC } from "react";
 
-import {
-  AdaWithTooltip,
-  EpochCell,
-  formatNumber,
-  Tooltip,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
 
 import { Network, Users } from "lucide-react";
 import { TableList } from "@/components/global/TableList";

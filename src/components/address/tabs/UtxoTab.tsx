@@ -3,12 +3,10 @@ import type { FC } from "react";
 import { TableList } from "@/components/global/TableList";
 
 import { HashCell } from "@/components/tx/HashCell";
-import {
-  AdaWithTooltip,
-  Copy,
-  formatString,
-  getAssetFingerprint,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { getAssetFingerprint } from "@vellumlabs/cexplorer-sdk/GetAssetFingerprint";
 import { Link } from "@tanstack/react-router";
 import { calculateMinUtxo } from "@/utils/calculateMinUtxo";
 

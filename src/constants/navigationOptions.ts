@@ -1,5 +1,5 @@
 import type { NavigationOptionType } from "@/types/navigationTypes";
-import type { NavigationOptions } from "@vellumlabs/cexplorer-sdk";
+import type { NavigationOptions } from "@vellumlabs/cexplorer-sdk/NavigationTypes";
 
 export const navigationOptions: {
   [T in NavigationOptionType]: NavigationOptions;

@@ -1,10 +1,8 @@
 import type { Column } from "@/components/global/TableList";
 
-import {
-  AdaWithTooltip,
-  formatString,
-  PoolCell,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
 import { DrepNameCell } from "@/components/drep/DrepNameCell";
 import { Link } from "@tanstack/react-router";
 

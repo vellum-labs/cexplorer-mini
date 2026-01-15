@@ -1,12 +1,10 @@
 import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
-import {
-  AddressTypeInitialsBadge,
-  Copy,
-  DateCell,
-  formatString,
-} from "@vellumlabs/cexplorer-sdk";
+import { AddressTypeInitialsBadge } from "@vellumlabs/cexplorer-sdk/AddressTypeInitialsBadge";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
 
 export const AssetOwnersTab: FC = () => {

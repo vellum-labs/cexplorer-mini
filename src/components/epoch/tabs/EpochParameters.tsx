@@ -1,12 +1,12 @@
 import {
-  formatNumber,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from "@vellumlabs/cexplorer-sdk";
+} from "@vellumlabs/cexplorer-sdk/GlobalTable/Components";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 import { Download } from "lucide-react";
 import { Fragment, type FC } from "react";
 

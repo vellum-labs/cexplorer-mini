@@ -2,7 +2,9 @@ import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
 import { Link } from "@tanstack/react-router";
-import { AdaWithTooltip, Copy, formatString } from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 
 export const ReferenceInputsTab: FC = () => {
   const columns = [

@@ -1,9 +1,7 @@
-import {
-  Badge,
-  formatString,
-  HeaderBannerSubtitle,
-  Tabs,
-} from "@vellumlabs/cexplorer-sdk";
+import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 import TxDetailOverview from "@/components/tx/TxDetailOverview";
 import { PageBase } from "@/components/global/PageBase";
 import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";

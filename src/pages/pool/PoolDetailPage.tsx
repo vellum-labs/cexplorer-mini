@@ -7,11 +7,9 @@ import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
 import { DelegatorsTab } from "@/components/pool/tabs/DelegatorsTab";
 import { AboutTab } from "@/components/pool/tabs/AboutTab";
 
-import {
-  formatString,
-  HeaderBannerSubtitle,
-  Tabs,
-} from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 
 export const PoolDetailPage: FC = () => {
   const hash = "dd7330d29709deb4e8dff5b49d50b174c9c884678992cca4a68d96d7";

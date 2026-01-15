@@ -1,14 +1,12 @@
 import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
-import {
-  AdaWithTooltip,
-  BlockCell,
-  Copy,
-  DateCell,
-  EpochCell,
-  formatString,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
 
 export const WithdrawalsTab: FC = () => {

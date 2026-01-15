@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import { useThemeStore } from "@vellumlabs/cexplorer-sdk";
+import { useThemeStore } from "@vellumlabs/cexplorer-sdk/ThemeStore";
 import { useEffect } from "react";
 
 export const App: FC = () => {

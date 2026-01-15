@@ -1,10 +1,10 @@
 import type { FC } from "react";
 
 import { AssetDetailOverview } from "@/components/asset/AssetDetailOverview";
-import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk";
-import { Tabs } from "@vellumlabs/cexplorer-sdk";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 import { TxListPage } from "../tx/TxListPage";
-import { formatString } from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
 import { AssetMintTab } from "@/components/asset/tabs/AssetMintTab";

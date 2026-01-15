@@ -1,6 +1,6 @@
 import type { FC } from "react";
-import { DateCell } from "@vellumlabs/cexplorer-sdk";
-import { Badge } from "@vellumlabs/cexplorer-sdk";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
 import { TableList } from "@/components/global/TableList";
 import { HashCell } from "@/components/tx/HashCell";
 

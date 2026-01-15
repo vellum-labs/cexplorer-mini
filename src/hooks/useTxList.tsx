@@ -1,13 +1,11 @@
 import type { Column } from "@/components/global/TableList";
 import { HashCell } from "@/components/tx/HashCell";
 
-import {
-  AdaWithTooltip,
-  BlockCell,
-  DateCell,
-  EpochCell,
-  SizeCell,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
 
 interface UseTxListReturn {
   items: Record<string, unknown>[];

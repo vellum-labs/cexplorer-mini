@@ -1,7 +1,8 @@
 import type { Column } from "@/components/global/TableList";
 import { Link } from "@tanstack/react-router";
 
-import { Badge, formatNumber, formatString } from "@vellumlabs/cexplorer-sdk";
+import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
+import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 interface UseAssetListReturn {
   items: Record<string, unknown>[];

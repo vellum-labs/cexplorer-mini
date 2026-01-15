@@ -1,9 +1,9 @@
 import { type FC } from "react";
-import { OverviewCard } from "@vellumlabs/cexplorer-sdk";
-import { formatString } from "@vellumlabs/cexplorer-sdk";
-import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk";
-import { Badge } from "@vellumlabs/cexplorer-sdk";
-import { Copy } from "@vellumlabs/cexplorer-sdk";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 
 interface StakeDetailOverviewProps {
   data: any;

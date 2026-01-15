@@ -1,6 +1,7 @@
 import type { FC } from "react";
 
-import { AdaWithTooltip, OverviewCard } from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 
 export const EpochLostAndCost: FC = () => {
   const overviewList = [

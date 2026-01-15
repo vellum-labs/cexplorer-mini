@@ -1,12 +1,10 @@
 import type { FC } from "react";
 
-import {
-  AdaWithTooltip,
-  Copy,
-  formatNumber,
-  formatString,
-  OverviewCard,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 
 interface PoolDetailOverview {
   hash: string;

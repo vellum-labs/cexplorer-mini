@@ -2,7 +2,9 @@ import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
 import { Link } from "@tanstack/react-router";
-import { AdaWithTooltip, Copy, formatString } from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 export const CollateralTab: FC = () => {
   const columns = [

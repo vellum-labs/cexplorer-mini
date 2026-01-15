@@ -1,6 +1,7 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 
-import { Button, useThemeStore } from "@vellumlabs/cexplorer-sdk";
+import { useThemeStore } from "@vellumlabs/cexplorer-sdk/ThemeStore";
+import { Button } from "@vellumlabs/cexplorer-sdk/Button";
 import { Navbar } from "@/components/layout/Navbar";
 
 import { useEffect } from "react";

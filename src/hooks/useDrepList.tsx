@@ -2,12 +2,10 @@ import type { Column } from "@/components/global/TableList";
 
 import { DrepNameCell } from "@/components/drep/DrepNameCell";
 import { MetadataCell } from "@/components/global/MetadataCell";
-import {
-  AdaWithTooltip,
-  DateCell,
-  formatNumber,
-  PulseDot,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { PulseDot } from "@vellumlabs/cexplorer-sdk/PulseDot";
 
 interface UseDrepListReturn {
   items: Record<string, unknown>[];

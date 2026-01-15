@@ -1,5 +1,5 @@
 import type { Column } from "@/components/global/TableList";
-import { handlePersistStore } from "@vellumlabs/cexplorer-sdk";
+import { handlePersistStore } from "@vellumlabs/cexplorer-sdk/HandlePersiststore";
 
 interface TableOptionsCore {
   columnsVisibility: Record<string, boolean>;

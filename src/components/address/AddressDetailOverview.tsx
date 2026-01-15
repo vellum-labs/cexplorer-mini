@@ -1,9 +1,9 @@
 import type { FC } from "react";
-import { OverviewCard } from "@vellumlabs/cexplorer-sdk";
-import { formatString } from "@vellumlabs/cexplorer-sdk";
-import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk";
-import { Copy } from "@vellumlabs/cexplorer-sdk";
-import { DateCell } from "@vellumlabs/cexplorer-sdk";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 
 interface AddressDetailOverviewProps {
   data: any[];
@@ -49,11 +49,7 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
   const delegationArr = [
     {
       label: "Status",
-      value: (
-        <span className='font-bold text-redText'>
-          Inactive
-        </span>
-      ),
+      value: <span className='font-bold text-redText'>Inactive</span>,
     },
     {
       label: "Stake pool",
@@ -118,11 +114,7 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
 
   return (
     <>
-      <OverviewCard
-        title='Overview'
-        overviewList={overviewList}
-        className=''
-      />
+      <OverviewCard title='Overview' overviewList={overviewList} className='' />
       <OverviewCard
         title='Delegation'
         overviewList={delegationArr}

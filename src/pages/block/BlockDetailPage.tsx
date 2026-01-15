@@ -4,19 +4,17 @@ import { PageBase } from "@/components/global/PageBase";
 
 import { getRouteApi } from "@tanstack/react-router";
 
-import {
-  AdaWithTooltip,
-  Copy,
-  EpochCell,
-  formatNumber,
-  formatString,
-  HeaderBannerSubtitle,
-  MintedByCard,
-  OverviewCard,
-  SizeCard,
-  TimeDateIndicator,
-  Tooltip,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { MintedByCard } from "@vellumlabs/cexplorer-sdk/MintedByCard";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { SizeCard } from "@vellumlabs/cexplorer-sdk/SizeCard";
+import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
+import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
 import {
   ChevronLeft,
   ChevronRight,

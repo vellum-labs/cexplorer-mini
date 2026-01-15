@@ -1,17 +1,14 @@
 import type { FC } from "react";
 
-import {
-  AdaWithTooltip,
-  BlockCell,
-  Copy,
-  DateCell,
-  EpochCell,
-  formatNumber,
-  formatString,
-  MintedByCard,
-  OverviewCard,
-  SizeCard,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { MintedByCard } from "@vellumlabs/cexplorer-sdk/MintedByCard";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { SizeCard } from "@vellumlabs/cexplorer-sdk/SizeCard";
 import { CircleCheck, HardDrive, Lock } from "lucide-react";
 
 const TxDetailOverview: FC = () => {

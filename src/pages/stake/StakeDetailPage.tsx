@@ -1,7 +1,7 @@
-import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk";
-import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk";
-import { Tabs } from "@vellumlabs/cexplorer-sdk";
-import { formatString } from "@vellumlabs/cexplorer-sdk";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk/LoadingSkeleton";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { getRouteApi } from "@tanstack/react-router";
 import { type FC } from "react";
 import { StakeDetailOverview } from "@/components/stake/StakeDetailOverview";

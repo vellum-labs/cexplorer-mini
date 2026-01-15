@@ -1,11 +1,11 @@
 import type { FC } from "react";
 
 import { AddressDetailOverview } from "@/components/address/AddressDetailOverview";
-import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk";
-import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk";
-import { Tabs } from "@vellumlabs/cexplorer-sdk";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
+import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk/LoadingSkeleton";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 import { TxListPage } from "../tx/TxListPage";
-import { formatString } from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
 import { AddressesTab } from "@/components/address/tabs/AddressesTab";

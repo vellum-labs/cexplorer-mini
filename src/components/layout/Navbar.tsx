@@ -1,6 +1,7 @@
 import type { FC } from "react";
 
-import { Dropdown, MainLogo } from "@vellumlabs/cexplorer-sdk";
+import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
+import { MainLogo } from "@vellumlabs/cexplorer-sdk/MainLogo";
 import { SettingsDropdown } from "../global/SettingsDropdown";
 
 import { navigationOptions } from "@/constants/navigationOptions";

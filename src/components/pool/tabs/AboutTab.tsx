@@ -1,14 +1,12 @@
 import { TableList } from "@/components/global/TableList";
 import { HashCell } from "@/components/tx/HashCell";
 import { Link } from "@tanstack/react-router";
-import {
-  AdaWithTooltip,
-  Copy,
-  DateCell,
-  EpochCell,
-  formatString,
-  Tooltip,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
 import { Clock, Download } from "lucide-react";
 import type { FC } from "react";
 

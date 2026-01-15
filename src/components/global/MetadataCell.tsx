@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useState } from "react";
 import { FileJson } from "lucide-react";
 
-import { Modal } from "@vellumlabs/cexplorer-sdk";
+import { Modal } from "@vellumlabs/cexplorer-sdk/Modal";
 import { createPortal } from "react-dom";
 
 interface MetadataCellProps {

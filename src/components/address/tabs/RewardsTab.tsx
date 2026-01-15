@@ -1,7 +1,9 @@
 import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
-import { AdaWithTooltip, DateCell, PoolCell } from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 
 export const RewardsTab: FC = () => {
   const items = Array.from({ length: 20 }, () => ({

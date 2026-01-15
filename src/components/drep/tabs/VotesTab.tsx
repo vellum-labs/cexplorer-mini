@@ -1,14 +1,12 @@
 import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
-import {
-  ActionTypes,
-  AdaWithTooltip,
-  Copy,
-  DateCell,
-  formatString,
-  VoteBadge,
-} from "@vellumlabs/cexplorer-sdk";
+import { ActionTypes } from "@vellumlabs/cexplorer-sdk/ActionTypes";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { VoteBadge } from "@vellumlabs/cexplorer-sdk/VoteBadge";
 import { HashCell } from "@/components/tx/HashCell";
 
 export const VotesTab: FC = () => {

@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from "react";
 
 import { Helmet } from "react-helmet";
-import { Header, type HeaderProps } from "@vellumlabs/cexplorer-sdk";
+import { Header, type HeaderProps } from "@vellumlabs/cexplorer-sdk/Header";
 
 import metadata from "../../../conf/en-metadata.json";
 

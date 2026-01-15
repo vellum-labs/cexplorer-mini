@@ -3,11 +3,9 @@ import type { FC } from "react";
 import { PageBase } from "@/components/global/PageBase";
 import { TableList } from "@/components/global/TableList";
 
-import {
-  AdaWithTooltip,
-  formatNumber,
-  PoolCell,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
 
 export const PoolListPage: FC = () => {
   const items = Array.from({ length: 20 }, () => ({

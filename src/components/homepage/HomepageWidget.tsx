@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@vellumlabs/cexplorer-sdk";
+} from "@vellumlabs/cexplorer-sdk/GlobalTable/Components";
 
 interface HomepageWidgetProps {
   title: string;

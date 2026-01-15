@@ -1,10 +1,8 @@
 import type { FC } from "react";
 
-import {
-  formatString,
-  OverviewCard,
-  TimeDateIndicator,
-} from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 
 export const AssetDetailOverview: FC = () => {
   const overview = [

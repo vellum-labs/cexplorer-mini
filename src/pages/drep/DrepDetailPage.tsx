@@ -1,13 +1,14 @@
 import type { FC } from "react";
 
 import { DrepDetailOverview } from "@/components/drep/DrepDetailOverview";
-import { HeaderBannerSubtitle, Tabs } from "@vellumlabs/cexplorer-sdk";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
+import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
 import { PageBase } from "@/components/global/PageBase";
 import { AboutTab } from "@/components/drep/tabs/AboutTab";
 import { VotesTab } from "@/components/drep/tabs/VotesTab";
 import { DelegatorsTab } from "@/components/pool/tabs/DelegatorsTab";
 
-import { formatString } from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 export const DrepDetailPage: FC = () => {
   const tabs = [

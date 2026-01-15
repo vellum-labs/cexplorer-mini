@@ -1,11 +1,9 @@
 import type { FC, MouseEventHandler, ReactNode, RefObject } from "react";
 
-import {
-  getNodeText,
-  GlobalTable,
-  TableSearchInput,
-  TableSettingsDropdown,
-} from "@vellumlabs/cexplorer-sdk";
+import { getNodeText } from "@vellumlabs/cexplorer-sdk/GetNodeText";
+import { GlobalTable } from "@vellumlabs/cexplorer-sdk/GlobalTable";
+import { TableSearchInput } from "@vellumlabs/cexplorer-sdk/TableSearchInput";
+import { TableSettingsDropdown } from "@vellumlabs/cexplorer-sdk/TableSettingsDropdown";
 
 import { useTableStore } from "@/stores/tableStore";
 

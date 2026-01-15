@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { PageBase } from "@/components/global/PageBase";
-import { Tabs } from "@vellumlabs/cexplorer-sdk";
+import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 
 import { AddressesTab } from "@/components/address/tabs/AddressesTab";
 import { StakeTab } from "@/components/address/tabs/StakeTab";

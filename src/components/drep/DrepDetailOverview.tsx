@@ -1,14 +1,12 @@
 import type { FC } from "react";
-import {
-  AdaWithTooltip,
-  Copy,
-  DelegatorsLabel,
-  formatNumber,
-  formatString,
-  OverviewCard,
-  PulseDot,
-  TimeDateIndicator,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DelegatorsLabel } from "@vellumlabs/cexplorer-sdk/DelegatorsLabel";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { PulseDot } from "@vellumlabs/cexplorer-sdk/PulseDot";
+import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 
 export const DrepDetailOverview: FC = () => {
   const about = [

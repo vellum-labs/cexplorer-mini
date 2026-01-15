@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { Link } from "@tanstack/react-router";
-import { Copy } from "@vellumlabs/cexplorer-sdk";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 
 interface AboutTabProps {
   data: Record<string, string>;

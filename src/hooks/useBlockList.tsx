@@ -1,14 +1,12 @@
 import type { Column } from "@/components/global/TableList";
 
 import { HashCell } from "@/components/tx/HashCell";
-import {
-  BlockCell,
-  DateCell,
-  EpochCell,
-  formatNumber,
-  PoolCell,
-  SizeCell,
-} from "@vellumlabs/cexplorer-sdk";
+import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
+import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
 
 interface UseBlockListReturn {
   items: Record<string, unknown>[];

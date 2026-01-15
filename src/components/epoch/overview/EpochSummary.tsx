@@ -1,12 +1,10 @@
 import type { FC } from "react";
 
-import {
-  AdaWithTooltip,
-  formatNumber,
-  OverviewCard,
-  PulseDot,
-  TimeDateIndicator,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
+import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
+import { PulseDot } from "@vellumlabs/cexplorer-sdk/PulseDot";
+import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 
 export const EpochSummary: FC = () => {
   const overviewList = [

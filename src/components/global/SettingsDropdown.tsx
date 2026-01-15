@@ -1,9 +1,11 @@
 import type { FC } from "react";
-import type { NavigationOptions } from "@vellumlabs/cexplorer-sdk";
+import type { NavigationOptions } from "@vellumlabs/cexplorer-sdk/NavigationTypes";
 
 import { Moon, Settings, Sun } from "lucide-react";
 
-import { Dropdown, useThemeStore } from "@vellumlabs/cexplorer-sdk";
+import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
+
+import { useThemeStore } from "@vellumlabs/cexplorer-sdk/ThemeStore";
 
 export const SettingsDropdown: FC = () => {
   const { theme, toggleTheme } = useThemeStore();

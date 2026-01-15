@@ -1,8 +1,8 @@
 import type { FileRoutesByPath } from "@tanstack/react-router";
 
-import { formatString } from "@vellumlabs/cexplorer-sdk";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
-import { Copy } from "@vellumlabs/cexplorer-sdk";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 
 export const HashCell = ({
   hash,

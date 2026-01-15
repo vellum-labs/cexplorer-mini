@@ -1,13 +1,11 @@
 import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
-import {
-  AdaWithTooltip,
-  Copy,
-  DateCell,
-  formatString,
-  PoolCell,
-} from "@vellumlabs/cexplorer-sdk";
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
 import { Link } from "@tanstack/react-router";
 
 interface DelegatorsTabProps {
