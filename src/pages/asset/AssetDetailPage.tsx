@@ -8,6 +8,7 @@ import { formatString } from "@vellumlabs/cexplorer-sdk";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
 import { AssetMintTab } from "@/components/asset/tabs/AssetMintTab";
+import { AssetOwnersTab } from "@/components/asset/tabs/AssetOwnersTab";
 
 export const AssetDetailPage: FC = () => {
   const route = getRouteApi("/asset/$fingerprint");
@@ -37,9 +38,7 @@ export const AssetDetailPage: FC = () => {
     {
       key: "owners",
       label: "Owners",
-      content: (
-        <div className='p-4 text-grayTextPrimary'>Owners - Coming soon</div>
-      ),
+      content: <AssetOwnersTab />,
       visible: true,
     },
   ];

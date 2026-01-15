@@ -4,15 +4,11 @@ import {
   HeaderBannerSubtitle,
   Tabs,
 } from "@vellumlabs/cexplorer-sdk";
-import CollateralTabItem from "@/components/tx/tabs/CollateralTabItem";
-import ContentTabItem from "@/components/tx/tabs/ContentTabItem";
-import { ContractsTabItem } from "@/components/tx/tabs/ContractsTabItem";
-import MetadataTabItem from "@/components/tx/tabs/MetadataTabItem";
-import OverviewTabItem from "@/components/tx/tabs/OverviewTabItem";
-import ReferenceInputsTabItem from "@/components/tx/tabs/ReferenceInputsTabItem";
-import WithdrawalsTabItem from "@/components/tx/tabs/WithdrawalsTabItem";
 import TxDetailOverview from "@/components/tx/TxDetailOverview";
 import { PageBase } from "@/components/global/PageBase";
+import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
+import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
+import { CollateralTab } from "./tabs/CollateralTab";
 
 export const TxDetailPage = () => {
   const hash = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6";
@@ -22,13 +18,13 @@ export const TxDetailPage = () => {
     {
       key: "overview",
       label: "Overview",
-      content: <OverviewTabItem />,
+      content: <></>,
       visible: true,
     },
     {
       key: "content",
       label: "Content",
-      content: <ContentTabItem />,
+      content: <></>,
       visible: true,
     },
     {
@@ -41,8 +37,7 @@ export const TxDetailPage = () => {
           </Badge>
         </span>
       ),
-      title: "Contracts",
-      content: <ContractsTabItem />,
+      content: <></>,
       visible: true,
     },
     {
@@ -55,22 +50,13 @@ export const TxDetailPage = () => {
           </Badge>
         </span>
       ),
-      title: "Collateral",
-      content: <CollateralTabItem />,
+      content: <CollateralTab />,
       visible: true,
     },
     {
       key: "withdrawals",
-      label: (
-        <span className='flex items-center gap-1'>
-          Withdrawals
-          <Badge small color='gray'>
-            2
-          </Badge>
-        </span>
-      ),
-      title: "Withdrawals",
-      content: <WithdrawalsTabItem />,
+      label: "Withdrawals",
+      content: <WithdrawalsTab />,
       visible: true,
     },
     {
@@ -83,14 +69,13 @@ export const TxDetailPage = () => {
           </Badge>
         </span>
       ),
-      title: "Reference inputs",
-      content: <ReferenceInputsTabItem />,
+      content: <ReferenceInputsTab />,
       visible: true,
     },
     {
       key: "metadata",
       label: "Metadata",
-      content: <MetadataTabItem />,
+      content: <></>,
       visible: true,
     },
   ];

@@ -8,9 +8,9 @@ import { StakeDetailOverview } from "@/components/stake/StakeDetailOverview";
 import { TxListPage } from "../tx/TxListPage";
 import { PageBase } from "@/components/global/PageBase";
 import { AssetListPage } from "../asset/AssetListPage";
-import { AddressPage } from "../address/AddressPage";
 import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
 import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
+import { AddressesTab } from "@/components/address/tabs/AddressesTab";
 
 export const StakeDetailPage: FC = () => {
   const route = getRouteApi("/stake/$stakeAddr");
@@ -40,7 +40,7 @@ export const StakeDetailPage: FC = () => {
     {
       key: "addresses",
       label: "Addresses",
-      content: <AddressPage />,
+      content: <AddressesTab />,
       visible: true,
     },
     {
