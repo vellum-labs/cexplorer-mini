@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@tanstack/react-router": "1.144.0",
-    "@vellumlabs/cexplorer-sdk": "^1.1.15",
+    "@vellumlabs/cexplorer-sdk": "^1.1.16",
     "autoprefixer": "^10.4.23",
     "date-fns": "^4.1.0",
     "immer": "10.1.1",

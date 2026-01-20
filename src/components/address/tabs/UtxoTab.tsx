@@ -6,7 +6,6 @@ import { HashCell } from "@/components/tx/HashCell";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
-import { getAssetFingerprint } from "@vellumlabs/cexplorer-sdk/GetAssetFingerprint";
 import { Link } from "@tanstack/react-router";
 import { calculateMinUtxo } from "@/utils/calculateMinUtxo";
 
@@ -81,7 +80,7 @@ export const UtxoTab: FC = () => {
                           <Link
                             to='/asset/$fingerprint'
                             params={{
-                              fingerprint: getAssetFingerprint(item.name),
+                              fingerprint: "fingerprint",
                             }}
                             className='text-primary'
                           >
