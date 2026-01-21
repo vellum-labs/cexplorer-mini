@@ -1,11 +1,18 @@
 import type { FC, MouseEventHandler, ReactNode, RefObject } from "react";
+import type {
+  FetchNextPageOptions,
+  InfiniteData,
+  InfiniteQueryObserverResult,
+} from "@tanstack/react-query";
 
 import { getNodeText } from "@vellumlabs/cexplorer-sdk/GetNodeText";
 import { GlobalTable } from "@vellumlabs/cexplorer-sdk/GlobalTable";
 import { TableSearchInput } from "@vellumlabs/cexplorer-sdk/TableSearchInput";
 import { TableSettingsDropdown } from "@vellumlabs/cexplorer-sdk/TableSettingsDropdown";
+import { Button } from "@vellumlabs/cexplorer-sdk/Button";
 
 import { useTableStore } from "@/stores/tableStore";
+import { Download } from "lucide-react";
 
 export type Column<T> = {
   key: string;
@@ -33,11 +40,14 @@ export type Column<T> = {
 
 interface TableListProps {
   title?: string;
-  items: Record<string, unknown>[] | undefined;
+  items: any[] | undefined;
   columns: Omit<Column<Record<string, unknown>>, "visible">[];
   storeKey?: string;
   withPadding?: boolean;
-  tableType?: "infinite" | "default";
+  showMoreButton?: boolean;
+  onFetch?: (
+    options?: FetchNextPageOptions | undefined,
+  ) => Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
 }
 
 export const TableList: FC<TableListProps> = ({
@@ -46,7 +56,8 @@ export const TableList: FC<TableListProps> = ({
   columns,
   storeKey,
   withPadding = true,
-  tableType = "infinite",
+  showMoreButton = true,
+  onFetch,
 }) => {
   const {
     columnsOrder,
@@ -109,8 +120,7 @@ export const TableList: FC<TableListProps> = ({
         )}
       </div>
       <GlobalTable
-        type={tableType}
-        currentPage={1}
+        type='default'
         totalItems={20}
         itemsPerPage={rows}
         minContentWidth={1200}
@@ -131,6 +141,17 @@ export const TableList: FC<TableListProps> = ({
         })}
         onOrderChange={setColumsOrder}
       />
+      {showMoreButton && (
+        <div className='mt-1 flex w-full justify-center'>
+          <Button
+            size='md'
+            variant='primary'
+            label='Load more'
+            leftIcon={<Download size={15} />}
+            onClick={onFetch}
+          />
+        </div>
+      )}
     </section>
   );
 };

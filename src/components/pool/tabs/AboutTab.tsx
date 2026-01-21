@@ -290,35 +290,30 @@ export const AboutTab: FC = () => {
         title='Owners (Pledge)'
         withPadding={false}
         items={Array.from({ length: 3 }, () => ({ todo: true }))}
-        tableType='default'
       />
       <TableList
         columns={rewardsColumns}
         title='Rewards'
         withPadding={false}
         items={Array.from({ length: 1 }, () => ({ todo: true }))}
-        tableType='default'
       />
       <TableList
         columns={relayColumns}
         title='Relays'
         withPadding={false}
         items={Array.from({ length: 2 }, () => ({ todo: true }))}
-        tableType='default'
       />
       <TableList
         columns={certificatesColumns}
         title='Pool certificates'
         withPadding={false}
         items={Array.from({ length: 7 }, () => ({ todo: true }))}
-        tableType='default'
       />
       <TableList
         columns={retirmentColumns}
         title='Retirement'
         withPadding={false}
         items={Array.from({ length: 1 }, () => ({ todo: true }))}
-        tableType='default'
       />
     </div>
   );

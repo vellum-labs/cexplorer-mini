@@ -10,7 +10,7 @@ interface BlockListPageProps {
 }
 
 export const BlockListPage: FC<BlockListPageProps> = ({ tab = false }) => {
-  const { columns, items } = useBlockList();
+  const { columns, items, hasNextPage, fetchNextPage } = useBlockList();
 
   return (
     <PageBase
@@ -25,6 +25,8 @@ export const BlockListPage: FC<BlockListPageProps> = ({ tab = false }) => {
         storeKey='block_list'
         columns={columns}
         items={items}
+        showMoreButton={hasNextPage}
+        onFetch={fetchNextPage}
       />
     </PageBase>
   );

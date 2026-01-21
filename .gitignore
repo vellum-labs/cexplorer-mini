@@ -16,3 +16,5 @@ routeTree.gen.ts
 .DS_Store
 
 stats.html
+
+.env
