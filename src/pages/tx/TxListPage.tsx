@@ -17,9 +17,12 @@ export const TxListPage: FC<TxListPageProps> = ({
   tab = false,
   txData,
   hideColumns = [],
-  showLoadMore = true
+  showLoadMore = true,
 }) => {
-  const { columns, items } = useTxList(txData, hideColumns);
+  const { columns, items, hasNextPage, fetchNextPage } = useTxList(
+    txData,
+    hideColumns,
+  );
 
   return (
     <PageBase
@@ -34,7 +37,8 @@ export const TxListPage: FC<TxListPageProps> = ({
         columns={columns}
         items={items}
         storeKey='tx_list'
-        showMoreButton={showLoadMore}
+        showMoreButton={showLoadMore && hasNextPage}
+        onFetch={fetchNextPage}
       />
     </PageBase>
   );

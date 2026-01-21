@@ -1,4 +1,10 @@
 import type { Column } from "@/components/global/TableList";
+import type {
+  FetchNextPageOptions,
+  InfiniteData,
+  InfiniteQueryObserverResult,
+} from "@tanstack/react-query";
+
 import { HashCell } from "@/components/tx/HashCell";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
@@ -6,31 +12,35 @@ import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
 import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
-import type { TxData } from "@/services/block";
+
+import { useFetchTxList, type TxListData } from "@/services/tx";
+import { normalizeHash } from "@/utils/normalizeHash";
 
 interface UseTxListReturn {
-  items: Record<string, any>[];
+  items: any[] | undefined;
   columns: Column<Record<string, unknown>>[];
+  fetchNextPage: (
+    options?: FetchNextPageOptions | undefined,
+  ) => Promise<
+    InfiniteQueryObserverResult<InfiniteData<TxListData, unknown>, Error>
+  >;
+  hasNextPage: boolean;
 }
 
 export const useTxList = (
-  txData?: TxData[],
+  blockTxData?: any[],
   hideColumns: string[] = [],
 ): UseTxListReturn => {
+  const { data: txData, fetchNextPage, hasNextPage } = useFetchTxList(20);
+
   const items =
-    txData ??
-    Array.from({ length: 20 }, () => ({
-      time: "2026-01-05T04:36:36",
-      hash: "b62b9e00b04094b6d9c17c3b0dabe65fca8bb59d3244db85ccb644184ada98e0",
-      block: {
-        epoch_no: 456,
-        no: 12868010,
-        hash: "7489e5e0e7baa6bb4dbed7451ee0727b0d343d34042170e21264ac44b0603e16",
-      },
-      out_sum: 800000000,
-      size: 289,
-      fee: 420981,
-    }));
+    blockTxData ??
+    txData?.pages.flatMap(page =>
+      page.tx.map(tx => ({
+        ...tx,
+        hash: normalizeHash(tx.hash),
+      })),
+    );
 
   const columns = [
     {
@@ -96,5 +106,7 @@ export const useTxList = (
     columns: columns
       .filter(col => !hideColumns.includes(col.key))
       .map(item => ({ ...item, visible: true })),
+    fetchNextPage,
+    hasNextPage,
   };
 };
