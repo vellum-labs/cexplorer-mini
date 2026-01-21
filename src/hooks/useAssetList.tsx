@@ -5,7 +5,7 @@ import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 interface UseAssetListReturn {
-  items: Record<string, unknown>[];
+  items: Record<string, any>[];
   columns: Column<Record<string, unknown>>[];
 }
 

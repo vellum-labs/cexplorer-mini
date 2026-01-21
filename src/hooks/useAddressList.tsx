@@ -7,7 +7,7 @@ import { DrepNameCell } from "@/components/drep/DrepNameCell";
 import { Link } from "@tanstack/react-router";
 
 interface UseAddressListReturn {
-  items: Record<string, unknown>[];
+  items: Record<string, any>[];
   columns: Column<Record<string, unknown>>[];
 }
 

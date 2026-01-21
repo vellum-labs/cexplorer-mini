@@ -6,25 +6,31 @@ import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
 import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
+import type { TxData } from "@/services/block";
 
 interface UseTxListReturn {
-  items: Record<string, unknown>[];
+  items: Record<string, any>[];
   columns: Column<Record<string, unknown>>[];
 }
 
-export const useTxList = (): UseTxListReturn => {
-  const items = Array.from({ length: 20 }, () => ({
-    time: "2026-01-05T04:36:36",
-    hash: "b62b9e00b04094b6d9c17c3b0dabe65fca8bb59d3244db85ccb644184ada98e0",
-    block: {
-      epoch_no: 456,
-      no: 12868010,
-      hash: "7489e5e0e7baa6bb4dbed7451ee0727b0d343d34042170e21264ac44b0603e16",
-    },
-    out_sum: 800000000,
-    size: 289,
-    fee: 420981,
-  }));
+export const useTxList = (
+  txData?: TxData[],
+  hideColumns: string[] = [],
+): UseTxListReturn => {
+  const items =
+    txData ??
+    Array.from({ length: 20 }, () => ({
+      time: "2026-01-05T04:36:36",
+      hash: "b62b9e00b04094b6d9c17c3b0dabe65fca8bb59d3244db85ccb644184ada98e0",
+      block: {
+        epoch_no: 456,
+        no: 12868010,
+        hash: "7489e5e0e7baa6bb4dbed7451ee0727b0d343d34042170e21264ac44b0603e16",
+      },
+      out_sum: 800000000,
+      size: 289,
+      fee: 420981,
+    }));
 
   const columns = [
     {
@@ -87,6 +93,8 @@ export const useTxList = (): UseTxListReturn => {
 
   return {
     items,
-    columns: columns.map(item => ({ ...item, visible: true })),
+    columns: columns
+      .filter(col => !hideColumns.includes(col.key))
+      .map(item => ({ ...item, visible: true })),
   };
 };

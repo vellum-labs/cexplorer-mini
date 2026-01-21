@@ -1,5 +1,6 @@
 import { gql } from "@/lib/gql";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { normalizeHash } from "@/utils/normalizeHash";
 
 export interface BlockData {
   block_no: number | null;
@@ -12,6 +13,37 @@ export interface BlockData {
 
 export interface BlockListData {
   block: BlockData[];
+}
+
+export interface SlotLeaderData {
+  hash: string;
+  description: string;
+}
+
+export interface TxData {
+  hash: string;
+  size: number;
+  out_sum: number;
+  fee: number;
+}
+
+export interface BlockDetailData {
+  block_no: number | null;
+  block_time: string | null;
+  epoch_no: number | null;
+  slot_no: number | null;
+  tx_count: number;
+  slot_leader: SlotLeaderData | null;
+  block_size: number;
+  tx_data: TxData[];
+  vrf_key: string | null;
+  proto_major: number | null;
+  proto_minor: number | null;
+  op_cert_counter: number | null;
+}
+
+export interface BlockDetailResponse {
+  mini_block_detail: BlockDetailData[];
 }
 
 type Vars = {
@@ -55,5 +87,42 @@ export const useFetchBlockList = (limit: number) => {
 
     refetchOnWindowFocus: true,
     refetchInterval: 20000,
+  });
+};
+
+const BLOCK_DETAIL_QUERY = `
+  query GetBlockDetail($blockHash: String!) {
+    mini_block_detail(where: {block_hash: {_eq: $blockHash}}) {
+      block_no
+      block_time
+      epoch_no
+      slot_no
+      tx_count
+      slot_leader
+      block_size
+      tx_data
+      vrf_key
+      proto_major
+      proto_minor
+      op_cert_counter
+    }
+  }
+`;
+
+type BlockDetailVars = {
+  blockHash: string;
+};
+
+export const useFetchBlockDetail = (blockHash: string) => {
+  const normalizedHash = normalizeHash(blockHash);
+
+  return useQuery<BlockDetailResponse, Error>({
+    queryKey: ["blockDetail", normalizedHash],
+    queryFn: () =>
+      gql<BlockDetailResponse, BlockDetailVars>(BLOCK_DETAIL_QUERY, {
+        blockHash: normalizedHash,
+      }),
+    enabled: !!normalizedHash,
+    refetchOnWindowFocus: true,
   });
 };

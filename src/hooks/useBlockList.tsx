@@ -16,6 +16,7 @@ import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
 
 import { useFetchEpochParam } from "@/services/epoch";
 import { useFetchBlockList } from "@/services/block";
+import { normalizeHash } from "@/utils/normalizeHash";
 
 interface UseBlockListReturn {
   items: BlockData[] | undefined;
@@ -76,7 +77,7 @@ export const useBlockList = (): UseBlockListReturn => {
 
         return (
           <HashCell
-            hash={item?.hash.slice(2)}
+            hash={normalizeHash(item?.hash)}
             enableHover={false}
             formatType='short'
             href='/block'

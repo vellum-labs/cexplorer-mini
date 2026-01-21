@@ -8,7 +8,7 @@ import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 import { PulseDot } from "@vellumlabs/cexplorer-sdk/PulseDot";
 
 interface UseDrepListReturn {
-  items: Record<string, unknown>[];
+  items: Record<string, any>[];
   columns: Column<Record<string, unknown>>[];
 }
 

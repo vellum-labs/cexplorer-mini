@@ -4,7 +4,6 @@ import { PageBase } from "@/components/global/PageBase";
 
 import { getRouteApi } from "@tanstack/react-router";
 
-import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
@@ -22,24 +21,42 @@ import {
   HardDrive,
 } from "lucide-react";
 import { TxListPage } from "../tx/TxListPage";
+import { useFetchBlockDetail } from "@/services/block";
+import { useFetchEpochParam } from "@/services/epoch";
+import { normalizeHash } from "@/utils/normalizeHash";
 
 export const BlockDetailPage: FC = () => {
   const route = getRouteApi("/block/$hash");
   const { hash } = route.useParams();
 
+  const { data: blockDetailData } = useFetchBlockDetail(hash);
+  const blockDetail = blockDetailData?.mini_block_detail?.[0];
+
+  const { data: epochParamData } = useFetchEpochParam();
+  const maxBlockSize =
+    epochParamData?.epoch_param && Array.isArray(epochParamData?.epoch_param)
+      ? epochParamData?.epoch_param[0].max_block_size
+      : undefined;
+
   const overviewListItems = [
     {
       label: "Date",
-      value: <TimeDateIndicator time='2026-01-07T19:22:19' />,
+      value: blockDetail?.block_time ? (
+        <TimeDateIndicator time={blockDetail.block_time} />
+      ) : (
+        <span>-</span>
+      ),
     },
     {
       label: "Height",
       value: (
         <div className='flex items-center gap-1'>
           <span className='text-text-sm font-medium text-text'>
-            {formatNumber(5960121)}
+            {blockDetail?.block_no ? formatNumber(blockDetail.block_no) : "-"}
           </span>
-          <Copy copyText={String(5960121)} />
+          {blockDetail?.block_no && (
+            <Copy copyText={String(blockDetail.block_no)} />
+          )}
           <div>
             <div className='flex items-center gap-1/2'>
               <Tooltip
@@ -65,20 +82,27 @@ export const BlockDetailPage: FC = () => {
     },
     {
       label: "Epoch",
-      value: (
+      value: blockDetail?.epoch_no ? (
         <div className='text-text-sm'>
-          <EpochCell no={601} justify='start' />
+          <EpochCell no={blockDetail.epoch_no} justify='start' />
         </div>
+      ) : (
+        <span>-</span>
       ),
     },
     {
       label: "Slot",
       value: (
         <div className='flex flex-wrap items-center gap-1/2 text-text-sm leading-none'>
-          <span className='font-medium text-text'>{formatNumber(128450)}</span>
-          <Copy copyText={String(128450)} />
+          <span className='font-medium text-text'>
+            {blockDetail?.slot_no ? formatNumber(blockDetail.slot_no) : "-"}
+          </span>
+          {blockDetail?.slot_no && (
+            <Copy copyText={String(blockDetail.slot_no)} />
+          )}
           <span className='pr-1/2 text-grayTextPrimary'>
-            (epoch slot {formatNumber(128450)})
+            (epoch slot{" "}
+            {blockDetail?.slot_no ? formatNumber(blockDetail.slot_no) : "-"})
           </span>
         </div>
       ),
@@ -98,20 +122,10 @@ export const BlockDetailPage: FC = () => {
     {
       label: <span className='text-nowrap'>Total Transactions</span>,
       value: (
-        <span className='text-text-sm font-medium text-text'>{45682}</span>
+        <span className='text-text-sm font-medium text-text'>
+          {blockDetail?.tx_count ?? "-"}
+        </span>
       ),
-    },
-    {
-      label: "Total Output",
-      value: <AdaWithTooltip data={789456132} />,
-    },
-    {
-      label: "Total Fees",
-      value: <AdaWithTooltip data={789456132} />,
-    },
-    {
-      label: "Total Rewards",
-      value: <AdaWithTooltip data={789456132} />,
     },
   ];
 
@@ -124,7 +138,11 @@ export const BlockDetailPage: FC = () => {
       }}
       breadcrumbItems={[
         {
-          label: <span className='inline pt-1/2'>Epoch {596}</span>,
+          label: (
+            <span className='inline pt-1/2'>
+              Epoch {blockDetail?.epoch_no ?? "-"}
+            </span>
+          ),
         },
         {
           label: <span className=''>{formatString(hash ?? "", "long")}</span>,
@@ -155,30 +173,30 @@ export const BlockDetailPage: FC = () => {
             />
           </div>
           <div className='flex w-[400px] flex-grow flex-col gap-3 xl:justify-between xl:gap-0'>
-            <MintedByCard
-              poolInfo={{
-                id: "pool1c3fjkls7d2aujud8y5xy5e0azu0ueatwn34u7jy3ql85ze3xya8",
-                meta: {
-                  name: "Cardano Yoda Pool",
-                  ticker: "MANDA",
-                  homepage: "https://cardanoyoda.com",
-                  description: "MANDA Pool is operated by Cardano Yoda",
-                  extended: {},
-                },
-              }}
-              vrfKey={
-                "vrf_vk1ugya7fr6k6ra87377qfs0mwpcee8taq4sgzl9rhrn62xat4y6wcslrc7jp"
-              }
-              protoMajor={10}
-              protoMinor={2}
-              opCounter={16666666666666}
-              isGenesisBlock={false}
-              miscData={undefined}
-              generateImageUrl={() => ""}
-            />
+            {blockDetail?.slot_leader && (
+              <MintedByCard
+                poolInfo={{
+                  id: normalizeHash(blockDetail.slot_leader.hash),
+                  meta: {
+                    name: blockDetail.slot_leader.description,
+                    ticker: blockDetail.slot_leader.description,
+                    homepage: "",
+                    description: blockDetail.slot_leader.description,
+                    extended: {},
+                  },
+                }}
+                vrfKey={blockDetail.vrf_key ?? ""}
+                protoMajor={blockDetail.proto_major ?? 0}
+                protoMinor={blockDetail.proto_minor ?? 0}
+                opCounter={blockDetail.op_cert_counter ?? 0}
+                isGenesisBlock={blockDetail.epoch_no === null}
+                miscData={undefined}
+                generateImageUrl={() => ""}
+              />
+            )}
             <SizeCard
-              size={4500000}
-              maxSize={5000000}
+              size={blockDetail?.block_size ?? 0}
+              maxSize={maxBlockSize ?? 5000000}
               title='Block size'
               icon={<HardDrive size={20} className='text-primary' />}
             />
@@ -186,7 +204,12 @@ export const BlockDetailPage: FC = () => {
         </div>
       </section>
       <div className='w-full max-w-desktop px-mobile md:px-desktop'>
-        <TxListPage tab />
+        <TxListPage
+          tab
+          txData={blockDetail?.tx_data}
+          hideColumns={["date", "block"]}
+          showLoadMore={false}
+        />
       </div>
     </PageBase>
   );
