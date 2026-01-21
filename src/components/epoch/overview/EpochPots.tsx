@@ -1,16 +1,31 @@
 import type { FC } from "react";
+import type { AdaPots } from "@/services/epoch";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
 
-export const EpochPots: FC = () => {
+interface EpochPotsProps {
+  adaPots?: AdaPots;
+}
+
+export const EpochPots: FC<EpochPotsProps> = ({ adaPots }) => {
+  const totalDeposits =
+    (adaPots?.deposits_stake ?? 0) +
+    (adaPots?.deposits_drep ?? 0) +
+    (adaPots?.deposits_proposal ?? 0);
+
+  const feesReservesPercentage =
+    adaPots?.fees && adaPots?.reserves
+      ? Math.round((adaPots.fees / (adaPots.fees + adaPots.reserves)) * 100)
+      : 0;
+
   const overviewList = [
     {
       label: "Treasury",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={850000} />
+          {adaPots?.treasury ? <AdaWithTooltip data={adaPots.treasury} /> : "-"}
         </p>
       ),
     },
@@ -18,7 +33,7 @@ export const EpochPots: FC = () => {
       label: "Reserves",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={450000} />
+          {adaPots?.reserves ? <AdaWithTooltip data={adaPots.reserves} /> : "-"}
         </p>
       ),
     },
@@ -26,7 +41,7 @@ export const EpochPots: FC = () => {
       label: "Rewards",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={85023} />
+          {adaPots?.rewards ? <AdaWithTooltip data={adaPots.rewards} /> : "-"}
         </p>
       ),
     },
@@ -34,7 +49,7 @@ export const EpochPots: FC = () => {
       label: "Deposits",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={456031} />
+          {totalDeposits > 0 ? <AdaWithTooltip data={totalDeposits} /> : "-"}
         </p>
       ),
     },
@@ -42,7 +57,7 @@ export const EpochPots: FC = () => {
       label: "Fees",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={789797} />
+          {adaPots?.fees ? <AdaWithTooltip data={adaPots.fees} /> : "-"}
         </p>
       ),
     },
@@ -52,7 +67,7 @@ export const EpochPots: FC = () => {
           <span className='cursor-help'>Fees / Reserves</span>
         </Tooltip>
       ),
-      value: <p className='text-text-sm font-medium'>{80}%</p>,
+      value: <p className='text-text-sm font-medium'>{feesReservesPercentage}%</p>,
     },
   ];
 

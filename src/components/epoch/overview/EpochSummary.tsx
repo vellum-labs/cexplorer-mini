@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import type { EpochDetailData } from "@/services/epoch";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
@@ -6,29 +7,50 @@ import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { PulseDot } from "@vellumlabs/cexplorer-sdk/PulseDot";
 import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 
-export const EpochSummary: FC = () => {
+interface EpochSummaryProps {
+  epochDetail?: EpochDetailData;
+  isCurrentEpoch?: boolean;
+}
+
+export const EpochSummary: FC<EpochSummaryProps> = ({ epochDetail, isCurrentEpoch = false }) => {
   const overviewList = [
     {
       label: "Beginning",
-      value: <TimeDateIndicator time='2026-01-04T21:44:52' />,
+      value: epochDetail?.start_time ? (
+        <TimeDateIndicator time={epochDetail.start_time} />
+      ) : (
+        <span>-</span>
+      ),
     },
     {
       label: "End",
-      value: <TimeDateIndicator time='2026-01-07T19:22:19' />,
+      value: epochDetail?.end_time ? (
+        <TimeDateIndicator time={epochDetail.end_time} />
+      ) : (
+        <span>-</span>
+      ),
     },
     {
       label: "Blocks",
-      value: <p className='text-text-sm font-medium'>{formatNumber(12462)}</p>,
+      value: (
+        <p className='text-text-sm font-medium'>
+          {epochDetail?.blk_count ? formatNumber(epochDetail.blk_count) : "-"}
+        </p>
+      ),
     },
     {
       label: "Transactions",
-      value: <p className='text-text-sm font-medium'>{formatNumber(99683)}</p>,
+      value: (
+        <p className='text-text-sm font-medium'>
+          {epochDetail?.tx_count ? formatNumber(epochDetail.tx_count) : "-"}
+        </p>
+      ),
     },
     {
       label: "Fees Generated",
       value: (
         <p className='text-text-sm font-medium'>
-          <AdaWithTooltip data={32438087827} />
+          {epochDetail?.fees ? <AdaWithTooltip data={epochDetail.fees} /> : "-"}
         </p>
       ),
     },
@@ -36,7 +58,8 @@ export const EpochSummary: FC = () => {
       label: "TPS:",
       value: (
         <p className='text-text-sm font-medium'>
-          {2.74} (used) / {(4.89).toFixed(2)} (cap)
+          {/* TPS calculation can be added later */}
+          - (used) / - (cap)
         </p>
       ),
     },
@@ -46,12 +69,14 @@ export const EpochSummary: FC = () => {
     <OverviewCard
       title='Summary'
       subTitle={
-        <div className='relative flex h-[24px] w-[115px] items-center justify-end rounded-m border border-border px-[10px]'>
-          <div className='absolute left-2'>
-            <PulseDot />
+        isCurrentEpoch ? (
+          <div className='relative flex h-[24px] w-[115px] items-center justify-end rounded-m border border-border px-[10px]'>
+            <div className='absolute left-2'>
+              <PulseDot />
+            </div>
+            <span className='text-text-xs font-medium'>Current Epoch</span>
           </div>
-          <span className='text-text-xs font-medium'>Current Epoch</span>
-        </div>
+        ) : undefined
       }
       overviewList={overviewList}
     />

@@ -50,11 +50,16 @@ type Vars = {
   limit: number;
   offset: number;
   orderBy: { time: "desc" }[];
+  where?: {
+    epoch_no?: {
+      _eq: number;
+    };
+  };
 };
 
 const BLOCK_LIST_QUERY = `
-  query GetBlocks($limit: Int!, $offset: Int!, $orderBy: [block_order_by!]!) {
-    block(limit: $limit, offset: $offset, order_by: $orderBy) {
+  query GetBlocks($limit: Int!, $offset: Int!, $orderBy: [block_order_by!]!, $where: block_bool_exp) {
+    block(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
       block_no
       time
       hash
@@ -66,15 +71,18 @@ const BLOCK_LIST_QUERY = `
   }
 `;
 
-export const useFetchBlockList = (limit: number) => {
+export const useFetchBlockList = (limit: number, epochNo?: number) => {
+  const where = epochNo !== undefined ? { epoch_no: { _eq: epochNo } } : undefined;
+
   return useInfiniteQuery<BlockListData, Error>({
-    queryKey: ["blocks", limit],
+    queryKey: ["blocks", limit, epochNo],
     initialPageParam: 0,
     queryFn: ({ pageParam }) =>
       gql<BlockListData, Vars>(BLOCK_LIST_QUERY, {
         limit,
         offset: pageParam as number,
         orderBy: [{ time: "desc" }],
+        where,
       }),
 
     getNextPageParam: (lastPage, allPages) => {

@@ -29,8 +29,8 @@ interface UseBlockListReturn {
   hasNextPage: boolean;
 }
 
-export const useBlockList = (): UseBlockListReturn => {
-  const { data: blockData, fetchNextPage, hasNextPage } = useFetchBlockList(20);
+export const useBlockList = (epochNo?: number): UseBlockListReturn => {
+  const { data: blockData, fetchNextPage, hasNextPage } = useFetchBlockList(20, epochNo);
 
   const { data } = useFetchEpochParam();
 

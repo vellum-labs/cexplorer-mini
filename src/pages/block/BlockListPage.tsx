@@ -7,10 +7,11 @@ import { useBlockList } from "@/hooks/useBlockList";
 
 interface BlockListPageProps {
   tab?: boolean;
+  epochNo?: number;
 }
 
-export const BlockListPage: FC<BlockListPageProps> = ({ tab = false }) => {
-  const { columns, items, hasNextPage, fetchNextPage } = useBlockList();
+export const BlockListPage: FC<BlockListPageProps> = ({ tab = false, epochNo }) => {
+  const { columns, items, hasNextPage, fetchNextPage } = useBlockList(epochNo);
 
   return (
     <PageBase

@@ -9,8 +9,13 @@ import {
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 import { Download } from "lucide-react";
 import { Fragment, type FC } from "react";
+import type { EpochParamDetail } from "@/services/epoch";
 
-export const EpochParameters: FC = () => {
+interface EpochParametersProps {
+  epochParam?: EpochParamDetail;
+}
+
+export const EpochParameters: FC<EpochParametersProps> = ({ epochParam }) => {
   const tableHeader = [
     {
       key: "explanation",
@@ -40,7 +45,7 @@ export const EpochParameters: FC = () => {
           title: "min_fee_a",
         },
         {
-          title: <p className='w-full text-right'>{formatNumber(44)}</p>,
+          title: <p className='w-full text-right'>{epochParam?.min_fee_a ? formatNumber(epochParam.min_fee_a) : "-"}</p>,
         },
       ],
     },
@@ -54,7 +59,7 @@ export const EpochParameters: FC = () => {
           title: "min_fee_b",
         },
         {
-          title: <p className='w-full text-right'>{formatNumber(155381)}</p>,
+          title: <p className='w-full text-right'>{epochParam?.min_fee_b ? formatNumber(epochParam.min_fee_b) : "-"}</p>,
         },
       ],
     },
@@ -68,7 +73,7 @@ export const EpochParameters: FC = () => {
           title: "max_block_size",
         },
         {
-          title: <p className='text-right'>{formatNumber(90112)}</p>,
+          title: <p className='text-right'>{epochParam?.max_block_size ? formatNumber(epochParam.max_block_size) : "-"}</p>,
         },
       ],
     },
@@ -82,7 +87,7 @@ export const EpochParameters: FC = () => {
           title: "max_tx_size",
         },
         {
-          title: <p className='text-right'>{formatNumber(1100)}</p>,
+          title: <p className='text-right'>{epochParam?.max_tx_size ? formatNumber(epochParam.max_tx_size) : "-"}</p>,
         },
       ],
     },
@@ -96,7 +101,7 @@ export const EpochParameters: FC = () => {
           title: "max_bh_size",
         },
         {
-          title: <p className='text-right'>{formatNumber(2000000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_bh_size ? formatNumber(epochParam.max_bh_size) : "-"}</p>,
         },
       ],
     },
@@ -111,7 +116,7 @@ export const EpochParameters: FC = () => {
           title: "key_deposit",
         },
         {
-          title: <p className='text-right'>{formatNumber(500000000)}</p>,
+          title: <p className='text-right'>{epochParam?.key_deposit ? formatNumber(epochParam.key_deposit) : "-"}</p>,
         },
       ],
     },
@@ -126,7 +131,7 @@ export const EpochParameters: FC = () => {
           title: "pool_deposit",
         },
         {
-          title: <p className='text-right'>{formatNumber(18)}</p>,
+          title: <p className='text-right'>{epochParam?.pool_deposit ? formatNumber(epochParam.pool_deposit) : "-"}</p>,
         },
       ],
     },
@@ -141,7 +146,7 @@ export const EpochParameters: FC = () => {
           title: "max_epoch",
         },
         {
-          title: <p className='w-full text-right'>{formatNumber(500)}</p>,
+          title: <p className='w-full text-right'>{epochParam?.max_epoch ? formatNumber(epochParam.max_epoch) : "-"}</p>,
         },
       ],
     },
@@ -155,7 +160,7 @@ export const EpochParameters: FC = () => {
           title: "optimal_pool_count",
         },
         {
-          title: <p className='text-right'>{formatNumber(0.3)}</p>,
+          title: <p className='text-right'>{epochParam?.optimal_pool_count ? formatNumber(epochParam.optimal_pool_count) : "-"}</p>,
         },
       ],
     },
@@ -170,7 +175,7 @@ export const EpochParameters: FC = () => {
           title: "influence",
         },
         {
-          title: <p className='w-full text-right'>{formatNumber(500)}</p>,
+          title: <p className='w-full text-right'>{epochParam?.influence ?? "-"}</p>,
         },
       ],
     },
@@ -184,7 +189,7 @@ export const EpochParameters: FC = () => {
           title: "monetary_expand_rate",
         },
         {
-          title: <p className='text-right'>{formatNumber(0.0003)}</p>,
+          title: <p className='text-right'>{epochParam?.monetary_expand_rate ?? "-"}</p>,
         },
       ],
     },
@@ -198,7 +203,7 @@ export const EpochParameters: FC = () => {
           title: "treasury_growth_rate",
         },
         {
-          title: <p className='text-right'>{formatNumber(0.2)}</p>,
+          title: <p className='text-right'>{epochParam?.treasury_growth_rate ?? "-"}</p>,
         },
       ],
     },
@@ -213,7 +218,7 @@ export const EpochParameters: FC = () => {
           title: "decentralisation",
         },
         {
-          title: <p className='text-right'>{formatNumber(0)}</p>,
+          title: <p className='text-right'>{epochParam?.decentralisation ?? "-"}</p>,
         },
       ],
     },
@@ -227,7 +232,7 @@ export const EpochParameters: FC = () => {
           title: "protocol_major",
         },
         {
-          title: <p className='w-full text-right'>{10}</p>,
+          title: <p className='w-full text-right'>{epochParam?.protocol_major ?? "-"}</p>,
         },
       ],
     },
@@ -241,7 +246,7 @@ export const EpochParameters: FC = () => {
           title: "protocol_minor",
         },
         {
-          title: <p className='w-full text-right'>{0}</p>,
+          title: <p className='w-full text-right'>{epochParam?.protocol_minor ?? "-"}</p>,
         },
       ],
     },
@@ -255,7 +260,7 @@ export const EpochParameters: FC = () => {
           title: "min_utxo_value",
         },
         {
-          title: <p className='w-full text-right'>{0}</p>,
+          title: <p className='w-full text-right'>{epochParam?.min_utxo_value ?? "-"}</p>,
         },
       ],
     },
@@ -269,7 +274,7 @@ export const EpochParameters: FC = () => {
           title: "min_pool_cost",
         },
         {
-          title: <p className='text-right'>{formatNumber(170000000)}</p>,
+          title: <p className='text-right'>{epochParam?.min_pool_cost ? formatNumber(epochParam.min_pool_cost) : "-"}</p>,
         },
       ],
     },
@@ -285,7 +290,7 @@ export const EpochParameters: FC = () => {
         {
           title: (
             <p className='text-wrap break-words'>
-              b42a8aa7b858d0f6e4c9675342809f78e8e24543477af80d5653eb68286f8094
+              {epochParam?.nonce ? epochParam.nonce.replace(/^\\x/, '') : "-"}
             </p>
           ),
         },
@@ -301,7 +306,7 @@ export const EpochParameters: FC = () => {
           title: "price_mem",
         },
         {
-          title: <p className='w-full text-right'>{0.0577}</p>,
+          title: <p className='w-full text-right'>{epochParam?.price_mem ?? "-"}</p>,
         },
       ],
     },
@@ -315,7 +320,7 @@ export const EpochParameters: FC = () => {
           title: "price_step",
         },
         {
-          title: <p className='w-full text-right'>{0.0000721}</p>,
+          title: <p className='w-full text-right'>{epochParam?.price_step ?? "-"}</p>,
         },
       ],
     },
@@ -330,7 +335,7 @@ export const EpochParameters: FC = () => {
           title: "max_tx_ex_mem",
         },
         {
-          title: <p className='text-right'>{formatNumber(14000000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_tx_ex_mem ? formatNumber(epochParam.max_tx_ex_mem) : "-"}</p>,
         },
       ],
     },
@@ -345,7 +350,7 @@ export const EpochParameters: FC = () => {
           title: "max_tx_ex_steps",
         },
         {
-          title: <p className='text-right'>{formatNumber(10000000000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_tx_ex_steps ? formatNumber(epochParam.max_tx_ex_steps) : "-"}</p>,
         },
       ],
     },
@@ -360,7 +365,7 @@ export const EpochParameters: FC = () => {
           title: "max_block_ex_mem",
         },
         {
-          title: <p className='text-right'>{formatNumber(62000000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_block_ex_mem ? formatNumber(epochParam.max_block_ex_mem) : "-"}</p>,
         },
       ],
     },
@@ -375,7 +380,7 @@ export const EpochParameters: FC = () => {
           title: "max_block_ex_steps",
         },
         {
-          title: <p className='text-right'>{formatNumber(20000000000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_block_ex_steps ? formatNumber(epochParam.max_block_ex_steps) : "-"}</p>,
         },
       ],
     },
@@ -389,7 +394,7 @@ export const EpochParameters: FC = () => {
           title: "max_val_size",
         },
         {
-          title: <p className='text-right'>{formatNumber(5000)}</p>,
+          title: <p className='text-right'>{epochParam?.max_val_size ? formatNumber(epochParam.max_val_size) : "-"}</p>,
         },
       ],
     },
@@ -404,7 +409,7 @@ export const EpochParameters: FC = () => {
           title: "collateral_percent",
         },
         {
-          title: <p className='text-right'>{formatNumber(150)}</p>,
+          title: <p className='text-right'>{epochParam?.collateral_percent ? formatNumber(epochParam.collateral_percent) : "-"}</p>,
         },
       ],
     },
@@ -419,7 +424,7 @@ export const EpochParameters: FC = () => {
           title: "max_collateral_inputs",
         },
         {
-          title: <p className='text-right'>{formatNumber(3)}</p>,
+          title: <p className='text-right'>{epochParam?.max_collateral_inputs ? formatNumber(epochParam.max_collateral_inputs) : "-"}</p>,
         },
       ],
     },
