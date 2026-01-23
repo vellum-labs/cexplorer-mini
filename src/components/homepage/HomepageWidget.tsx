@@ -17,7 +17,7 @@ interface HomepageWidgetProps {
   title: string;
   linkTitle: string;
   link: FileRoutesByPath[keyof FileRoutesByPath]["path"];
-  items: Record<string, any>[];
+  items?: Record<string, any>[];
   columns: Column<Record<string, unknown>>[];
 }
 
