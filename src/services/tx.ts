@@ -49,6 +49,7 @@ export interface TxDetailData {
   collateral_inputs: TxUtxo[] | null;
   collateral_output: TxUtxo | null;
   withdrawals: Withdrawal[] | null;
+  reference_inputs: TxUtxo[] | null;
 }
 
 export interface TxDetailResponse {
@@ -134,6 +135,7 @@ const TX_DETAIL_QUERY = `
       collateral_inputs
       collateral_output
       withdrawals
+      reference_inputs
     }
   }
 `;

@@ -1,65 +1,90 @@
 import type { FC } from "react";
-
+import type { TxUtxo } from "@/services/tx";
 import { TableList } from "@/components/global/TableList";
 import { Link } from "@tanstack/react-router";
-import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
-import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
-export const ReferenceInputsTab: FC = () => {
+interface ReferenceInputsTabProps {
+  referenceInputs: TxUtxo[] | null;
+  isLoading?: boolean;
+}
+
+export const ReferenceInputsTab: FC<ReferenceInputsTabProps> = ({
+  referenceInputs,
+  isLoading,
+}) => {
+  if (isLoading) {
+    return (
+      <div className='h-24 animate-pulse rounded-xl bg-border' />
+    );
+  }
+
+  if (!referenceInputs || referenceInputs.length === 0) {
+    return (
+      <p className='w-full text-center text-text-sm text-grayTextPrimary'>
+        No reference inputs found in this transaction
+      </p>
+    );
+  }
+
   const columns = [
     {
       key: "address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
-        const isStake = view.includes("stake");
+      render: (row: Record<string, unknown>) => {
+        const item = row as unknown as TxUtxo;
+        const address = item.payment_addr?.bech32 || "";
+        const isStake = address.startsWith("stake");
 
         return (
           <div className='flex items-center gap-1/2'>
             <Link
               className='text-primary'
               to={isStake ? "/stake/$stakeAddr" : "/address/$address"}
-              params={isStake ? { stakeAddr: view } : { address: view || "" }}
+              params={isStake ? { stakeAddr: address } : { address }}
             >
-              {formatString(view, "long")}
+              {formatString(address, "longer")}
             </Link>
-            <Copy copyText={view} />
+            <Copy copyText={address} />
           </div>
         );
       },
       title: "Address",
-      widthPx: 90,
+      widthPx: 150,
     },
     {
       key: "tx",
-      render: () => {
-        const tx = "bd0cf286c048f602ac242b4fb79...e99a4f5c30d3b2ffb54d83";
-
+      render: (row: Record<string, unknown>) => {
+        const item = row as unknown as TxUtxo;
         return (
-          <p className='flex items-center gap-1 text-primary' title={tx}>
+          <div className='flex items-center gap-1'>
             <Link
               to='/tx/$hash'
-              params={{ hash: tx }}
-              className='flex justify-end text-primary'
+              params={{ hash: item.tx_hash }}
+              className='text-primary'
             >
-              {formatString(tx, "long")}
+              {formatString(item.tx_hash, "longer")}
             </Link>
-            <Copy copyText={tx} className='stroke-grayText' />
-          </p>
+            <Copy copyText={item.tx_hash} />
+          </div>
         );
       },
       title: "Transaction",
-      widthPx: 80,
+      widthPx: 150,
     },
     {
-      key: "block",
-      render: () => {
-        return <AdaWithTooltip data={456465654} />;
+      key: "value",
+      render: (row: Record<string, unknown>) => {
+        const item = row as unknown as TxUtxo;
+        return (
+          <span className='flex justify-end'>
+            <AdaWithTooltip data={Number(item.value)} />
+          </span>
+        );
       },
       title: <p className='w-full text-right'>Collateral</p>,
-      widthPx: 55,
+      widthPx: 80,
     },
   ];
 
@@ -67,7 +92,7 @@ export const ReferenceInputsTab: FC = () => {
     <TableList
       withPadding={false}
       columns={columns}
-      items={Array.from({ length: 20 }, () => ({ todo: true }))}
+      items={referenceInputs}
       storeKey='reference_inputs_tab_list'
     />
   );

@@ -28,6 +28,8 @@ export const TxDetailPage = () => {
   const collateralCount = collateralInputs?.length ?? 0;
   const withdrawals = txDetail?.withdrawals ?? null;
   const withdrawalsCount = withdrawals?.length ?? 0;
+  const referenceInputs = txDetail?.reference_inputs ?? null;
+  const referenceInputsCount = referenceInputs?.length ?? 0;
 
   const txTabItems = [
     {
@@ -100,13 +102,17 @@ export const TxDetailPage = () => {
       label: (
         <span className='flex items-center gap-1'>
           Reference inputs
-          <Badge small color='gray'>
-            2
-          </Badge>
+          {referenceInputsCount > 0 && (
+            <Badge small color='gray'>
+              {referenceInputsCount}
+            </Badge>
+          )}
         </span>
       ),
-      content: <ReferenceInputsTab />,
-      visible: true,
+      content: (
+        <ReferenceInputsTab referenceInputs={referenceInputs} isLoading={isLoading} />
+      ),
+      visible: referenceInputsCount > 0,
     },
     {
       key: "metadata",
