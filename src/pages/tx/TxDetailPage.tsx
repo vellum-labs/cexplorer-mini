@@ -8,6 +8,7 @@ import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
 import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
 import { CollateralTab } from "./tabs/CollateralTab";
 import { OverviewTab } from "./tabs/OverviewTab";
+import { ContentTab } from "./tabs/ContentTab";
 import { getRouteApi } from "@tanstack/react-router";
 import { useFetchTxDetail } from "@/services/tx";
 
@@ -33,7 +34,7 @@ export const TxDetailPage = () => {
     {
       key: "content",
       label: "Content",
-      content: <></>,
+      content: <ContentTab inputs={inputs} outputs={outputs} />,
       visible: true,
     },
     {
