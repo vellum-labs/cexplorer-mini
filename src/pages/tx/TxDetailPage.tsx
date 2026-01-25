@@ -4,7 +4,7 @@ import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubt
 import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 import TxDetailOverview from "@/components/tx/TxDetailOverview";
 import { PageBase } from "@/components/global/PageBase";
-import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
+import { WithdrawalsTab } from "./tabs/WithdrawalsTab";
 import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
 import { CollateralTab } from "./tabs/CollateralTab";
 import { OverviewTab } from "./tabs/OverviewTab";
@@ -26,6 +26,8 @@ export const TxDetailPage = () => {
   const contractsCount = contracts?.length ?? 0;
   const collateralInputs = txDetail?.collateral_inputs ?? null;
   const collateralCount = collateralInputs?.length ?? 0;
+  const withdrawals = txDetail?.withdrawals ?? null;
+  const withdrawalsCount = withdrawals?.length ?? 0;
 
   const txTabItems = [
     {
@@ -78,9 +80,20 @@ export const TxDetailPage = () => {
     },
     {
       key: "withdrawals",
-      label: "Withdrawals",
-      content: <WithdrawalsTab />,
-      visible: true,
+      label: (
+        <span className='flex items-center gap-1'>
+          Withdrawals
+          {withdrawalsCount > 0 && (
+            <Badge small color='gray'>
+              {withdrawalsCount}
+            </Badge>
+          )}
+        </span>
+      ),
+      content: (
+        <WithdrawalsTab withdrawals={withdrawals} isLoading={isLoading} />
+      ),
+      visible: withdrawalsCount > 0,
     },
     {
       key: "inputs",

@@ -5,7 +5,6 @@ import { Link } from "@tanstack/react-router";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
-import { AssetLink } from "@/components/asset/AssetLink";
 
 interface CollateralTabProps {
   collateralInputs: TxUtxo[] | null;
@@ -45,34 +44,34 @@ export const CollateralTab: FC<CollateralTabProps> = ({
               to={isStake ? "/stake/$stakeAddr" : "/address/$address"}
               params={isStake ? { stakeAddr: address } : { address }}
             >
-              {formatString(address, "long")}
+              {formatString(address, "longer")}
             </Link>
             <Copy copyText={address} />
           </div>
         );
       },
       title: "Address",
-      widthPx: 120,
+      widthPx: 150,
     },
     {
       key: "tx",
       render: (row: Record<string, unknown>) => {
         const item = row as unknown as TxUtxo;
         return (
-          <p className='flex items-center gap-1 text-primary' title={item.tx_hash}>
+          <div className='flex items-center gap-1'>
             <Link
               to='/tx/$hash'
               params={{ hash: item.tx_hash }}
-              className='flex justify-end text-primary'
+              className='text-primary'
             >
-              {formatString(item.tx_hash, "long")}
+              {formatString(item.tx_hash, "longer")}
             </Link>
-            <Copy copyText={item.tx_hash} className='stroke-grayText' />
-          </p>
+            <Copy copyText={item.tx_hash} />
+          </div>
         );
       },
       title: "Transaction",
-      widthPx: 80,
+      widthPx: 150,
     },
     {
       key: "value",
@@ -86,29 +85,6 @@ export const CollateralTab: FC<CollateralTabProps> = ({
       },
       title: <p className='w-full text-right'>Collateral</p>,
       widthPx: 80,
-    },
-    {
-      key: "assets",
-      render: (row: Record<string, unknown>) => {
-        const item = row as unknown as TxUtxo;
-        if (!item.asset_list || item.asset_list.length === 0) {
-          return <span className='text-grayTextPrimary'>-</span>;
-        }
-        return (
-          <span className='flex flex-wrap justify-end gap-1/2'>
-            {item.asset_list.map((asset, index) => (
-              <AssetLink
-                key={index}
-                type='input'
-                asset={asset}
-                className='min-w-[110px] max-w-[110px]'
-              />
-            ))}
-          </span>
-        );
-      },
-      title: <p className='w-full text-right'>Assets</p>,
-      widthPx: 100,
     },
   ];
 

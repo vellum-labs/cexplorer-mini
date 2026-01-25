@@ -21,6 +21,11 @@ export interface TxUtxo {
   };
 }
 
+export interface Withdrawal {
+  amount: string;
+  stake_addr: string;
+}
+
 export interface PlutusContract {
   size: number;
   address: string;
@@ -43,6 +48,7 @@ export interface TxDetailData {
   plutus_contracts: PlutusContract[] | null;
   collateral_inputs: TxUtxo[] | null;
   collateral_output: TxUtxo | null;
+  withdrawals: Withdrawal[] | null;
 }
 
 export interface TxDetailResponse {
@@ -127,6 +133,7 @@ const TX_DETAIL_QUERY = `
       plutus_contracts
       collateral_inputs
       collateral_output
+      withdrawals
     }
   }
 `;
