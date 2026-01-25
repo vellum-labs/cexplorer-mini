@@ -119,8 +119,8 @@ type Vars = {
 };
 
 const EPOCH_LIST_QUERY = `
-  query GetEpochs($limit: Int!, $offset: Int!, $orderBy: [epoch_order_by!]!) {
-    epoch(limit: $limit, offset: $offset, order_by: $orderBy) {
+  query GetEpochs($limit: Int!, $offset: Int!, $orderBy: [epoch_order_by!]!, $where: epoch_bool_exp) {
+    epoch(limit: $limit, offset: $offset, order_by: $orderBy, where: $where) {
       no
       start_time
       end_time
@@ -136,17 +136,25 @@ type EpochListVars = {
   limit: number;
   offset: number;
   orderBy: { no: "desc" }[];
+  where?: {
+    no?: {
+      _eq: number;
+    };
+  };
 };
 
-export const useFetchEpochList = (limit: number) => {
+export const useFetchEpochList = (limit: number, epochNo?: number) => {
+  const where = epochNo !== undefined ? { no: { _eq: epochNo } } : undefined;
+
   return useInfiniteQuery<EpochListData, Error>({
-    queryKey: ["epochs", limit],
+    queryKey: ["epochs", limit, epochNo],
     initialPageParam: 0,
     queryFn: ({ pageParam }) =>
       gql<EpochListData, EpochListVars>(EPOCH_LIST_QUERY, {
         limit,
         offset: pageParam as number,
         orderBy: [{ no: "desc" }],
+        where,
       }),
 
     getNextPageParam: (lastPage, allPages) => {

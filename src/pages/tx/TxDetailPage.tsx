@@ -7,16 +7,27 @@ import { PageBase } from "@/components/global/PageBase";
 import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
 import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
 import { CollateralTab } from "./tabs/CollateralTab";
+import { OverviewTab } from "./tabs/OverviewTab";
+import { getRouteApi } from "@tanstack/react-router";
+import { useFetchTxDetail } from "@/services/tx";
 
 export const TxDetailPage = () => {
-  const hash = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6";
+  const route = getRouteApi("/tx/$hash");
+  const { hash } = route.useParams();
 
-  // TODO: Fix tabs UI
+  const { data: txDetailData, isLoading } = useFetchTxDetail(hash);
+  const txDetail = txDetailData?.mini_tx_detail?.[0];
+
+  const inputs = txDetail?.inputs ?? [];
+  const outputs = txDetail?.outputs ?? [];
+
   const txTabItems = [
     {
       key: "overview",
       label: "Overview",
-      content: <></>,
+      content: (
+        <OverviewTab inputs={inputs} outputs={outputs} isLoading={isLoading} />
+      ),
       visible: true,
     },
     {
@@ -87,10 +98,18 @@ export const TxDetailPage = () => {
       }}
       breadcrumbItems={[
         {
-          label: <span className='inline pt-1/2'>Epoch (456)</span>,
+          label: (
+            <span className='inline pt-1/2'>
+              Epoch ({txDetail?.epoch_no ?? "-"})
+            </span>
+          ),
         },
         {
-          label: <span className='inline pt-1/2'>Block (10234567)</span>,
+          label: (
+            <span className='inline pt-1/2'>
+              Block ({txDetail?.block_height ?? "-"})
+            </span>
+          ),
         },
         {
           label: <span className=''>{formatString(hash, "long")}</span>,
