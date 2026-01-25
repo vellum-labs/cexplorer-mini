@@ -34,6 +34,8 @@ export interface PlutusContract {
   valid_contract: boolean;
 }
 
+export type TxMetadata = Record<string, unknown> | null;
+
 export interface TxDetailData {
   tx_hash: string;
   tx_timestamp: number;
@@ -50,6 +52,7 @@ export interface TxDetailData {
   collateral_output: TxUtxo | null;
   withdrawals: Withdrawal[] | null;
   reference_inputs: TxUtxo[] | null;
+  metadata: TxMetadata;
 }
 
 export interface TxDetailResponse {
@@ -136,6 +139,7 @@ const TX_DETAIL_QUERY = `
       collateral_output
       withdrawals
       reference_inputs
+      metadata
     }
   }
 `;

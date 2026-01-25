@@ -10,6 +10,7 @@ import { CollateralTab } from "./tabs/CollateralTab";
 import { OverviewTab } from "./tabs/OverviewTab";
 import { ContentTab } from "./tabs/ContentTab";
 import { ContractsTab } from "./tabs/ContractsTab";
+import { MetadataTab } from "./tabs/MetadataTab";
 import { getRouteApi } from "@tanstack/react-router";
 import { useFetchTxDetail } from "@/services/tx";
 
@@ -30,6 +31,8 @@ export const TxDetailPage = () => {
   const withdrawalsCount = withdrawals?.length ?? 0;
   const referenceInputs = txDetail?.reference_inputs ?? null;
   const referenceInputsCount = referenceInputs?.length ?? 0;
+  const metadata = txDetail?.metadata ?? null;
+  const hasMetadata = metadata && Object.keys(metadata).length > 0;
 
   const txTabItems = [
     {
@@ -117,8 +120,10 @@ export const TxDetailPage = () => {
     {
       key: "metadata",
       label: "Metadata",
-      content: <></>,
-      visible: true,
+      content: (
+        <MetadataTab metadata={metadata} isLoading={isLoading} />
+      ),
+      visible: !!hasMetadata,
     },
   ];
 
