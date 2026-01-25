@@ -285,7 +285,7 @@ export const OverviewTab: FC<OverviewTabProps> = ({
 };
 
 const ViewportSetter = ({ nodes }: { nodes: Node[] }) => {
-  const { fitView, getViewport, setViewport } = useReactFlow();
+  const { fitView } = useReactFlow();
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -293,14 +293,10 @@ const ViewportSetter = ({ nodes }: { nodes: Node[] }) => {
 
     hasRun.current = true;
 
-    fitView({ padding: 0, includeHiddenNodes: true });
-
     setTimeout(() => {
-      const minY = Math.min(...nodes.map(n => n.position.y));
-      const { zoom, x } = getViewport();
-      setViewport({ x: x + 20, y: minY + 20, zoom: zoom - 0.2 });
-    }, 300);
-  }, [nodes, fitView, getViewport, setViewport]);
+      fitView({ padding: 0.1, includeHiddenNodes: true, maxZoom: 0.8 });
+    }, 50);
+  }, [nodes, fitView]);
 
   return null;
 };

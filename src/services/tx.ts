@@ -42,9 +42,12 @@ export interface TxDetailData {
   block_height: number;
   block_hash: string;
   epoch_no: number;
+  epoch_slot: number;
+  absolute_slot: number;
   fee: string;
   tx_size: number;
   total_output: string;
+  deposit: string | null;
   inputs: TxUtxo[];
   outputs: TxUtxo[];
   plutus_contracts: PlutusContract[] | null;
@@ -129,9 +132,12 @@ const TX_DETAIL_QUERY = `
       block_height
       block_hash
       epoch_no
+      epoch_slot
+      absolute_slot
       fee
       tx_size
       total_output
+      deposit
       inputs
       outputs
       plutus_contracts

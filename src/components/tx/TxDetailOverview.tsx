@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import type { TxDetailData } from "@/services/tx";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { BlockCell } from "@vellumlabs/cexplorer-sdk/BlockCell";
@@ -6,18 +7,43 @@ import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
-import { MintedByCard } from "@vellumlabs/cexplorer-sdk/MintedByCard";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { SizeCard } from "@vellumlabs/cexplorer-sdk/SizeCard";
-import { CircleCheck, HardDrive, Lock } from "lucide-react";
+import { CircleCheck, Lock, FileCode } from "lucide-react";
 
-const TxDetailOverview: FC = () => {
-  const hash = "a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6q7r8s9t0u1v2w3x4y5z6";
+interface TxDetailOverviewProps {
+  txDetail: TxDetailData | undefined;
+  isLoading?: boolean;
+}
+
+export const TxDetailOverview: FC<TxDetailOverviewProps> = ({
+  txDetail,
+  isLoading,
+}) => {
+  const hash = txDetail?.tx_hash ?? "";
+  const timestamp = txDetail?.tx_timestamp
+    ? new Date(txDetail.tx_timestamp * 1000)
+    : undefined;
+  const blockHeight = txDetail?.block_height ?? 0;
+  const blockHash = txDetail?.block_hash ?? "";
+  const totalOutput = txDetail?.total_output
+    ? Number(txDetail.total_output)
+    : 0;
+  const fee = txDetail?.fee ? Number(txDetail.fee) : 0;
+  const epochNo = txDetail?.epoch_no ?? 0;
+  const absoluteSlot = txDetail?.absolute_slot ?? 0;
+  const epochSlot = txDetail?.epoch_slot ?? 0;
+  const deposit = txDetail?.deposit ? Number(txDetail.deposit) : null;
+  const txSize = txDetail?.tx_size ?? 0;
+
+  const maxTxSize = 16384;
 
   const overviewListItems = [
     {
       label: "Hash",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-40 animate-pulse bg-border' />
+      ) : (
         <div className='flex items-center gap-1/2'>
           <span title={hash} className='text-text-sm'>
             {formatString(hash || "", "long")}
@@ -28,87 +54,108 @@ const TxDetailOverview: FC = () => {
     },
     {
       label: "Date",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-32 animate-pulse bg-border' />
+      ) : (
         <div className='flex flex-wrap items-center gap-1/2 text-text-sm'>
           <span className='font-medium leading-none'>
-            <DateCell time='2026-01-04T21:44:52' />
+            <DateCell time={timestamp as unknown as string} />
           </span>
         </div>
       ),
     },
     {
       label: "Height",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-24 animate-pulse bg-border' />
+      ) : (
         <div className='text-text-sm'>
-          <BlockCell hash={String(hash) || ""} no={4561231} justify='start' />
+          <BlockCell hash={blockHash} no={blockHeight} justify='start' />
         </div>
       ),
     },
     {
       label: "Total Output",
-      value: <AdaWithTooltip data={4654132132} />,
+      value: isLoading ? (
+        <div className='rounded h-5 w-20 animate-pulse bg-border' />
+      ) : (
+        <AdaWithTooltip data={totalOutput} />
+      ),
     },
     {
       label: "Fee",
-      value: <AdaWithTooltip data={4654132132} />,
+      value: isLoading ? (
+        <div className='rounded h-5 w-20 animate-pulse bg-border' />
+      ) : (
+        <AdaWithTooltip data={fee} />
+      ),
     },
     {
       label: "Epoch",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-16 animate-pulse bg-border' />
+      ) : (
         <div className='text-text-sm'>
-          <EpochCell no={691} justify='start' />
+          <EpochCell no={epochNo} justify='start' />
         </div>
       ),
     },
     {
       label: "Slot",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-48 animate-pulse bg-border' />
+      ) : (
         <div className='flex flex-wrap items-center gap-1/2 text-text-sm leading-none'>
           <span className='font-medium text-grayTextPrimary'>
-            {formatNumber(465132132)}
+            {formatNumber(absoluteSlot)}
           </span>
           <span className='pr-1/2 text-grayTextPrimary'>
-            (epoch slot {13130316})
+            (epoch slot {formatNumber(epochSlot)})
           </span>
         </div>
       ),
     },
     {
       label: "TTL",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-32 animate-pulse bg-border' />
+      ) : (
         <div className='flex items-center gap-1/2 text-text-sm'>
           <Lock
             size={16}
             strokeWidth={2.5}
             className='shrink-0 text-grayTextPrimary'
           />
-          <span className='font-medium text-grayTextPrimary'>TODO</span>
+          <span className='font-medium text-grayTextPrimary'>No expiry</span>
         </div>
       ),
     },
-    {
-      label: "Deposit",
-      value: (
-        <div className='flex items-center gap-1/2 text-text-sm'>
-          <span className='font-medium'>
-            <AdaWithTooltip data={4564321321} />
-          </span>
-        </div>
-      ),
-    },
+    ...(deposit !== null && deposit !== 0
+      ? [
+          {
+            label: "Deposit",
+            value: isLoading ? (
+              <div className='rounded h-5 w-20 animate-pulse bg-border' />
+            ) : (
+              <div className='flex items-center gap-1/2 text-text-sm'>
+                <span className='font-medium'>
+                  <AdaWithTooltip data={deposit} />
+                </span>
+              </div>
+            ),
+          },
+        ]
+      : []),
     {
       label: "Confirmations",
-      value: (
+      value: isLoading ? (
+        <div className='rounded h-5 w-24 animate-pulse bg-border' />
+      ) : (
         <div className='flex items-center gap-[2.5px] text-text-sm'>
           <CircleCheck size={15} className='translate-y-[1px] text-green-600' />
-
-          <span className={`font-bold text-green-500`}>High (49)</span>
+          <span className='font-bold text-green-500'>High</span>
         </div>
       ),
-    },
-    {
-      label: "Treasury donation",
-      value: <AdaWithTooltip data={13265323} />,
     },
   ];
 
@@ -121,36 +168,13 @@ const TxDetailOverview: FC = () => {
         columnGap='clamp(48px, 8vw, 150px)'
       />
       <section className='flex w-full flex-col gap-5 lg:h-[400px] lg:w-[400px]'>
-        <MintedByCard
-          poolInfo={{
-            id: "pool1c3fjkls7d2aujud8y5xy5e0azu0ueatwn34u7jy3ql85ze3xya8",
-            meta: {
-              name: "Cardano Yoda Pool",
-              ticker: "MANDA",
-              homepage: "https://cardanoyoda.com",
-              description: "MANDA Pool is operated by Cardano Yoda",
-              extended: {},
-            },
-          }}
-          vrfKey={
-            "vrf_vk1ugya7fr6k6ra87377qfs0mwpcee8taq4sgzl9rhrn62xat4y6wcslrc7jp"
-          }
-          protoMajor={10}
-          protoMinor={2}
-          opCounter={16666666666666}
-          isGenesisBlock={false}
-          miscData={undefined}
-          generateImageUrl={() => ""}
-        />
         <SizeCard
-          size={4500000}
-          maxSize={5000000}
-          title='Block size'
-          icon={<HardDrive size={20} className='text-primary' />}
+          size={txSize}
+          maxSize={maxTxSize}
+          title='Transaction size'
+          icon={<FileCode size={20} className='text-primary' />}
         />
       </section>
     </div>
   );
 };
-
-export default TxDetailOverview;
