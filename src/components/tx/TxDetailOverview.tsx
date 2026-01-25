@@ -34,6 +34,7 @@ export const TxDetailOverview: FC<TxDetailOverviewProps> = ({
   const absoluteSlot = txDetail?.absolute_slot ?? 0;
   const epochSlot = txDetail?.epoch_slot ?? 0;
   const deposit = txDetail?.deposit ? Number(txDetail.deposit) : null;
+  const invalidAfter = txDetail?.invalid_after ?? null;
   const txSize = txDetail?.tx_size ?? 0;
 
   const maxTxSize = 16384;
@@ -126,7 +127,9 @@ export const TxDetailOverview: FC<TxDetailOverviewProps> = ({
             strokeWidth={2.5}
             className='shrink-0 text-grayTextPrimary'
           />
-          <span className='font-medium text-grayTextPrimary'>No expiry</span>
+          <span className='font-medium text-grayTextPrimary'>
+            {invalidAfter ? `Slot ${formatNumber(invalidAfter)}` : "No expiry"}
+          </span>
         </div>
       ),
     },
@@ -167,7 +170,7 @@ export const TxDetailOverview: FC<TxDetailOverviewProps> = ({
         className='max-h-[450px] pt-2'
         columnGap='clamp(48px, 8vw, 150px)'
       />
-      <section className='flex w-full flex-col gap-5 lg:h-[400px] lg:w-[400px]'>
+      <section className='flex w-full flex-col gap-3 lg:w-[400px]'>
         <SizeCard
           size={txSize}
           maxSize={maxTxSize}

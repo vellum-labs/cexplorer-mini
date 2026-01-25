@@ -48,6 +48,7 @@ export interface TxDetailData {
   tx_size: number;
   total_output: string;
   deposit: string | null;
+  invalid_after: number | null;
   inputs: TxUtxo[];
   outputs: TxUtxo[];
   plutus_contracts: PlutusContract[] | null;
@@ -138,6 +139,7 @@ const TX_DETAIL_QUERY = `
       tx_size
       total_output
       deposit
+      invalid_after
       inputs
       outputs
       plutus_contracts
