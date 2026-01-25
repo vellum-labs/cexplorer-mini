@@ -21,6 +21,14 @@ export interface TxUtxo {
   };
 }
 
+export interface PlutusContract {
+  size: number;
+  address: string;
+  bytecode: string;
+  script_hash: string;
+  valid_contract: boolean;
+}
+
 export interface TxDetailData {
   tx_hash: string;
   tx_timestamp: number;
@@ -32,6 +40,7 @@ export interface TxDetailData {
   total_output: string;
   inputs: TxUtxo[];
   outputs: TxUtxo[];
+  plutus_contracts: PlutusContract[] | null;
 }
 
 export interface TxDetailResponse {
@@ -113,6 +122,7 @@ const TX_DETAIL_QUERY = `
       total_output
       inputs
       outputs
+      plutus_contracts
     }
   }
 `;

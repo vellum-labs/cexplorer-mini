@@ -9,6 +9,7 @@ import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
 import { CollateralTab } from "./tabs/CollateralTab";
 import { OverviewTab } from "./tabs/OverviewTab";
 import { ContentTab } from "./tabs/ContentTab";
+import { ContractsTab } from "./tabs/ContractsTab";
 import { getRouteApi } from "@tanstack/react-router";
 import { useFetchTxDetail } from "@/services/tx";
 
@@ -21,6 +22,8 @@ export const TxDetailPage = () => {
 
   const inputs = txDetail?.inputs ?? [];
   const outputs = txDetail?.outputs ?? [];
+  const contracts = txDetail?.plutus_contracts ?? null;
+  const contractsCount = contracts?.length ?? 0;
 
   const txTabItems = [
     {
@@ -42,13 +45,17 @@ export const TxDetailPage = () => {
       label: (
         <span className='flex items-center gap-1'>
           Contracts{" "}
-          <Badge small color='gray'>
-            2
-          </Badge>
+          {contractsCount > 0 && (
+            <Badge small color='gray'>
+              {contractsCount}
+            </Badge>
+          )}
         </span>
       ),
-      content: <></>,
-      visible: true,
+      content: (
+        <ContractsTab contracts={contracts} isLoading={isLoading} />
+      ),
+      visible: contractsCount > 0,
     },
     {
       key: "collateral",
