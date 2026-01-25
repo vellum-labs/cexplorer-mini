@@ -41,6 +41,8 @@ export interface TxDetailData {
   inputs: TxUtxo[];
   outputs: TxUtxo[];
   plutus_contracts: PlutusContract[] | null;
+  collateral_inputs: TxUtxo[] | null;
+  collateral_output: TxUtxo | null;
 }
 
 export interface TxDetailResponse {
@@ -123,6 +125,8 @@ const TX_DETAIL_QUERY = `
       inputs
       outputs
       plutus_contracts
+      collateral_inputs
+      collateral_output
     }
   }
 `;

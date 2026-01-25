@@ -24,6 +24,8 @@ export const TxDetailPage = () => {
   const outputs = txDetail?.outputs ?? [];
   const contracts = txDetail?.plutus_contracts ?? null;
   const contractsCount = contracts?.length ?? 0;
+  const collateralInputs = txDetail?.collateral_inputs ?? null;
+  const collateralCount = collateralInputs?.length ?? 0;
 
   const txTabItems = [
     {
@@ -62,13 +64,17 @@ export const TxDetailPage = () => {
       label: (
         <span className='flex items-center gap-1'>
           Collateral
-          <Badge small color='gray'>
-            2
-          </Badge>
+          {collateralCount > 0 && (
+            <Badge small color='gray'>
+              {collateralCount}
+            </Badge>
+          )}
         </span>
       ),
-      content: <CollateralTab />,
-      visible: true,
+      content: (
+        <CollateralTab collateralInputs={collateralInputs} isLoading={isLoading} />
+      ),
+      visible: collateralCount > 0,
     },
     {
       key: "withdrawals",
