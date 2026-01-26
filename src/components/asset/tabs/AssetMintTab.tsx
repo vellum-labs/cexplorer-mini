@@ -2,7 +2,7 @@ import type { FC } from "react";
 import { useMemo } from "react";
 
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
-import { TableList } from "@/components/global/TableList";
+import { TableList, type Column } from "@/components/global/TableList";
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 import { HashCell } from "@/components/tx/HashCell";
 import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
@@ -124,7 +124,7 @@ export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
 
   return (
     <TableList
-      columns={columns}
+      columns={columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]}
       items={enrichedMints}
       storeKey='asset_mint_tab'
       loading={isLoading || txLoading || blockLoading}

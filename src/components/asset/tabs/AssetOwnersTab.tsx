@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 
-import { TableList } from "@/components/global/TableList";
+import { TableList, type Column } from "@/components/global/TableList";
 import { AddressTypeInitialsBadge } from "@vellumlabs/cexplorer-sdk/AddressTypeInitialsBadge";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
@@ -106,7 +106,7 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
 
   return (
     <TableList
-      columns={columns}
+      columns={columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]}
       items={owners}
       storeKey='asset_owners_tab_list'
       loading={isLoading || txOutLoading}
