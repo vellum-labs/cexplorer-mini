@@ -2,10 +2,10 @@ import type { FC } from "react";
 
 import { TableList } from "@/components/global/TableList";
 
-import { useAddressList } from "@/hooks/useAddressList";
+import { useStakeList } from "@/hooks/useStakeList";
 
 export const StakeTab: FC = () => {
-  const { columns, items } = useAddressList(true);
+  const { columns, items, hasNextPage, fetchNextPage } = useStakeList();
 
   return (
     <TableList
@@ -14,6 +14,8 @@ export const StakeTab: FC = () => {
       columns={columns}
       items={items}
       storeKey='stake_list'
+      showMoreButton={hasNextPage}
+      onFetch={fetchNextPage}
     />
   );
 };
