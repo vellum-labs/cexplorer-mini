@@ -47,9 +47,8 @@ export const ScriptListPage: FC = () => {
           <div className={`flex w-[calc(100%-40px)] flex-col`}>
             {item?.label?.label && (
               <Link
-                to='/'
-                // to='/script/$hash'
-                // params={{ hash: item?.hash }}
+                to='/script/$hash'
+                params={{ hash: item?.hash }}
                 className='w-fit text-primary'
               >
                 {item?.label?.label}
@@ -57,9 +56,8 @@ export const ScriptListPage: FC = () => {
             )}
             <div className='flex items-center gap-1/2'>
               <Link
-                // to='/script/$hash'
-                // params={{ hash: item?.hash }}
-                to='/'
+                to='/script/$hash'
+                params={{ hash: item?.hash }}
                 className={
                   item?.label?.label
                     ? "text-text-xs hover:text-grayTextPrimary"
