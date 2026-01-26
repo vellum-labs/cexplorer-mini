@@ -1,118 +1,145 @@
 import type { Column } from "@/components/global/TableList";
-import { Link } from "@tanstack/react-router";
+import type { AssetListResponse } from "@/services/asset";
+import type {
+  FetchNextPageOptions,
+  InfiniteData,
+  InfiniteQueryObserverResult,
+} from "@tanstack/react-query";
 
+import { Link } from "@tanstack/react-router";
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
+import { useFetchAssetList } from "@/services/asset";
+
 interface UseAssetListReturn {
-  items: Record<string, any>[];
+  items: any[] | undefined;
   columns: Column<Record<string, unknown>>[];
+  fetchNextPage: (
+    options?: FetchNextPageOptions | undefined
+  ) => Promise<
+    InfiniteQueryObserverResult<InfiniteData<AssetListResponse, unknown>, Error>
+  >;
+  hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useAssetList = (): UseAssetListReturn => {
-  const items = Array.from({ length: 20 }, (_, i) => ({
-    type: i % 2 === 0 ? "NFT" : "FT",
-    asset: `Asset ${i + 1}`,
-    policy_id: `policy${i.toString().padStart(56, "0")}`,
-    supply: 1000000000,
-    minted: 100000,
-  }));
+  const {
+    data: assetData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useFetchAssetList(20);
+
+  const items = assetData?.pages.flatMap(page => page.mini_asset_detail);
 
   const columns = [
     {
       key: "type",
       render: item => {
-        if (item?.type === "FT") {
-          return <Badge color='blue'>Token</Badge>;
+        const isNFT = item?.quantity === 1;
+        if (isNFT) {
+          return <Badge color='yellow'>NFT</Badge>;
         }
-
-        return <Badge color='yellow'>NFT</Badge>;
+        return <Badge color='blue'>Token</Badge>;
       },
       title: <p>Type</p>,
-
       widthPx: 40,
     },
     {
       key: "asset",
       render: item => {
-        if (!item?.asset) {
-          return "-";
+        const fingerprint = item?.fingerprint;
+        if (!fingerprint) return "-";
+
+        return (
+          <div className='flex items-center gap-1'>
+            <Link
+              to='/asset/$fingerprint'
+              params={{ fingerprint }}
+              className='text-primary'
+            >
+              {formatString(fingerprint, "long")}
+            </Link>
+            <Copy copyText={fingerprint} />
+          </div>
+        );
+      },
+      title: <p>Fingerprint</p>,
+      widthPx: 100,
+    },
+    {
+      key: "name",
+      render: item => {
+        const name = item?.name;
+        if (!name) return <span className='text-grayTextSecondary'>-</span>;
+
+        let decodedName = name;
+        try {
+          if (/^[0-9a-fA-F]+$/.test(name) && name.length % 2 === 0) {
+            const bytes = name.match(/.{2}/g)?.map(b => parseInt(b, 16)) ?? [];
+            const decoded = String.fromCharCode(...bytes);
+            if (/^[\x20-\x7E]+$/.test(decoded)) {
+              decodedName = decoded;
+            } else {
+              decodedName = formatString(name, "long");
+            }
+          }
+        } catch {
+          decodedName = formatString(name, "long");
         }
 
         return (
-          <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-            <Link
-              to='/asset/$fingerprint'
-              params={{ fingerprint: item?.asset }}
-              title={item?.asset}
-              className='text-primary'
-            >
-              <p className='break-words break-all'>
-                {formatString(item?.asset, "long")}
-              </p>
-            </Link>
-          </span>
+          <p className='text-grayTextPrimary' title={name}>
+            {decodedName}
+          </p>
         );
       },
-      title: <p>Asset</p>,
-
+      title: <p>Name</p>,
       widthPx: 80,
     },
     {
       key: "policy_id",
       render: item => {
-        if (!item?.policy_id) {
-          return "-";
-        }
+        const policy = item?.policy;
+        if (!policy) return "-";
 
         return (
-          <p className='break-words break-all text-grayTextPrimary text-text'>
-            {formatString(item?.policy_id, "long")}
-          </p>
+          <div className='flex items-center gap-1'>
+            <span className='text-grayTextPrimary'>
+              {formatString(policy, "long")}
+            </span>
+            <Copy copyText={policy} />
+          </div>
         );
       },
       title: <p>Policy ID</p>,
-
-      widthPx: 120,
+      widthPx: 100,
     },
     {
-      key: "supply",
+      key: "quantity",
       render: item => {
-        if (typeof item?.supply === "undefined") {
+        if (typeof item?.quantity === "undefined") {
           return <p className='text-right'>-</p>;
         }
-
-        return <p className='text-right'>{formatNumber(item.supply)}</p>;
+        return (
+          <p className='text-right text-grayTextPrimary'>
+            {formatNumber(item.quantity)}
+          </p>
+        );
       },
-      title: (
-        <div className='flex w-full justify-end'>
-          <span>Supply</span>
-        </div>
-      ),
-
-      widthPx: 60,
-    },
-    {
-      key: "minted",
-      render: item => {
-        if (typeof item?.minted === "undefined") {
-          return <p className='text-right'>-</p>;
-        }
-
-        return <p className='text-right'>{formatNumber(item.minted)}</p>;
-      },
-      title: (
-        <div className='flex w-full justify-end'>
-          <span>Minted</span>
-        </div>
-      ),
-
+      title: <p className='w-full text-right'>Quantity</p>,
       widthPx: 60,
     },
   ];
 
   return {
     items,
-    columns,
+    loading: isLoading,
+    columns: columns.map(item => ({ ...item, visible: true })),
+    fetchNextPage,
+    hasNextPage,
   };
 };

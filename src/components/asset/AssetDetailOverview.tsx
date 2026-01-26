@@ -1,48 +1,55 @@
 import type { FC } from "react";
+import type { AssetDetailData } from "@/services/asset";
 
-import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
+import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
-import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 
-export const AssetDetailOverview: FC = () => {
+interface AssetDetailOverviewProps {
+  assetDetail: AssetDetailData | undefined;
+  isLoading?: boolean;
+}
+
+export const AssetDetailOverview: FC<AssetDetailOverviewProps> = ({
+  assetDetail,
+  isLoading,
+}) => {
+  const name = assetDetail?.name || "-";
+  const policy = assetDetail?.policy || "";
+  const fingerprint = assetDetail?.fingerprint || "";
+  const quantity = assetDetail?.quantity ?? 0;
+  const mintCount = assetDetail?.mint?.length ?? 0;
+
   const overview = [
     {
       label: "Name",
-      value: (
+      value: isLoading ? (
+        <div className='h-5 w-32 animate-pulse rounded bg-border' />
+      ) : (
         <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>
-            {formatString("Asset", "long")}
-          </p>
-        </span>
-      ),
-    },
-    {
-      label: "Encoded Name",
-      value: (
-        <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>
-            {formatString("Asset", "long")}
-          </p>
+          <p className='break-words break-all'>{name}</p>
         </span>
       ),
     },
     {
       label: "Policy ID",
-      value: (
-        <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>
-            {formatString("Asset", "long")}
-          </p>
+      value: isLoading ? (
+        <div className='h-5 w-40 animate-pulse rounded bg-border' />
+      ) : (
+        <span className='flex items-center gap-1'>
+          {formatString(policy, "long")}
+          {policy && <Copy copyText={policy} />}
         </span>
       ),
     },
     {
-      label: "Asset ID",
-      value: (
-        <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>
-            {formatString("Asset", "long")}
-          </p>
+      label: "Fingerprint",
+      value: isLoading ? (
+        <div className='h-5 w-40 animate-pulse rounded bg-border' />
+      ) : (
+        <span className='flex items-center gap-1'>
+          {formatString(fingerprint, "long")}
+          {fingerprint && <Copy copyText={fingerprint} />}
         </span>
       ),
     },
@@ -50,30 +57,20 @@ export const AssetDetailOverview: FC = () => {
 
   const blockchain = [
     {
-      label: "Owner",
-      value: (
-        <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>
-            {formatString("Asset", "long")}
-          </p>
-        </span>
+      label: "Supply",
+      value: isLoading ? (
+        <div className='h-5 w-16 animate-pulse rounded bg-border' />
+      ) : (
+        formatNumber(quantity)
       ),
     },
     {
-      label: "Supply",
-      value: 1,
-    },
-    {
-      label: "First mint",
-      value: <TimeDateIndicator time='2026-01-04T21:44:52' />,
-    },
-    {
       label: "Mint count",
-      value: 5,
-    },
-    {
-      label: "Metadata standard",
-      value: "-",
+      value: isLoading ? (
+        <div className='h-5 w-16 animate-pulse rounded bg-border' />
+      ) : (
+        formatNumber(mintCount)
+      ),
     },
   ];
 
