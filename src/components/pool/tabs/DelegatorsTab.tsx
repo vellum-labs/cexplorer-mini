@@ -5,6 +5,7 @@ import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
+
 import { useFetchPoolDelegators } from "@/services/pool";
 import { useMemo } from "react";
 
@@ -13,10 +14,8 @@ interface DelegatorsTabProps {
 }
 
 export const DelegatorsTab: FC<DelegatorsTabProps> = ({ poolHash }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchPoolDelegators(
-    poolHash ?? "",
-    20
-  );
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useFetchPoolDelegators(poolHash ?? "", 20);
 
   const items = useMemo(() => {
     if (!data?.pages) return [];

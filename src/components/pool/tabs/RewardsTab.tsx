@@ -3,9 +3,9 @@ import type { PoolStat } from "@/services/pool";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
-import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
-
 import { TableList } from "@/components/global/TableList";
+
+import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 
 interface RewardsTabProps {
   stats?: PoolStat[];

@@ -116,7 +116,10 @@ const ASSET_MINT_QUERY = `
   }
 `;
 
-export const useFetchAssetMints = (assetId: number | undefined, limit: number) => {
+export const useFetchAssetMints = (
+  assetId: number | undefined,
+  limit: number,
+) => {
   return useInfiniteQuery<AssetMintListResponse, Error>({
     queryKey: ["assetMints", assetId, limit],
     initialPageParam: 0,
@@ -159,13 +162,6 @@ const TX_BY_IDS_QUERY = `
     }
   }
 `;
-
-export const cleanHash = (hash: string): string => {
-  if (hash.startsWith("\\x")) {
-    return hash.slice(2);
-  }
-  return hash;
-};
 
 export const useFetchTxByIds = (txIds: number[]) => {
   return useQuery<TxByIdResponse, Error>({

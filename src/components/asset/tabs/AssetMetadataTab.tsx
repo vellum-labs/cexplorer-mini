@@ -1,9 +1,13 @@
-import { useState, type FC } from "react";
-import { useMemo } from "react";
-
-import { useFetchTxByHashes, useFetchTxMetadata, cleanHash } from "@/services/asset";
+import type { FC } from "react";
 
 import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
+
+import { useState } from "react";
+import { useMemo } from "react";
+import { useFetchTxByHashes, useFetchTxMetadata } from "@/services/asset";
+
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { normalizeHash } from "@/utils/normalizeHash";
 
 interface AssetMetadataTabProps {
   mintTxHashes?: string[];
@@ -15,18 +19,13 @@ interface MetadataItem {
   txHash: string;
 }
 
-const shortenHash = (hash: string) => {
-  if (!hash || hash.length < 16) return hash;
-  return `${hash.slice(0, 8)}...${hash.slice(-8)}`;
-};
-
 export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
   mintTxHashes,
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   const { data: txData, isLoading: txLoading } = useFetchTxByHashes(
-    mintTxHashes ?? []
+    mintTxHashes ?? [],
   );
 
   const txIds = useMemo(() => {
@@ -36,7 +35,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
   const txIdToHash = useMemo(() => {
     const map = new Map<number, string>();
     txData?.tx?.forEach(t => {
-      map.set(t.id, cleanHash(t.hash));
+      map.set(t.id, normalizeHash(t.hash));
     });
     return map;
   }, [txData]);
@@ -61,7 +60,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
   const currentItem = items[currentIndex];
 
   const tabOptions = items.map((item, index) => ({
-    label: `Tx: ${shortenHash(item.txHash)}`,
+    label: `Tx: ${formatString(item.txHash, "long")}`,
     onClick: () => setCurrentIndex(index),
   }));
 
@@ -89,7 +88,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
           <Dropdown
             id='metadata-tx-selector'
             width='200px'
-            label={`Tx: ${shortenHash(currentHash)}`}
+            label={`Tx: ${normalizeHash(currentHash)}`}
             options={tabOptions}
             triggerClassName='text-primary font-medium px-1.5 py-1'
             closeOnSelect
@@ -101,7 +100,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
           <div className='w-fit rounded-m border border-border bg-darker px-1.5 py-1/2 text-text-xs font-medium shadow-md'>
             {currentItem.key}
           </div>
-          <div className='overflow-auto rounded-l border border-border bg-cardBg p-2 font-mono text-text-xs'>
+          <div className='font-mono overflow-auto rounded-l border border-border bg-cardBg p-2 text-text-xs'>
             <pre className='whitespace-pre-wrap break-all'>
               {JSON.stringify(currentItem.json, null, 2)}
             </pre>

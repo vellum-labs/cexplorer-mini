@@ -1,12 +1,15 @@
 import type { FC } from "react";
-import { useMemo } from "react";
+import type { Column } from "@vellumlabs/cexplorer-sdk/GlobalTable";
 
-import { TableList, type Column } from "@/components/global/TableList";
+import { TableList } from "@/components/global/TableList";
 import { AddressTypeInitialsBadge } from "@vellumlabs/cexplorer-sdk/AddressTypeInitialsBadge";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
+
+import { useMemo } from "react";
 import { useFetchMaTxOut, useFetchTxOut } from "@/services/asset";
+
+import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 interface AssetOwnersTabProps {
   assetId?: number;
@@ -21,7 +24,7 @@ interface OwnerData {
 export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useFetchMaTxOut(
     assetId,
-    100
+    100,
   );
 
   const maTxOuts = useMemo(() => {
@@ -63,7 +66,6 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
         <span className='text-gray-500'>{item.rank}</span>
       ),
       title: "#",
-      visible: true,
       widthPx: 10,
     },
     {
@@ -72,7 +74,6 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
         <AddressTypeInitialsBadge address={item.address} />
       ),
       title: "Type",
-      visible: true,
       widthPx: 30,
     },
     {
@@ -90,7 +91,6 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
         </div>
       ),
       title: "Owner",
-      visible: true,
       widthPx: 150,
     },
     {
@@ -99,14 +99,15 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
         <p className='text-right'>{formatNumber(item.quantity)}</p>
       ),
       title: <p className='w-full text-right'>Quantity</p>,
-      visible: true,
       widthPx: 65,
     },
   ];
 
   return (
     <TableList
-      columns={columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]}
+      columns={
+        columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]
+      }
       items={owners}
       storeKey='asset_owners_tab_list'
       loading={isLoading || txOutLoading}

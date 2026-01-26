@@ -1,17 +1,20 @@
 import type { FC } from "react";
-import { useMemo } from "react";
+import type { Column } from "@/components/global/TableList";
 
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
-import { TableList, type Column } from "@/components/global/TableList";
+import { TableList } from "@/components/global/TableList";
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
 import { HashCell } from "@/components/tx/HashCell";
 import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
+
 import {
   useFetchAssetMints,
   useFetchTxByIds,
   useFetchBlockByIds,
-  cleanHash,
 } from "@/services/asset";
+import { useMemo } from "react";
+
+import { normalizeHash } from "@/utils/normalizeHash";
 
 interface AssetMintTabProps {
   assetId?: number;
@@ -27,7 +30,7 @@ interface EnrichedMint {
 export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useFetchAssetMints(
     assetId,
-    20
+    20,
   );
 
   const mints = useMemo(() => {
@@ -44,12 +47,13 @@ export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
     return [...new Set(txData.tx.map(t => t.block_id))];
   }, [txData]);
 
-  const { data: blockData, isLoading: blockLoading } = useFetchBlockByIds(blockIds);
+  const { data: blockData, isLoading: blockLoading } =
+    useFetchBlockByIds(blockIds);
 
   const txMap = useMemo(() => {
     const map = new Map<number, { hash: string; blockId: number }>();
     txData?.tx?.forEach(tx => {
-      map.set(tx.id, { hash: cleanHash(tx.hash), blockId: tx.block_id });
+      map.set(tx.id, { hash: normalizeHash(tx.hash), blockId: tx.block_id });
     });
     return map;
   }, [txData]);
@@ -124,7 +128,9 @@ export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
 
   return (
     <TableList
-      columns={columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]}
+      columns={
+        columns as unknown as Omit<Column<Record<string, unknown>>, "visible">[]
+      }
       items={enrichedMints}
       storeKey='asset_mint_tab'
       loading={isLoading || txLoading || blockLoading}
