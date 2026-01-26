@@ -31,6 +31,42 @@ export default defineConfig({
     },
     dedupe: ["@tanstack/react-router"],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return;
+
+          if (id.includes("/node_modules/@xyflow/")) return "xyflow";
+
+          if (
+            id.includes("/node_modules/react/") ||
+            id.includes("/node_modules/react-dom/") ||
+            id.includes("/node_modules/scheduler/")
+          ) {
+            return "react";
+          }
+
+          if (id.includes("/node_modules/@tanstack/")) return "tanstack";
+
+          if (id.includes("/node_modules/@vellumlabs/")) return "cexplorer-sdk";
+
+          if (
+            id.includes("/node_modules/zustand/") ||
+            id.includes("/node_modules/immer/") ||
+            id.includes("/node_modules/date-fns/") ||
+            id.includes("/node_modules/lucide-react/") ||
+            id.includes("/node_modules/react-helmet/")
+          ) {
+            return "shared";
+          }
+
+          // rest
+          return "vendor";
+        },
+      },
+    },
+  },
   server: {
     port: 3001,
   },

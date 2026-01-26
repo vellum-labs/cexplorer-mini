@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useMemo } from "react";
 
 import { AssetDetailOverview } from "@/components/asset/AssetDetailOverview";
 import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
@@ -8,13 +9,20 @@ import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
 import { AssetMintTab } from "@/components/asset/tabs/AssetMintTab";
+import { AssetMetadataTab } from "@/components/asset/tabs/AssetMetadataTab";
 import { AssetOwnersTab } from "@/components/asset/tabs/AssetOwnersTab";
+import { useFetchAssetDetail } from "@/services/asset";
 
 export const AssetDetailPage: FC = () => {
   const route = getRouteApi("/asset/$fingerprint");
   const { fingerprint } = route.useParams();
 
-  const assetDetailQuery = { data: null, isLoading: false };
+  const { data, isLoading } = useFetchAssetDetail(fingerprint);
+  const assetDetail = data?.mini_asset_detail?.[0];
+
+  const mintTxHashes = useMemo(() => {
+    return assetDetail?.mint?.map(m => m.encode) ?? [];
+  }, [assetDetail?.mint]);
 
   const tabs = [
     {
@@ -26,19 +34,21 @@ export const AssetDetailPage: FC = () => {
     {
       key: "mints",
       label: "Mints",
-      content: <AssetMintTab />,
+      content: <AssetMintTab assetId={assetDetail?.id} />,
       visible: true,
     },
     {
       key: "metadata",
       label: "Metadata",
-      content: <></>,
+      content: (
+        <AssetMetadataTab mintTxHashes={mintTxHashes} />
+      ),
       visible: true,
     },
     {
       key: "owners",
       label: "Owners",
-      content: <AssetOwnersTab />,
+      content: <AssetOwnersTab assetId={assetDetail?.id} />,
       visible: true,
     },
   ];
@@ -47,7 +57,7 @@ export const AssetDetailPage: FC = () => {
     <PageBase
       title={
         <span className='flex-1 break-all'>
-          {formatString(fingerprint, "longer")}
+          {assetDetail?.name || formatString(fingerprint, "longer")}
         </span>
       }
       breadcrumbItems={[
@@ -69,11 +79,14 @@ export const AssetDetailPage: FC = () => {
       <section className='flex w-full justify-center'>
         <div className='flex w-full max-w-desktop flex-grow flex-wrap gap-3 px-mobile md:px-desktop xl:flex-nowrap xl:justify-start'>
           <div className='flex grow basis-[980px] flex-wrap items-stretch gap-3'>
-            <AssetDetailOverview />
+            <AssetDetailOverview
+              assetDetail={assetDetail}
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </section>
-      <Tabs items={tabs} apiLoading={assetDetailQuery.isLoading} />
+      <Tabs items={tabs} apiLoading={isLoading} />
     </PageBase>
   );
 };

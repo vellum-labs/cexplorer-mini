@@ -10,7 +10,7 @@ interface AssetListPageProps {
 }
 
 export const AssetListPage: FC<AssetListPageProps> = ({ tab = false }) => {
-  const { columns, items } = useAssetList();
+  const { columns, items, loading, hasNextPage, fetchNextPage } = useAssetList();
 
   return (
     <PageBase
@@ -26,6 +26,9 @@ export const AssetListPage: FC<AssetListPageProps> = ({ tab = false }) => {
         items={items}
         storeKey='asset_list'
         withPadding={!tab}
+        loading={loading}
+        showMoreButton={hasNextPage}
+        onFetch={fetchNextPage}
       />
     </PageBase>
   );

@@ -3,39 +3,36 @@ import type { FC } from "react";
 import { TableList } from "@/components/global/TableList";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
-import { PoolCell } from "@vellumlabs/cexplorer-sdk/PoolCell";
 import { Link } from "@tanstack/react-router";
 
+import { useFetchPoolDelegators } from "@/services/pool";
+import { useMemo } from "react";
+
 interface DelegatorsTabProps {
-  type?: "pool" | "DRep";
+  poolHash?: string;
 }
 
-export const DelegatorsTab: FC<DelegatorsTabProps> = ({ type = "pool" }) => {
+export const DelegatorsTab: FC<DelegatorsTabProps> = ({ poolHash }) => {
+  const { data, isLoading, fetchNextPage, hasNextPage } =
+    useFetchPoolDelegators(poolHash ?? "", 20);
+
+  const items = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap(page => page.mini_account_detail ?? []);
+  }, [data]);
+
   const columns = [
     {
-      key: "date",
-      render: () => {
-        return <DateCell time='2026-01-04T21:44:52' />;
-      },
-      title: <p>Date</p>,
-      widthPx: 20,
-    },
-    {
       key: "address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
-        const isStake = view.includes("stake");
-
+      render: item => {
+        const view = item.stake_view || item.stake_hash || "";
         return (
-          <div className='flex items-center gap-1/2'>
+          <div className='flex items-center gap-1'>
             <Link
               className='text-primary'
-              to={isStake ? "/stake/$stakeAddr" : "/address/$address"}
-              params={isStake ? { stakeAddr: view } : { address: view || "" }}
+              to='/stake/$stakeAddr'
+              params={{ stakeAddr: view }}
             >
               {formatString(view, "long")}
             </Link>
@@ -43,54 +40,29 @@ export const DelegatorsTab: FC<DelegatorsTabProps> = ({ type = "pool" }) => {
           </div>
         );
       },
-      title: "Address",
-      widthPx: 90,
-    },
-    {
-      key: `${type}_delegation`,
-      render: () => {
-        return (
-          <div className='flex min-w-[40%] items-center gap-1'>
-            <PoolCell
-              poolInfo={{
-                id: "pool1lfsslc99da8jhj5apzctsnfm76kjc6ndyc6hnynagcj8xexvjsr",
-                meta: {
-                  name: "Binance Node - 14",
-                  ticker: "BNP",
-                  extended: null,
-                  homepage: "https://www.binance.com/en/earn",
-                  description: "Binance Staking Pool",
-                },
-              }}
-              fontSize='12px'
-            />
-          </div>
-        );
-      },
-      title: <p>Previous {type}</p>,
-      widthPx: 180,
+      title: "Stake Address",
+      widthPx: 150,
     },
     {
       key: "amount",
-      render: () => (
-        <div className='flex flex-col items-end gap-1/2'>
-          <AdaWithTooltip data={45656465456} />
+      render: item => (
+        <div className='flex flex-col items-end'>
+          <AdaWithTooltip data={Number(item.total_balance ?? 0)} />
         </div>
       ),
-      title: (
-        <div className='flex w-full justify-end'>
-          <span>Amount</span>
-        </div>
-      ),
-      widthPx: 40,
+      title: <p className='w-full text-right'>Balance</p>,
+      widthPx: 60,
     },
   ];
 
   return (
     <TableList
       columns={columns}
-      storeKey='delegators_tab'
-      items={Array.from({ length: 20 }, () => ({ rodo: true }))}
+      storeKey='pool_delegators_tab'
+      items={items}
+      loading={isLoading}
+      showMoreButton={hasNextPage}
+      onFetch={fetchNextPage}
     />
   );
 };
