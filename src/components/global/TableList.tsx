@@ -83,7 +83,7 @@ export const TableList: FC<TableListProps> = ({
 
   return (
     <section
-      className={`flex w-full max-w-desktop flex-col py-3 ${!title || !withPadding ? "" : "px-mobile md:px-desktop"}`}
+      className={`flex w-full max-w-desktop flex-col py-3 ${!title && !withPadding ? "" : "px-mobile md:px-desktop"}`}
     >
       <div className='mb-2 flex w-full flex-col justify-between gap-1 md:flex-row md:items-center'>
         <div className='flex w-full flex-wrap items-center justify-between gap-1 sm:flex-nowrap'>
