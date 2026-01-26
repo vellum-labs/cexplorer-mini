@@ -17,6 +17,10 @@ export const navigationOptions: {
       label: "Epochs",
       href: "/epoch",
     },
+    {
+      label: "Scripts",
+      href: "/script",
+    },
   ],
   staking: [
     {
