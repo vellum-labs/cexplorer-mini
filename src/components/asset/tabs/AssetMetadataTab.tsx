@@ -4,8 +4,6 @@ import { useMemo } from "react";
 import { useFetchTxByHashes, useFetchTxMetadata, cleanHash } from "@/services/asset";
 
 import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
-import { JsonDisplay } from "@vellumlabs/cexplorer-sdk/JsonDisplay";
-import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk/LoadingSkeleton";
 
 interface AssetMetadataTabProps {
   mintTxHashes?: string[];
@@ -60,6 +58,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
   }, [data, txIdToHash]);
 
   const currentHash = items[currentIndex]?.txHash || "";
+  const currentItem = items[currentIndex];
 
   const tabOptions = items.map((item, index) => ({
     label: `Tx: ${shortenHash(item.txHash)}`,
@@ -68,14 +67,23 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
 
   if (isLoading) {
     return (
-      <div className='flex flex-grow flex-col gap-1.5 md:flex-shrink-0'>
-        <LoadingSkeleton height='500px' width='100%' rounded='lg' />
+      <div className='flex flex-col gap-1.5'>
+        <div className='h-7 w-16 animate-pulse rounded-max bg-border' />
+        <div className='h-48 animate-pulse rounded-xl bg-border' />
       </div>
     );
   }
 
+  if (items.length === 0) {
+    return (
+      <p className='w-full text-center text-text-sm text-grayTextPrimary'>
+        No metadata found for this asset
+      </p>
+    );
+  }
+
   return (
-    <div className='flex flex-grow flex-col gap-1.5 md:flex-shrink-0'>
+    <div className='flex flex-col gap-2'>
       {items.length > 1 && (
         <div className='w-fit rounded-m border border-border'>
           <Dropdown
@@ -88,13 +96,18 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
           />
         </div>
       )}
-      <JsonDisplay
-        data={items[currentIndex]?.json}
-        isLoading={isLoading}
-        isError={items.length === 0}
-        search
-        noDataLabel='No metadata found for this asset'
-      />
+      {currentItem && (
+        <div className='flex flex-col gap-1'>
+          <div className='w-fit rounded-m border border-border bg-darker px-1.5 py-1/2 text-text-xs font-medium shadow-md'>
+            {currentItem.key}
+          </div>
+          <div className='overflow-auto rounded-l border border-border bg-cardBg p-2 font-mono text-text-xs'>
+            <pre className='whitespace-pre-wrap break-all'>
+              {JSON.stringify(currentItem.json, null, 2)}
+            </pre>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
