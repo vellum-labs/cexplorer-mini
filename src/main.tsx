@@ -21,15 +21,6 @@ const queryClient = new QueryClient({
 
 export const router = createRouter({
   routeTree,
-  defaultViewTransition: {
-    types: ({ pathChanged }) => {
-      if (!pathChanged) {
-        return false;
-      }
-
-      return ["fade"];
-    },
-  },
 });
 
 declare module "@tanstack/react-router" {
