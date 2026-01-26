@@ -15,20 +15,6 @@ export const WithdrawalsTab: FC<WithdrawalsTabProps> = ({
   withdrawals,
   isLoading,
 }) => {
-  if (isLoading) {
-    return (
-      <div className='h-24 animate-pulse rounded-xl bg-border' />
-    );
-  }
-
-  if (!withdrawals || withdrawals.length === 0) {
-    return (
-      <p className='w-full text-center text-text-sm text-grayTextPrimary'>
-        No withdrawals found in this transaction
-      </p>
-    );
-  }
-
   const columns = [
     {
       key: "stake",
@@ -68,9 +54,11 @@ export const WithdrawalsTab: FC<WithdrawalsTabProps> = ({
   return (
     <TableList
       withPadding={false}
+      showMoreButton={false}
       columns={columns}
-      items={withdrawals}
+      items={withdrawals ?? []}
       storeKey='withdrawals_tab_list'
+      loading={isLoading}
     />
   );
 };

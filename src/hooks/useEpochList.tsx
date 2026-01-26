@@ -25,10 +25,16 @@ interface UseEpochListReturn {
     InfiniteQueryObserverResult<InfiniteData<EpochListData, unknown>, Error>
   >;
   hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useEpochList = (): UseEpochListReturn => {
-  const { data: epochData, fetchNextPage, hasNextPage } = useFetchEpochList(20);
+  const {
+    data: epochData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useFetchEpochList(20);
 
   const items = epochData?.pages.flatMap(page => page.epoch);
 
@@ -140,6 +146,7 @@ export const useEpochList = (): UseEpochListReturn => {
 
   return {
     items,
+    loading: isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

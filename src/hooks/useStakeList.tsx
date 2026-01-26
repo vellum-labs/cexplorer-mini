@@ -27,10 +27,12 @@ interface UseStakeListReturn {
     >
   >;
   hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useStakeList = (): UseStakeListReturn => {
-  const { data, fetchNextPage, hasNextPage } = useFetchStakeAddressList(20);
+  const { data, fetchNextPage, isLoading, hasNextPage } =
+    useFetchStakeAddressList(20);
 
   const items = data?.pages.flatMap(page => page.mini_account_detail);
 
@@ -111,6 +113,7 @@ export const useStakeList = (): UseStakeListReturn => {
 
   return {
     items,
+    loading: isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

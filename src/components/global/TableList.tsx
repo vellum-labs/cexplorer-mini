@@ -45,6 +45,7 @@ interface TableListProps {
   storeKey?: string;
   withPadding?: boolean;
   showMoreButton?: boolean;
+  loading?: boolean;
   onFetch?: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
@@ -56,6 +57,7 @@ export const TableList: FC<TableListProps> = ({
   columns,
   storeKey,
   withPadding = true,
+  loading = true,
   showMoreButton = true,
   onFetch,
 }) => {
@@ -127,7 +129,7 @@ export const TableList: FC<TableListProps> = ({
         scrollable
         query={
           {
-            isLoading: false,
+            isLoading: loading,
 
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
           } as any

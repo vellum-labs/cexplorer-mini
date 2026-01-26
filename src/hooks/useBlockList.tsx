@@ -27,10 +27,16 @@ interface UseBlockListReturn {
     InfiniteQueryObserverResult<InfiniteData<BlockListData, unknown>, Error>
   >;
   hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useBlockList = (epochNo?: number): UseBlockListReturn => {
-  const { data: blockData, fetchNextPage, hasNextPage } = useFetchBlockList(20, epochNo);
+  const {
+    data: blockData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useFetchBlockList(20, epochNo);
 
   const { data } = useFetchEpochParam();
 
@@ -156,6 +162,7 @@ export const useBlockList = (epochNo?: number): UseBlockListReturn => {
 
   return {
     items,
+    loading: isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

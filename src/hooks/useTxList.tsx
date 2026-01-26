@@ -25,13 +25,19 @@ interface UseTxListReturn {
     InfiniteQueryObserverResult<InfiniteData<TxListData, unknown>, Error>
   >;
   hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useTxList = (
   blockTxData?: any[],
   hideColumns: string[] = [],
 ): UseTxListReturn => {
-  const { data: txData, fetchNextPage, hasNextPage } = useFetchTxList(20);
+  const {
+    data: txData,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = useFetchTxList(20);
 
   const items =
     blockTxData ??
@@ -110,6 +116,7 @@ export const useTxList = (
   ];
 
   return {
+    loading: isLoading,
     items,
     columns: columns
       .filter(col => !hideColumns.includes(col.key))

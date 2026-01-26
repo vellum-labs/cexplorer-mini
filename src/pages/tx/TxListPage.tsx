@@ -19,7 +19,7 @@ export const TxListPage: FC<TxListPageProps> = ({
   hideColumns = [],
   showLoadMore = true,
 }) => {
-  const { columns, items, hasNextPage, fetchNextPage } = useTxList(
+  const { columns, items, loading, hasNextPage, fetchNextPage } = useTxList(
     txData,
     hideColumns,
   );
@@ -39,6 +39,7 @@ export const TxListPage: FC<TxListPageProps> = ({
         storeKey='tx_list'
         showMoreButton={showLoadMore && hasNextPage}
         onFetch={fetchNextPage}
+        loading={loading}
       />
     </PageBase>
   );

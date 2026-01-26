@@ -21,10 +21,12 @@ interface UseAddressListReturn {
     InfiniteQueryObserverResult<InfiniteData<AddressListData, unknown>, Error>
   >;
   hasNextPage: boolean;
+  loading: boolean;
 }
 
 export const useAddressList = (): UseAddressListReturn => {
-  const { data, fetchNextPage, hasNextPage } = useFetchAddressList(20);
+  const { data, fetchNextPage, isLoading, hasNextPage } =
+    useFetchAddressList(20);
 
   const items = data?.pages.flatMap(page => page.mini_get_address);
 
@@ -75,6 +77,7 @@ export const useAddressList = (): UseAddressListReturn => {
 
   return {
     items,
+    loading: isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

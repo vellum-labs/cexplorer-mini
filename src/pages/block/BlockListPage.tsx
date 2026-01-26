@@ -10,8 +10,12 @@ interface BlockListPageProps {
   epochNo?: number;
 }
 
-export const BlockListPage: FC<BlockListPageProps> = ({ tab = false, epochNo }) => {
-  const { columns, items, hasNextPage, fetchNextPage } = useBlockList(epochNo);
+export const BlockListPage: FC<BlockListPageProps> = ({
+  tab = false,
+  epochNo,
+}) => {
+  const { columns, items, hasNextPage, loading, fetchNextPage } =
+    useBlockList(epochNo);
 
   return (
     <PageBase
@@ -28,6 +32,7 @@ export const BlockListPage: FC<BlockListPageProps> = ({ tab = false, epochNo }) 
         items={items}
         showMoreButton={hasNextPage}
         onFetch={fetchNextPage}
+        loading={loading}
       />
     </PageBase>
   );

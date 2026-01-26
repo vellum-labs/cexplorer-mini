@@ -4,13 +4,13 @@ import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubt
 import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
 import { TxDetailOverview } from "@/components/tx/TxDetailOverview";
 import { PageBase } from "@/components/global/PageBase";
-import { WithdrawalsTab } from "./tabs/WithdrawalsTab";
-import { ReferenceInputsTab } from "./tabs/ReferenceInputsTab";
-import { CollateralTab } from "./tabs/CollateralTab";
-import { OverviewTab } from "./tabs/OverviewTab";
-import { ContentTab } from "./tabs/ContentTab";
-import { ContractsTab } from "./tabs/ContractsTab";
-import { MetadataTab } from "./tabs/MetadataTab";
+import { WithdrawalsTab } from "../../components/tx/tabs/WithdrawalsTab";
+import { ReferenceInputsTab } from "../../components/tx/tabs/ReferenceInputsTab";
+import { CollateralTab } from "../../components/tx/tabs/CollateralTab";
+import { OverviewTab } from "../../components/tx/tabs/OverviewTab";
+import { ContentTab } from "../../components/tx/tabs/ContentTab";
+import { ContractsTab } from "../../components/tx/tabs/ContractsTab";
+import { MetadataTab } from "../../components/tx/tabs/MetadataTab";
 import { getRouteApi } from "@tanstack/react-router";
 import { useFetchTxDetail } from "@/services/tx";
 
@@ -61,9 +61,7 @@ export const TxDetailPage = () => {
           )}
         </span>
       ),
-      content: (
-        <ContractsTab contracts={contracts} isLoading={isLoading} />
-      ),
+      content: <ContractsTab contracts={contracts} isLoading={isLoading} />,
       visible: contractsCount > 0,
     },
     {
@@ -79,7 +77,10 @@ export const TxDetailPage = () => {
         </span>
       ),
       content: (
-        <CollateralTab collateralInputs={collateralInputs} isLoading={isLoading} />
+        <CollateralTab
+          collateralInputs={collateralInputs}
+          isLoading={isLoading}
+        />
       ),
       visible: collateralCount > 0,
     },
@@ -113,16 +114,17 @@ export const TxDetailPage = () => {
         </span>
       ),
       content: (
-        <ReferenceInputsTab referenceInputs={referenceInputs} isLoading={isLoading} />
+        <ReferenceInputsTab
+          referenceInputs={referenceInputs}
+          isLoading={isLoading}
+        />
       ),
       visible: referenceInputsCount > 0,
     },
     {
       key: "metadata",
       label: "Metadata",
-      content: (
-        <MetadataTab metadata={metadata} isLoading={isLoading} />
-      ),
+      content: <MetadataTab metadata={metadata} isLoading={isLoading} />,
       visible: !!hasMetadata,
     },
   ];

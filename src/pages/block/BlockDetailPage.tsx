@@ -1,7 +1,16 @@
 import type { FC } from "react";
 
+import {
+  ChevronLeft,
+  ChevronRight,
+  CircleCheck,
+  HardDrive,
+} from "lucide-react";
+
+import { TxListPage } from "../tx/TxListPage";
 import { PageBase } from "@/components/global/PageBase";
 
+import { normalizeHash } from "@/utils/normalizeHash";
 import { getRouteApi } from "@tanstack/react-router";
 
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
@@ -14,22 +23,16 @@ import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { SizeCard } from "@vellumlabs/cexplorer-sdk/SizeCard";
 import { TimeDateIndicator } from "@vellumlabs/cexplorer-sdk/TimeDateIndicator";
 import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
-import {
-  ChevronLeft,
-  ChevronRight,
-  CircleCheck,
-  HardDrive,
-} from "lucide-react";
-import { TxListPage } from "../tx/TxListPage";
+import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk/LoadingSkeleton";
+
 import { useFetchBlockDetail } from "@/services/block";
 import { useFetchEpochParam } from "@/services/epoch";
-import { normalizeHash } from "@/utils/normalizeHash";
 
 export const BlockDetailPage: FC = () => {
   const route = getRouteApi("/block/$hash");
   const { hash } = route.useParams();
 
-  const { data: blockDetailData } = useFetchBlockDetail(hash);
+  const { data: blockDetailData, isLoading } = useFetchBlockDetail(hash);
   const blockDetail = blockDetailData?.mini_block_detail?.[0];
 
   const { data: epochParamData } = useFetchEpochParam();
@@ -160,47 +163,78 @@ export const BlockDetailPage: FC = () => {
     >
       <section className='flex w-full justify-center'>
         <div className='flex w-full max-w-desktop flex-grow flex-wrap gap-3 p-mobile md:p-desktop xl:flex-nowrap xl:justify-start'>
-          <div className='flex grow basis-[980px] flex-wrap gap-3'>
-            <OverviewCard
-              title='Block Overview'
-              overviewList={overviewListItems}
-              className='h-auto min-h-[227px]'
-            />
-            <OverviewCard
-              title='Transactions and Fees'
-              overviewList={overviewTransactionsListItems}
-              className='h-auto'
-            />
-          </div>
-          <div className='flex w-[400px] flex-grow flex-col gap-3 xl:justify-between xl:gap-0'>
-            {blockDetail?.slot_leader && (
-              <MintedByCard
-                poolInfo={{
-                  id: normalizeHash(blockDetail.slot_leader.hash),
-                  meta: {
-                    name: blockDetail.slot_leader.description,
-                    ticker: blockDetail.slot_leader.description,
-                    homepage: "",
-                    description: blockDetail.slot_leader.description,
-                    extended: {},
-                  },
-                }}
-                vrfKey={blockDetail.vrf_key ?? ""}
-                protoMajor={blockDetail.proto_major ?? 0}
-                protoMinor={blockDetail.proto_minor ?? 0}
-                opCounter={blockDetail.op_cert_counter ?? 0}
-                isGenesisBlock={blockDetail.epoch_no === null}
-                miscData={undefined}
-                generateImageUrl={() => ""}
-              />
-            )}
-            <SizeCard
-              size={blockDetail?.block_size ?? 0}
-              maxSize={maxBlockSize ?? 5000000}
-              title='Block size'
-              icon={<HardDrive size={20} className='text-primary' />}
-            />
-          </div>
+          {isLoading ? (
+            <>
+              <div className='flex grow basis-[980px] flex-wrap gap-3'>
+                <LoadingSkeleton
+                  height='227px'
+                  rounded='xl'
+                  className='grow basis-[460px] px-4 py-2'
+                />
+                <LoadingSkeleton
+                  height='227px'
+                  rounded='xl'
+                  className='grow basis-[430px] px-4 py-2'
+                />
+              </div>
+              <div className='flex min-h-full w-[400px] flex-grow flex-col gap-3 xl:justify-between xl:gap-0'>
+                <LoadingSkeleton
+                  className='basis-[400px] lg:basis-[416px]'
+                  maxHeight='110px'
+                  rounded='xl'
+                />
+                <LoadingSkeleton
+                  className='basis-[450px] lg:basis-[400px]'
+                  maxHeight='105px'
+                  rounded='xl'
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className='flex grow basis-[980px] flex-wrap gap-3'>
+                <OverviewCard
+                  title='Block Overview'
+                  overviewList={overviewListItems}
+                  className='h-auto min-h-[227px]'
+                />
+                <OverviewCard
+                  title='Transactions and Fees'
+                  overviewList={overviewTransactionsListItems}
+                  className='h-auto'
+                />
+              </div>
+              <div className='flex w-[400px] flex-grow flex-col gap-3 xl:justify-between xl:gap-0'>
+                {blockDetail?.slot_leader && (
+                  <MintedByCard
+                    poolInfo={{
+                      id: normalizeHash(blockDetail.slot_leader.hash),
+                      meta: {
+                        name: blockDetail.slot_leader.description,
+                        ticker: blockDetail.slot_leader.description,
+                        homepage: "",
+                        description: blockDetail.slot_leader.description,
+                        extended: {},
+                      },
+                    }}
+                    vrfKey={blockDetail.vrf_key ?? ""}
+                    protoMajor={blockDetail.proto_major ?? 0}
+                    protoMinor={blockDetail.proto_minor ?? 0}
+                    opCounter={blockDetail.op_cert_counter ?? 0}
+                    isGenesisBlock={blockDetail.epoch_no === null}
+                    miscData={undefined}
+                    generateImageUrl={() => ""}
+                  />
+                )}
+                <SizeCard
+                  size={blockDetail?.block_size ?? 0}
+                  maxSize={maxBlockSize ?? 5000000}
+                  title='Block size'
+                  icon={<HardDrive size={20} className='text-primary' />}
+                />
+              </div>
+            </>
+          )}
         </div>
       </section>
       <div className='w-full max-w-desktop px-mobile md:px-desktop'>

@@ -6,29 +6,15 @@ import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
-interface ReferenceInputsTabProps {
-  referenceInputs: TxUtxo[] | null;
+interface CollateralTabProps {
+  collateralInputs: TxUtxo[] | null;
   isLoading?: boolean;
 }
 
-export const ReferenceInputsTab: FC<ReferenceInputsTabProps> = ({
-  referenceInputs,
+export const CollateralTab: FC<CollateralTabProps> = ({
+  collateralInputs,
   isLoading,
 }) => {
-  if (isLoading) {
-    return (
-      <div className='h-24 animate-pulse rounded-xl bg-border' />
-    );
-  }
-
-  if (!referenceInputs || referenceInputs.length === 0) {
-    return (
-      <p className='w-full text-center text-text-sm text-grayTextPrimary'>
-        No reference inputs found in this transaction
-      </p>
-    );
-  }
-
   const columns = [
     {
       key: "address",
@@ -91,9 +77,11 @@ export const ReferenceInputsTab: FC<ReferenceInputsTabProps> = ({
   return (
     <TableList
       withPadding={false}
+      showMoreButton={false}
       columns={columns}
-      items={referenceInputs}
-      storeKey='reference_inputs_tab_list'
+      items={collateralInputs ?? []}
+      storeKey='collateral_tab_list'
+      loading={isLoading}
     />
   );
 };
