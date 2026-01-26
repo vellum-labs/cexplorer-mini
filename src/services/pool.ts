@@ -74,12 +74,12 @@ export const useFetchPoolList = (limit: number) => {
 };
 
 type PoolDetailVars = {
-  poolView: string;
+  poolHash: string;
 };
 
 const POOL_DETAIL_QUERY = `
-  query GetPoolDetail($poolView: String!) {
-    mini_pool_detail(where: {view: {_eq: $poolView}}) {
+  query GetPoolDetail($poolHash: String!) {
+    mini_pool_detail(where: {encode: {_eq: $poolHash}}) {
       cert
       description
       encode
@@ -91,14 +91,14 @@ const POOL_DETAIL_QUERY = `
   }
 `;
 
-export const useFetchPoolDetail = (poolView: string) => {
+export const useFetchPoolDetail = (poolHash: string) => {
   return useQuery<PoolListResponse, Error>({
-    queryKey: ["poolDetail", poolView],
+    queryKey: ["poolDetail", poolHash],
     queryFn: () =>
       gql<PoolListResponse, PoolDetailVars>(POOL_DETAIL_QUERY, {
-        poolView,
+        poolHash,
       }),
-    enabled: !!poolView,
+    enabled: !!poolHash,
     refetchOnWindowFocus: true,
   });
 };

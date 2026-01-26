@@ -9,6 +9,7 @@ import type {
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { Link } from "@tanstack/react-router";
 
 import { useFetchPoolList } from "@/services/pool";
 
@@ -63,7 +64,9 @@ export const usePoolList = (): UsePoolListReturn => {
         }
         return (
           <div className='flex items-center gap-1'>
-            <span className='text-primary'>{formatString(hash, "long")}</span>
+            <Link to='/pool/$id' params={{ id: hash }} className='text-primary'>
+              {formatString(hash, "long")}
+            </Link>
             <Copy copyText={hash} />
           </div>
         );

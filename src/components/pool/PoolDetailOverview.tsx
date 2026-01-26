@@ -1,117 +1,138 @@
 import type { FC } from "react";
+import type { PoolDetailData } from "@/services/pool";
 
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
-import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 
-interface PoolDetailOverview {
-  hash: string;
+interface PoolDetailOverviewProps {
+  poolDetail: PoolDetailData | undefined;
+  isLoading?: boolean;
 }
 
-export const PoolDetailOverview: FC<PoolDetailOverview> = ({ hash }) => {
+export const PoolDetailOverview: FC<PoolDetailOverviewProps> = ({
+  poolDetail,
+  isLoading,
+}) => {
+  const hash = poolDetail?.encode || "";
+  const view = poolDetail?.view || "";
+  const description = poolDetail?.description || "-";
+
+  const latestCert = poolDetail?.cert?.[0];
+  const latestStat = poolDetail?.stat?.reduce((latest, current) =>
+    current.epoch_no > latest.epoch_no ? current : latest
+  );
+
   const aboutList = [
-    { label: "Name", value: "AzureADA2" },
-    { label: "Ticker", value: "[AZUR2]" },
+    {
+      label: "Description",
+      value: isLoading ? (
+        <div className='h-5 w-32 animate-pulse rounded bg-border' />
+      ) : (
+        description
+      ),
+    },
     {
       label: "Pool ID",
-      value: (
+      value: isLoading ? (
+        <div className='h-5 w-40 animate-pulse rounded bg-border' />
+      ) : (
         <span className='flex items-center gap-1'>
           {formatString(hash || "", "long")}
-          <Copy copyText={hash} />
+          {hash && <Copy copyText={hash} />}
         </span>
       ),
     },
     {
-      label: "Created",
-      value: "04.12.2020",
+      label: "Pool View",
+      value: isLoading ? (
+        <div className='h-5 w-40 animate-pulse rounded bg-border' />
+      ) : (
+        <span className='flex items-center gap-1'>
+          {formatString(view || "", "long")}
+          {view && <Copy copyText={view} />}
+        </span>
+      ),
     },
     {
       label: "Delegators",
-      value: "2,707",
-    },
-    {
-      label: "Website",
-      value: "azureada.com",
+      value: isLoading ? (
+        <div className='h-5 w-16 animate-pulse rounded bg-border' />
+      ) : (
+        formatNumber(latestStat?.number_of_delegators ?? 0)
+      ),
     },
   ];
 
   const stakeAndPledgeList = [
     {
-      label: "Saturation",
-      value: "TBD",
+      label: "Stake",
+      value: isLoading ? (
+        <div className='h-5 w-24 animate-pulse rounded bg-border' />
+      ) : (
+        <AdaWithTooltip data={latestStat?.stake ?? 0} />
+      ),
     },
     {
-      label: "Live Stake",
-      value: <AdaWithTooltip data={22_000_000} />,
+      label: "Pledge",
+      value: isLoading ? (
+        <div className='h-5 w-24 animate-pulse rounded bg-border' />
+      ) : (
+        <AdaWithTooltip data={latestCert?.pledge ?? 0} />
+      ),
     },
-    {
-      label: "Active Stake",
-      value: <AdaWithTooltip data={22_000_000} />,
-    },
-    {
-      label: "Declared Pledge",
-      value: <AdaWithTooltip data={22_000_000} />,
-    },
-    {
-      label: "Active Pledge",
-      value: <AdaWithTooltip data={22_000_000} />,
-    },
-    { label: "Pledge Leverage", value: 44 },
     {
       label: "Margin Fee",
-      value: (2).toFixed(2) + "%",
+      value: isLoading ? (
+        <div className='h-5 w-16 animate-pulse rounded bg-border' />
+      ) : (
+        (latestCert?.margin ? (latestCert.margin * 100).toFixed(2) : "0") + "%"
+      ),
     },
     {
       label: "Fixed Fee",
-      value: <AdaWithTooltip data={340000} />,
+      value: isLoading ? (
+        <div className='h-5 w-24 animate-pulse rounded bg-border' />
+      ) : (
+        <AdaWithTooltip data={latestCert?.fixed_cost ?? 0} />
+      ),
     },
   ];
 
   const performanceList = [
     {
-      label: "Recent ROA",
-      value: (
-        <div className='flex items-center gap-1/2'>
-          <span>{(2).toFixed(2) + "%"}</span>
-        </div>
+      label: "Blocks in Epoch",
+      value: isLoading ? (
+        <div className='h-5 w-16 animate-pulse rounded bg-border' />
+      ) : (
+        formatNumber(latestStat?.number_of_blocks ?? 0)
       ),
     },
     {
-      label: "Lifetime ROA",
-      value: "2%",
-    },
-    {
-      label: "Blocks in Epoch",
-      value: formatNumber(22),
-    },
-    {
-      label: "Estimated Blocks",
-      value: "22.24",
-    },
-    {
-      label: "Prorated Luck",
-      value: "125.89%",
-    },
-    {
       label: "Blocks Lifetime",
-      value: formatNumber(8914),
-    },
-    {
-      label: "Lifetime Luck",
-      value: "96.51" + "%",
+      value: isLoading ? (
+        <div className='h-5 w-20 animate-pulse rounded bg-border' />
+      ) : (
+        formatNumber(
+          poolDetail?.stat?.reduce((sum, s) => sum + s.number_of_blocks, 0) ?? 0
+        )
+      ),
     },
   ];
 
   return (
-    <div className='flex w-full flex-wrap items-stretch gap-3'>
-      <OverviewCard title='About' overviewList={aboutList} />
-      <OverviewCard
-        title='Stake and Pledge'
-        overviewList={stakeAndPledgeList}
-      />
-      <OverviewCard title='Performance' overviewList={performanceList} />
-    </div>
+    <section className='flex w-full justify-center py-3'>
+      <div className='flex w-full max-w-desktop flex-grow flex-wrap gap-3 px-mobile md:px-desktop xl:flex-nowrap xl:justify-start'>
+        <div className='flex grow basis-[980px] flex-wrap items-stretch gap-3'>
+          <OverviewCard title='About' overviewList={aboutList} />
+          <OverviewCard
+            title='Stake and Pledge'
+            overviewList={stakeAndPledgeList}
+          />
+          <OverviewCard title='Performance' overviewList={performanceList} />
+        </div>
+      </div>
+    </section>
   );
 };

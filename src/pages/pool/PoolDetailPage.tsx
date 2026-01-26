@@ -6,13 +6,17 @@ import { BlockListPage } from "../block/BlockListPage";
 import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
 import { DelegatorsTab } from "@/components/pool/tabs/DelegatorsTab";
 import { AboutTab } from "@/components/pool/tabs/AboutTab";
+import { useFetchPoolDetail } from "@/services/pool";
 
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
 import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
+import { useParams } from "@tanstack/react-router";
 
 export const PoolDetailPage: FC = () => {
-  const hash = "dd7330d29709deb4e8dff5b49d50b174c9c884678992cca4a68d96d7";
+  const { id: hash } = useParams({ from: "/pool/$id" });
+  const { data, isLoading } = useFetchPoolDetail(hash);
+  const poolDetail = data?.mini_pool_detail?.[0];
 
   const tabs = [
     {
@@ -24,7 +28,7 @@ export const PoolDetailPage: FC = () => {
     {
       key: "rewards",
       label: "Rewards",
-      content: <RewardsTab />,
+      content: <RewardsTab stats={poolDetail?.stat} isLoading={isLoading} />,
       visible: true,
     },
     {
@@ -46,11 +50,13 @@ export const PoolDetailPage: FC = () => {
       metadataTitle='poolDetail'
       metadataReplace={{
         before: "%name%",
-        after: "AzureADA2",
+        after: poolDetail?.description || hash,
       }}
       title={
         <span className='mt-1/2 flex w-full items-center gap-1'>
-          <span className='flex-1 break-all'>[AZUR2] AzureADA2</span>
+          <span className='flex-1 break-all'>
+            {poolDetail?.description || formatString(hash, "long")}
+          </span>
         </span>
       }
       breadcrumbItems={[
@@ -80,7 +86,7 @@ export const PoolDetailPage: FC = () => {
       }
       homepageAd
     >
-      <PoolDetailOverview hash={hash} />
+      <PoolDetailOverview poolDetail={poolDetail} isLoading={isLoading} />
       <Tabs items={tabs} />
     </PageBase>
   );
