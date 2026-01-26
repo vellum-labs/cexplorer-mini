@@ -36,9 +36,17 @@ export const useTxList = (
   const items =
     blockTxData ??
     txData?.pages.flatMap(page =>
-      page.tx.map(tx => ({
-        ...tx,
-        hash: normalizeHash(tx.hash),
+      page.mini_tx_detail.map(tx => ({
+        hash: normalizeHash(tx.tx_hash),
+        time: tx.tx_timestamp ? new Date(tx.tx_timestamp * 1000) : null,
+        fee: tx.fee,
+        size: tx.tx_size,
+        out_sum: tx.total_output,
+        block: {
+          epoch_no: tx.epoch_no,
+          hash: normalizeHash(tx.block_hash),
+          no: tx.block_height,
+        },
       })),
     );
 
