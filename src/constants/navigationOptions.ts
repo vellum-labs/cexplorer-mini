@@ -21,6 +21,10 @@ export const navigationOptions: {
       label: "Scripts",
       href: "/script",
     },
+    {
+      label: "Metadata",
+      href: "/metadata",
+    },
   ],
   staking: [
     {
