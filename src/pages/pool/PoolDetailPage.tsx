@@ -34,13 +34,19 @@ export const PoolDetailPage: FC = () => {
     {
       key: "delegators",
       label: "Delegators",
-      content: <DelegatorsTab />,
+      content: <DelegatorsTab poolHash={hash} />,
       visible: true,
     },
     {
       key: "about",
       label: "About",
-      content: <AboutTab />,
+      content: (
+        <AboutTab
+          certs={poolDetail?.cert}
+          hashId={poolDetail?.pool_hash_id}
+          isLoading={isLoading}
+        />
+      ),
       visible: true,
     },
   ];

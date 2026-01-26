@@ -71,6 +71,7 @@ export const RewardsTab: FC<RewardsTabProps> = ({ stats, isLoading }) => {
       storeKey='pool_detail_rewards_tab'
       items={sortedStats}
       loading={isLoading}
+      showMoreButton={false}
     />
   );
 };

@@ -1,320 +1,241 @@
+import type { FC } from "react";
+import type { PoolCert } from "@/services/pool";
+
 import { TableList } from "@/components/global/TableList";
-import { HashCell } from "@/components/tx/HashCell";
 import { Link } from "@tanstack/react-router";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { Download } from "lucide-react";
 import { Tooltip } from "@vellumlabs/cexplorer-sdk/Tooltip";
-import { Clock, Download } from "lucide-react";
-import type { FC } from "react";
+import {
+  useFetchPoolRelays,
+  useFetchPoolUpdates,
+  useFetchPoolRetires,
+} from "@/services/pool";
 
-export const AboutTab: FC = () => {
+interface AboutTabProps {
+  certs?: PoolCert[];
+  hashId?: number;
+  isLoading?: boolean;
+}
+
+export const AboutTab: FC<AboutTabProps> = ({ certs, hashId, isLoading }) => {
+  const { data: relaysData, isLoading: relaysLoading } =
+    useFetchPoolRelays(hashId);
+  const { data: updatesData, isLoading: updatesLoading } =
+    useFetchPoolUpdates(hashId);
+  const { data: retiresData, isLoading: retiresLoading } =
+    useFetchPoolRetires(hashId);
+
+  const latestCert = certs?.[0];
+  const owners = latestCert?.owners ?? [];
+  const rewardAddr = latestCert?.reward_addr_view ?? "";
+
+  const relays = relaysData?.pool_relay ?? [];
+  const updates = updatesData?.pool_update ?? [];
+  const retires = retiresData?.pool_retire ?? [];
+
   const ownerColumns = [
     {
       key: "address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
-        const isStake = view.includes("stake");
-
-        return isStake ? (
-          <Link
-            to='/stake/$stakeAddr'
-            params={{ stakeAddr: view }}
-            className='text-primary'
-          >
-            {formatString(view, "longer")}
-          </Link>
-        ) : (
-          <Link
-            to='/address/$address'
-            params={{ address: view }}
-            className='text-primary'
-          >
-            {formatString(view, "longer")}
-          </Link>
+      render: item => {
+        const view = item as string;
+        return (
+          <div className='flex items-center gap-1'>
+            <Link
+              to='/stake/$stakeAddr'
+              params={{ stakeAddr: view }}
+              className='text-primary'
+            >
+              {formatString(view, "longer")}
+            </Link>
+            <Copy copyText={view} />
+          </div>
         );
       },
       title: "Address",
-      widthPx: 40,
-    },
-    {
-      key: "active_stake",
-      render: () => (
-        <p className='text-right'>
-          <AdaWithTooltip data={4565456465} />
-        </p>
-      ),
-      title: <p className='w-full text-right'>Active Stake</p>,
-      visible: true,
-      widthPx: 20,
-    },
-    {
-      key: "live_stake",
-      render: () => (
-        <p className='text-right'>
-          <AdaWithTooltip data={4565456465} />
-        </p>
-      ),
-      title: <p className='w-full text-right'>Live Stake</p>,
-      visible: true,
-      widthPx: 20,
+      widthPx: 100,
     },
   ];
 
   const rewardsColumns = [
     {
       key: "address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
-        const isStake = view.includes("stake");
-
-        return isStake ? (
-          <Link
-            to='/stake/$stakeAddr'
-            params={{ stakeAddr: view }}
-            className='text-primary'
-          >
-            {formatString(view, "longer")}
-          </Link>
-        ) : (
-          <Link
-            to='/address/$address'
-            params={{ address: view }}
-            className='text-primary'
-          >
-            {formatString(view, "longer")}
-          </Link>
+      render: item => {
+        const view = item as string;
+        return (
+          <div className='flex items-center gap-1'>
+            <Link
+              to='/stake/$stakeAddr'
+              params={{ stakeAddr: view }}
+              className='text-primary'
+            >
+              {formatString(view, "longer")}
+            </Link>
+            <Copy copyText={view} />
+          </div>
         );
       },
       title: "Address",
-      widthPx: 40,
-    },
-    {
-      key: "active_stake",
-      render: () => (
-        <p className='text-right'>
-          <AdaWithTooltip data={4565456465} />
-        </p>
-      ),
-      title: <p className='w-full text-right'>Active Stake</p>,
-      visible: true,
-      widthPx: 20,
-    },
-    {
-      key: "live_stake",
-      render: () => (
-        <p className='text-right'>
-          <AdaWithTooltip data={4565456465} />
-        </p>
-      ),
-      title: <p className='w-full text-right'>Live Stake</p>,
-      visible: true,
-      widthPx: 20,
+      widthPx: 100,
     },
   ];
 
   const relayColumns = [
     {
       key: "address",
-      render: () => {
-        return <p>140.238.214.***</p>;
+      render: item => {
+        const address = item.dns_name || item.ipv4 || item.ipv6 || "-";
+        return <p>{address}</p>;
       },
       title: "Address",
-      visible: true,
       widthPx: 150,
     },
     {
       key: "port",
-      render: () => <p className='text-right'>***0</p>,
+      render: item => <p className='text-right'>{item.port ?? "-"}</p>,
       title: <p className='w-full text-right'>Port</p>,
-      visible: true,
-      widthPx: 150,
+      widthPx: 50,
     },
   ];
 
   const certificatesColumns = [
     {
-      key: "date",
-      render: () => {
-        return (
-          <div className='updateItems-center flex items-center gap-1/2'>
-            <Clock size={10} color='grayText' />
-            7.12.2023
-          </div>
-        );
-      },
-      title: "Date",
-      visible: true,
-      widthPx: 20,
-    },
-    {
       key: "active_in",
-      render: () => <EpochCell no={601} />,
-      title: <p className='w-full text-right'>Active in</p>,
-      visible: true,
-      widthPx: 20,
+      render: item => <EpochCell no={item.active_epoch_no} justify='start' />,
+      title: "Active in",
+      widthPx: 30,
     },
     {
       key: "rewards_address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
+      render: item => {
+        const view = item.reward_addr?.view;
+        if (!view) return <span>-</span>;
         return (
           <Link
             className='text-primary'
             to='/stake/$stakeAddr'
-            params={{
-              stakeAddr: view,
-            }}
+            params={{ stakeAddr: view }}
           >
-            {formatString(view, "longer")}
+            {formatString(view, "long")}
           </Link>
         );
       },
-      title: <p>Rewards Address</p>,
-      visible: true,
-      widthPx: 50,
-    },
-    {
-      key: "owner_address",
-      render: () => {
-        const view =
-          "stake1u9zjr6e37w53a474puhx606ayr3rz2l6jljrmzvlzkk3cmg0m2zw0";
-
-        return (
-          <Link
-            className='text-primary'
-            to='/stake/$stakeAddr'
-            params={{
-              stakeAddr: view,
-            }}
-          >
-            {formatString(view, "longer")}
-          </Link>
-        );
-      },
-      title: <p>Owner Address</p>,
-      visible: true,
-      widthPx: 50,
+      title: "Rewards Address",
+      widthPx: 60,
     },
     {
       key: "params",
-      render: () => {
+      render: item => {
         return (
-          <div className='flex flex-col'>
+          <div className='flex flex-col text-text-xs'>
             <span>
-              Pledge: <AdaWithTooltip data={456212} />
+              Pledge: <AdaWithTooltip data={Number(item.pledge ?? 0)} />
             </span>
             <span>
-              Fixed Costs: <AdaWithTooltip data={170} />
+              Fixed: <AdaWithTooltip data={Number(item.fixed_cost ?? 0)} />
             </span>
-            <span>Margin: {(0.02 * 100).toFixed(2)}%</span>
+            <span>Margin: {((item.margin ?? 0) * 100).toFixed(2)}%</span>
           </div>
         );
       },
-      title: <p>Params</p>,
-      visible: true,
+      title: "Params",
       widthPx: 50,
     },
     {
       key: "metadata",
-      render: () => {
-        const hash =
-          "04ba91f1742c7b066677bc617eb1c3598e4d3bec7d21763f84364f4050019601";
-
+      render: item => {
+        if (!item.meta) return <span className='text-right'>-</span>;
         return (
           <div className='flex flex-col items-end'>
-            <Tooltip content='https://cardanians.io/_storage/pool-crdn1.json'>
-              <div className='flex w-fit cursor-pointer items-center justify-end gap-1/2'>
+            <Tooltip content={item.meta.url}>
+              <a
+                href={item.meta.url}
+                target='_blank'
+                rel='noopener noreferrer'
+                className='flex w-fit cursor-pointer items-center justify-end gap-1/2'
+              >
                 <Download className='text-primary' size={11} />
                 <span className='text-primary'>Download</span>
-              </div>
+              </a>
             </Tooltip>
             <div className='flex items-center justify-end gap-1/2'>
-              <span>{formatString(hash, "long")}</span>
-              <Copy copyText={hash} className='translate-y-[1px]' size={11} />
+              <span className='text-text-xs'>
+                {formatString(item.meta.hash, "long")}
+              </span>
+              <Copy copyText={item.meta.hash} size={11} />
             </div>
           </div>
         );
       },
       title: <p className='w-full text-right'>Metadata</p>,
-      visible: true,
-      widthPx: 50,
+      widthPx: 60,
     },
   ];
 
-  const retirmentColumns = [
-    {
-      key: "date",
-      render: () => {
-        return <DateCell time='2026-01-04T21:44:52' />;
-      },
-      title: "Date",
-      visible: true,
-      widthPx: 60,
-    },
-    {
-      key: "tx",
-      render: () => {
-        return (
-          <HashCell
-            hash='ajksdjkasjkldlajksdjlkajklsdjklasdjklajklsdjklasdjklasdjklajklsdjklasdjklajkldkl'
-            formatType='longer'
-          />
-        );
-      },
-      title: "Transaction ID",
-      visible: true,
-      widthPx: 180,
-    },
+  const retirementColumns = [
     {
       key: "epoch",
-      render: () => <EpochCell no={601} />,
-      title: <p className='w-full text-end'>Retiring epoch</p>,
-      visible: true,
-      widthPx: 180,
+      render: item => <EpochCell no={item.retiring_epoch} justify='start' />,
+      title: "Retiring Epoch",
+      widthPx: 50,
     },
   ];
 
   return (
     <div className='flex flex-col gap-2'>
-      <TableList
-        columns={ownerColumns}
-        title='Owners (Pledge)'
-        withPadding={false}
-        items={Array.from({ length: 3 }, () => ({ todo: true }))}
-      />
-      <TableList
-        columns={rewardsColumns}
-        title='Rewards'
-        withPadding={false}
-        items={Array.from({ length: 1 }, () => ({ todo: true }))}
-      />
-      <TableList
-        columns={relayColumns}
-        title='Relays'
-        withPadding={false}
-        items={Array.from({ length: 2 }, () => ({ todo: true }))}
-      />
-      <TableList
-        columns={certificatesColumns}
-        title='Pool certificates'
-        withPadding={false}
-        items={Array.from({ length: 7 }, () => ({ todo: true }))}
-      />
-      <TableList
-        columns={retirmentColumns}
-        title='Retirement'
-        withPadding={false}
-        items={Array.from({ length: 1 }, () => ({ todo: true }))}
-      />
+      {owners.length > 0 && (
+        <TableList
+          columns={ownerColumns}
+          title='Owners'
+          withPadding={false}
+          items={owners}
+          loading={isLoading}
+          showMoreButton={false}
+        />
+      )}
+      {rewardAddr && (
+        <TableList
+          columns={rewardsColumns}
+          title='Rewards Address'
+          withPadding={false}
+          items={[rewardAddr]}
+          loading={isLoading}
+          showMoreButton={false}
+        />
+      )}
+      {relays.length > 0 && (
+        <TableList
+          columns={relayColumns}
+          title='Relays'
+          withPadding={false}
+          items={relays}
+          loading={relaysLoading}
+          showMoreButton={false}
+        />
+      )}
+      {updates.length > 0 && (
+        <TableList
+          columns={certificatesColumns}
+          title='Pool Certificates'
+          withPadding={false}
+          items={updates}
+          loading={updatesLoading}
+          showMoreButton={false}
+        />
+      )}
+      {retires.length > 0 && (
+        <TableList
+          columns={retirementColumns}
+          title='Retirement'
+          withPadding={false}
+          items={retires}
+          loading={retiresLoading}
+          showMoreButton={false}
+        />
+      )}
     </div>
   );
 };
