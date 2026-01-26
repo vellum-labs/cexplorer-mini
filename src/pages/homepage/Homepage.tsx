@@ -5,14 +5,12 @@ import { HomepageWidget } from "@/components/homepage/HomepageWidget";
 
 import { useBlockList } from "@/hooks/useBlockList";
 import { useTxList } from "@/hooks/useTxList";
-import { useDrepList } from "@/hooks/useDrepList";
 
 export const Homepage: FC = () => {
   const [
     { columns: blockColumns, items: blockItems },
     { columns: txColumns, items: txItems },
-    { columns: drepColumns, items: drepItems },
-  ] = [useBlockList(), useTxList(), useDrepList()];
+  ] = [useBlockList(), useTxList()];
 
   const widgets = [
     {
@@ -32,15 +30,6 @@ export const Homepage: FC = () => {
         ["date", "hash", "block", "fee"].includes(item.key),
       ),
       items: txItems,
-    },
-    {
-      title: "DReps",
-      linkTitle: "All DReps",
-      link: "/drep",
-      columns: drepColumns.filter(item =>
-        ["drep_name", "voting_power", "registered"].includes(item.key),
-      ),
-      items: drepItems,
     },
   ] as const;
 

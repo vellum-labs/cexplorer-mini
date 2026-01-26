@@ -30,13 +30,6 @@ export const Navbar: FC = () => {
               wrapperClassname='z-[50]'
             />
             <Dropdown
-              id='governance'
-              label='Governance'
-              options={navigationOptions.governance}
-              withBorder
-              wrapperClassname='z-[50]'
-            />
-            <Dropdown
               id='assets'
               label='Assets'
               options={navigationOptions.assets}

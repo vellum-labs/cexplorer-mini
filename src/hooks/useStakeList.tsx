@@ -1,5 +1,8 @@
 import type { Column } from "@/components/global/TableList";
-import type { StakeAddressData, StakeAddressListData } from "@/services/address";
+import type {
+  StakeAddressData,
+  StakeAddressListData,
+} from "@/services/address";
 import type {
   FetchNextPageOptions,
   InfiniteData,
@@ -18,7 +21,10 @@ interface UseStakeListReturn {
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<
-    InfiniteQueryObserverResult<InfiniteData<StakeAddressListData, unknown>, Error>
+    InfiniteQueryObserverResult<
+      InfiniteData<StakeAddressListData, unknown>,
+      Error
+    >
   >;
   hasNextPage: boolean;
 }
@@ -76,15 +82,7 @@ export const useStakeList = (): UseStakeListReturn => {
           return "-";
         }
 
-        return (
-          <Link
-            to='/drep/$hash'
-            params={{ hash: item.delegated_drep }}
-            className='text-primary'
-          >
-            {formatString(item.delegated_drep, "longer")}
-          </Link>
-        );
+        return formatString(item.delegated_drep, "longer");
       },
       title: <p>DRep Delegation</p>,
       widthPx: 120,

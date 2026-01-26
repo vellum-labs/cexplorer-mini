@@ -24,12 +24,6 @@ export const navigationOptions: {
       href: "/pool",
     },
   ],
-  governance: [
-    {
-      label: "DReps",
-      href: "/drep",
-    },
-  ],
   assets: [
     {
       label: "Assets",
