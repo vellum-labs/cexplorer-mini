@@ -13,7 +13,17 @@ import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
 
-import { useFetchTxList, type TxListData } from "@/services/tx";
+import {
+  useFetchTxList,
+  useFetchAddressTxList,
+  useFetchAssetTxList,
+  type TxListData,
+  type AddressTxListResponse,
+  type AssetTxListResponse,
+  type MiniTxData,
+  type AddressTxItem,
+  type AssetTxItem,
+} from "@/services/tx";
 import { normalizeHash } from "@/utils/normalizeHash";
 
 interface UseTxListReturn {
@@ -22,39 +32,99 @@ interface UseTxListReturn {
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<
-    InfiniteQueryObserverResult<InfiniteData<TxListData, unknown>, Error>
+    InfiniteQueryObserverResult<
+      InfiniteData<TxListData | AddressTxListResponse | AssetTxListResponse, unknown>,
+      Error
+    >
   >;
   hasNextPage: boolean;
   loading: boolean;
 }
 
+interface UseTxListOptions {
+  address?: string;
+  fingerprint?: string;
+  hideColumns?: string[];
+}
+
+const mapTxData = (tx: MiniTxData) => ({
+  hash: normalizeHash(tx.tx_hash),
+  time: tx.tx_timestamp ? new Date(tx.tx_timestamp * 1000) : null,
+  fee: tx.fee,
+  size: tx.tx_size,
+  out_sum: tx.total_output,
+  block: {
+    epoch_no: tx.epoch_no,
+    hash: normalizeHash(tx.block_hash),
+    no: tx.block_height,
+  },
+});
+
+const mapAddressTxData = (tx: AddressTxItem) => ({
+  hash: normalizeHash(tx.tx_hash),
+  time: tx.block_time ? new Date(tx.block_time) : null,
+  fee: null,
+  size: tx.tx_size,
+  out_sum: tx.out_sum,
+  block: {
+    epoch_no: tx.epoch,
+    hash: normalizeHash(tx.block_hash),
+    no: tx.block_no,
+  },
+});
+
+const mapAssetTxData = (tx: AssetTxItem) => ({
+  hash: normalizeHash(tx.tx_hash),
+  time: tx.block_time ? new Date(tx.block_time) : null,
+  fee: null,
+  size: tx.tx_size,
+  out_sum: tx.out_sum,
+  block: {
+    epoch_no: tx.epoch,
+    hash: normalizeHash(tx.block_hash),
+    no: tx.block_no,
+  },
+});
+
 export const useTxList = (
   blockTxData?: any[],
   hideColumns: string[] = [],
+  options?: UseTxListOptions,
 ): UseTxListReturn => {
-  const {
-    data: txData,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-  } = useFetchTxList(20);
+  const { address, fingerprint } = options ?? {};
 
-  const items =
-    blockTxData ??
-    txData?.pages.flatMap(page =>
-      page.mini_tx_detail.map(tx => ({
-        hash: normalizeHash(tx.tx_hash),
-        time: tx.tx_timestamp ? new Date(tx.tx_timestamp * 1000) : null,
-        fee: tx.fee,
-        size: tx.tx_size,
-        out_sum: tx.total_output,
-        block: {
-          epoch_no: tx.epoch_no,
-          hash: normalizeHash(tx.block_hash),
-          no: tx.block_height,
-        },
-      })),
+  const generalQuery = useFetchTxList(20);
+  const addressQuery = useFetchAddressTxList(address ?? "", 20);
+  const assetQuery = useFetchAssetTxList(fingerprint ?? "", 20);
+
+  const isAddressQuery = !!address;
+  const isAssetQuery = !!fingerprint;
+
+  const activeQuery = isAddressQuery
+    ? addressQuery
+    : isAssetQuery
+      ? assetQuery
+      : generalQuery;
+
+  const { isLoading, fetchNextPage, hasNextPage } = activeQuery;
+
+  let items: any[] | undefined;
+
+  if (blockTxData) {
+    items = blockTxData;
+  } else if (isAddressQuery) {
+    items = addressQuery.data?.pages.flatMap(
+      page => page.mini_address_tx_list?.map(mapAddressTxData) ?? [],
     );
+  } else if (isAssetQuery) {
+    items = assetQuery.data?.pages.flatMap(
+      page => page.mini_asset_tx_list?.map(mapAssetTxData) ?? [],
+    );
+  } else {
+    items = generalQuery.data?.pages.flatMap(page =>
+      page.mini_tx_detail.map(mapTxData),
+    );
+  }
 
   const columns = [
     {
@@ -115,13 +185,15 @@ export const useTxList = (
     },
   ];
 
+  const allHideColumns = [...hideColumns, ...(options?.hideColumns ?? [])];
+
   return {
     loading: isLoading,
     items,
     columns: columns
-      .filter(col => !hideColumns.includes(col.key))
+      .filter(col => !allHideColumns.includes(col.key))
       .map(item => ({ ...item, visible: true })),
-    fetchNextPage,
+    fetchNextPage: fetchNextPage as any,
     hasNextPage,
   };
 };

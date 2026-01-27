@@ -5,6 +5,7 @@ import type {
   InfiniteData,
   InfiniteQueryObserverResult,
 } from "@tanstack/react-query";
+import type { AddressAsset } from "@/services/address";
 
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
@@ -17,7 +18,7 @@ interface UseAssetListReturn {
   items: any[] | undefined;
   columns: Column<Record<string, unknown>>[];
   fetchNextPage: (
-    options?: FetchNextPageOptions | undefined
+    options?: FetchNextPageOptions | undefined,
   ) => Promise<
     InfiniteQueryObserverResult<InfiniteData<AssetListResponse, unknown>, Error>
   >;
@@ -25,15 +26,23 @@ interface UseAssetListReturn {
   loading: boolean;
 }
 
-export const useAssetList = (): UseAssetListReturn => {
+export const useAssetList = (
+  assetData?: AddressAsset[] | null,
+): UseAssetListReturn => {
   const {
-    data: assetData,
+    data: fetchedData,
     isLoading,
     fetchNextPage,
     hasNextPage,
   } = useFetchAssetList(20);
 
-  const items = assetData?.pages.flatMap(page => page.mini_asset_detail);
+  const items = assetData
+    ? assetData.map(asset => ({
+        type: asset.quantity === 1 ? "NFT" : "FT",
+        name: asset.asset_name,
+        quantity: asset.quantity,
+      }))
+    : fetchedData?.pages.flatMap(page => page.mini_asset_detail);
 
   const columns = [
     {
@@ -101,7 +110,7 @@ export const useAssetList = (): UseAssetListReturn => {
       widthPx: 80,
     },
     {
-      key: "policy_id",
+      key: "policy",
       render: item => {
         const policy = item?.policy;
         if (!policy) return "-";
@@ -137,9 +146,9 @@ export const useAssetList = (): UseAssetListReturn => {
 
   return {
     items,
-    loading: isLoading,
+    loading: assetData ? false : isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
-    hasNextPage,
+    hasNextPage: assetData ? false : hasNextPage,
   };
 };
