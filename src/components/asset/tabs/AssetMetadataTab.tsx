@@ -1,13 +1,9 @@
-import type { FC } from "react";
+import { useState, useMemo, type FC } from "react";
 
-import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
-
-import { useState } from "react";
-import { useMemo } from "react";
 import { useFetchTxByHashes, useFetchTxMetadata } from "@/services/asset";
-
-import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { normalizeHash } from "@/utils/normalizeHash";
+import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 interface AssetMetadataTabProps {
   mintTxHashes?: string[];
@@ -88,7 +84,7 @@ export const AssetMetadataTab: FC<AssetMetadataTabProps> = ({
           <Dropdown
             id='metadata-tx-selector'
             width='200px'
-            label={`Tx: ${normalizeHash(currentHash)}`}
+            label={`Tx: ${formatString(currentHash, "long")}`}
             options={tabOptions}
             triggerClassName='text-primary font-medium px-1.5 py-1'
             closeOnSelect

@@ -8,32 +8,30 @@ import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
+import { useFetchWithdrawals } from "@/services/address";
 
-export const WithdrawalsTab: FC = () => {
-  const items = Array.from({ length: 20 }, () => ({
-    block: {
-      time: "2026-01-04T21:44:52",
-      epoch_no: 601,
-      no: 3213123,
-      hash: "dsadasdas",
-    },
-    amount: 321321312,
-    tx: {
-      hash: "dsajkbhdjlkasdewqenlwqenlewq",
-      fee: 2312312,
-    },
-  }));
+interface WithdrawalsTabProps {
+  stakeAddress?: string;
+}
+
+export const WithdrawalsTab: FC<WithdrawalsTabProps> = ({ stakeAddress }) => {
+  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchWithdrawals(
+    stakeAddress ?? "",
+    20
+  );
+
+  const items = data?.pages.flatMap(page => page) ?? [];
 
   const columns = [
     {
       key: "date",
-      render: item => <DateCell time={item?.block.time} />,
+      render: item => <DateCell time={item?.block?.time} />,
       jsonFormat: item => {
-        if (!item?.block.time) {
+        if (!item?.block?.time) {
           return "-";
         }
 
-        return item?.block.time;
+        return item?.block?.time;
       },
       title: "Date",
       widthPx: 50,
@@ -43,14 +41,14 @@ export const WithdrawalsTab: FC = () => {
       render: item => (
         <p
           className='flex items-center gap-1 text-primary'
-          title={item.tx.hash}
+          title={item?.tx?.hash}
         >
           <Link
             to='/tx/$hash'
-            params={{ hash: item.tx.hash }}
+            params={{ hash: item?.tx?.hash ?? "" }}
             className='flex justify-end text-primary'
           >
-            {formatString(item.tx.hash, "long")}
+            {formatString(item?.tx?.hash ?? "", "long")}
           </Link>
           <Copy copyText={item?.tx?.hash} className='stroke-grayText' />
         </p>
@@ -86,7 +84,7 @@ export const WithdrawalsTab: FC = () => {
       key: "fee",
       render: item => (
         <p className='text-right'>
-          <AdaWithTooltip data={item.tx?.fee} />
+          <AdaWithTooltip data={item?.tx?.fee} />
         </p>
       ),
       title: <p className='w-full text-right'>Fee</p>,
@@ -100,7 +98,10 @@ export const WithdrawalsTab: FC = () => {
       withPadding={false}
       columns={columns}
       items={items}
-      storeKey='utxo_list'
+      storeKey='withdrawals_list'
+      loading={isLoading}
+      showMoreButton={hasNextPage}
+      onFetch={fetchNextPage}
     />
   );
 };

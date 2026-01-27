@@ -11,6 +11,8 @@ interface TxListPageProps {
   txData?: TxData[];
   hideColumns?: string[];
   showLoadMore?: boolean;
+  address?: string;
+  fingerprint?: string;
 }
 
 export const TxListPage: FC<TxListPageProps> = ({
@@ -18,10 +20,13 @@ export const TxListPage: FC<TxListPageProps> = ({
   txData,
   hideColumns = [],
   showLoadMore = true,
+  address,
+  fingerprint,
 }) => {
   const { columns, items, loading, hasNextPage, fetchNextPage } = useTxList(
     txData,
     hideColumns,
+    { address, fingerprint },
   );
 
   return (

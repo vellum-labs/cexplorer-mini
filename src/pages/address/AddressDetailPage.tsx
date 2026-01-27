@@ -4,51 +4,49 @@ import { AddressDetailOverview } from "@/components/address/AddressDetailOvervie
 import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
 import { LoadingSkeleton } from "@vellumlabs/cexplorer-sdk/LoadingSkeleton";
 import { Tabs } from "@vellumlabs/cexplorer-sdk/Tabs";
-import { TxListPage } from "../tx/TxListPage";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { getRouteApi } from "@tanstack/react-router";
 import { PageBase } from "@/components/global/PageBase";
-import { AddressesTab } from "@/components/address/tabs/AddressesTab";
 import { UtxoTab } from "@/components/address/tabs/UtxoTab";
 import { AssetListPage } from "../asset/AssetListPage";
-import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
+import { TxListPage } from "../tx/TxListPage";
+import { StakeRewardsTab } from "@/components/stake/tabs/StakeRewardsTab";
+import { useFetchAddressDetail, useFetchAddressStake } from "@/services/address";
 
 export const AddressDetailPage: FC = () => {
   const route = getRouteApi("/address/$address");
   const { address } = route.useParams();
 
-  const addressQuery = { data: { data: [] }, isLoading: false, isError: false };
+  const { data, isLoading, isError } = useFetchAddressDetail(address);
+  const { data: stakeAddress, isLoading: isStakeLoading } = useFetchAddressStake(address);
+  const addressDetail = data?.mini_get_address?.[0];
+
+  const isShelleyAddress = address?.startsWith("addr");
 
   const tabs = [
     {
       key: "assets",
       label: "Assets",
-      content: <AssetListPage tab />,
+      content: <AssetListPage tab assetData={addressDetail?.asset} loading={isLoading} />,
       visible: true,
     },
     {
       key: "transactions",
       label: "Transactions",
-      content: <TxListPage tab />,
+      content: <TxListPage tab address={address} />,
       visible: true,
     },
     {
       key: "utxos",
       label: "UTXOs",
-      content: <UtxoTab />,
-      visible: true,
-    },
-    {
-      key: "addresses",
-      label: "Addresses",
-      content: <AddressesTab />,
+      content: <UtxoTab address={address} />,
       visible: true,
     },
     {
       key: "rewards",
       label: "Rewards",
-      content: <RewardsTab />,
-      visible: true,
+      content: <StakeRewardsTab stakeAddress={stakeAddress ?? undefined} />,
+      visible: isShelleyAddress && (isStakeLoading || !!stakeAddress),
     },
   ];
 
@@ -77,7 +75,7 @@ export const AddressDetailPage: FC = () => {
       <section className='flex w-full flex-col items-center'>
         <div className='flex w-full max-w-desktop flex-grow flex-wrap gap-3 px-mobile pb-3 pt-1.5 md:px-desktop xl:flex-nowrap xl:justify-start'>
           <div className='flex w-full shrink grow flex-wrap items-stretch gap-3'>
-            {addressQuery.isLoading || addressQuery.isError ? (
+            {isLoading || isError ? (
               <>
                 <LoadingSkeleton
                   height='227px'
@@ -97,7 +95,7 @@ export const AddressDetailPage: FC = () => {
               </>
             ) : (
               <AddressDetailOverview
-                data={addressQuery.data?.data ?? []}
+                data={addressDetail}
                 address={address}
               />
             )}

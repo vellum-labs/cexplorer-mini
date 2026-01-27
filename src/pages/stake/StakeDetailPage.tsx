@@ -8,45 +8,40 @@ import { StakeDetailOverview } from "@/components/stake/StakeDetailOverview";
 import { TxListPage } from "../tx/TxListPage";
 import { PageBase } from "@/components/global/PageBase";
 import { AssetListPage } from "../asset/AssetListPage";
-import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
+import { StakeRewardsTab } from "@/components/stake/tabs/StakeRewardsTab";
 import { WithdrawalsTab } from "@/components/address/tabs/WithdrawalsTab";
-import { AddressesTab } from "@/components/address/tabs/AddressesTab";
+import { useFetchStakeDetail } from "@/services/address";
 
 export const StakeDetailPage: FC = () => {
   const route = getRouteApi("/stake/$stakeAddr");
   const { stakeAddr: address } = route.useParams();
 
-  const stakeQuery = { data: null, isLoading: false, isError: false };
+  const { data, isLoading, isError } = useFetchStakeDetail(address);
+  const stakeDetail = data?.mini_account_detail?.[0];
 
   const tabs = [
     {
       key: "assets",
       label: "Assets",
-      content: <AssetListPage tab />,
+      content: <AssetListPage tab assetData={stakeDetail?.asset} loading={isLoading} />,
       visible: true,
     },
     {
       key: "transactions",
       label: "Transactions",
-      content: <TxListPage tab />,
+      content: <TxListPage tab address={address} />,
       visible: true,
     },
     {
       key: "withdrawals",
       label: "Withdrawals",
-      content: <WithdrawalsTab />,
-      visible: true,
-    },
-    {
-      key: "addresses",
-      label: "Addresses",
-      content: <AddressesTab />,
+      content: <WithdrawalsTab stakeAddress={address} />,
       visible: true,
     },
     {
       key: "rewards",
       label: "Rewards",
-      content: <RewardsTab />,
+      content: <StakeRewardsTab stakeAddress={address} />,
       visible: true,
     },
   ];
@@ -74,7 +69,7 @@ export const StakeDetailPage: FC = () => {
       <section className='flex w-full justify-center'>
         <div className='flex w-full max-w-desktop flex-grow flex-wrap gap-3 px-mobile md:px-desktop xl:flex-nowrap xl:justify-start'>
           <div className='flex grow basis-[980px] flex-wrap items-stretch gap-3'>
-            {stakeQuery.isLoading || stakeQuery.isError ? (
+            {isLoading || isError ? (
               <>
                 <LoadingSkeleton
                   height='330px'
@@ -89,14 +84,14 @@ export const StakeDetailPage: FC = () => {
               </>
             ) : (
               <StakeDetailOverview
-                data={stakeQuery.data}
+                data={stakeDetail}
                 stakeAddress={address}
               />
             )}
           </div>
         </div>
       </section>
-      <Tabs items={tabs} apiLoading={stakeQuery.isLoading} />
+      <Tabs items={tabs} apiLoading={isLoading} />
     </PageBase>
   );
 };

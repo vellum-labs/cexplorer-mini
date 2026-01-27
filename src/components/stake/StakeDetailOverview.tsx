@@ -1,4 +1,5 @@
 import { type FC } from "react";
+import type { StakeAddressData } from "@/services/address";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
@@ -6,7 +7,7 @@ import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 
 interface StakeDetailOverviewProps {
-  data: any;
+  data?: StakeAddressData;
   stakeAddress: string;
 }
 
@@ -14,16 +15,27 @@ export const StakeDetailOverview: FC<StakeDetailOverviewProps> = ({
   data,
   stakeAddress,
 }) => {
-  const address = data?.view || stakeAddress;
+  const address = data?.stake_view || stakeAddress;
+
+  const getStatusBadge = () => {
+    const status = data?.status;
+    if (status === "registered") {
+      return <Badge color='green'>Registered</Badge>;
+    }
+    if (status === "deregistered") {
+      return <Badge color='red'>Deregistered</Badge>;
+    }
+    return <Badge color='yellow'>Unknown</Badge>;
+  };
 
   const overviewList = [
     {
       label: "Total balance",
-      value: <AdaWithTooltip data={data?.stake?.live?.amount ?? 0} />,
+      value: <AdaWithTooltip data={Number(data?.total_balance ?? 0)} />,
     },
     {
-      label: "ADA balance",
-      value: <AdaWithTooltip data={data?.stake?.active?.amount ?? 0} />,
+      label: "UTXO balance",
+      value: <AdaWithTooltip data={Number(data?.utxo ?? 0)} />,
     },
     {
       label: "Private name",
@@ -34,43 +46,37 @@ export const StakeDetailOverview: FC<StakeDetailOverviewProps> = ({
   const stakeKey = [
     {
       label: "Status",
-      value: (
-        <>
-          {data?.stake?.info?.active ? (
-            <Badge className='' color='green'>
-              Active
-            </Badge>
-          ) : data?.stake?.info?.active === null ? (
-            <Badge className='' color='red'>
-              Inactive
-            </Badge>
-          ) : (
-            <Badge className='' color='yellow'>
-              Deregistered
-            </Badge>
-          )}
-        </>
-      ),
+      value: getStatusBadge(),
     },
     {
       label: "Stake pool",
-      value: "-",
-    },
-    {
-      label: "Rewards available",
-      value: (
-        <AdaWithTooltip
-          data={(data?.reward?.total ?? 0) - (data?.reward?.withdrawn ?? 0)}
-        />
+      value: data?.delegated_pool ? (
+        <span className='flex items-center gap-1'>
+          <span>{formatString(data.delegated_pool, "long")}</span>
+          <Copy copyText={data.delegated_pool} />
+        </span>
+      ) : (
+        "Not delegated"
       ),
     },
     {
+      label: "Rewards available",
+      value: <AdaWithTooltip data={Number(data?.rewards_available ?? 0)} />,
+    },
+    {
       label: "DRep delegation",
-      value: "-",
+      value: data?.delegated_drep ? (
+        <span className='flex items-center gap-1'>
+          <span>{formatString(data.delegated_drep, "long")}</span>
+          <Copy copyText={data.delegated_drep} />
+        </span>
+      ) : (
+        "-"
+      ),
     },
     {
       label: "Rewards withdrawn",
-      value: <AdaWithTooltip data={data?.reward?.withdrawn ?? 0} />,
+      value: <AdaWithTooltip data={Number(data?.withdrawals ?? 0)} />,
     },
     {
       label: "Stake key",
