@@ -1,12 +1,12 @@
 import type { FC } from "react";
+import type { AddressData } from "@/services/address";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { DateCell } from "@vellumlabs/cexplorer-sdk/DateCell";
 
 interface AddressDetailOverviewProps {
-  data: any[];
+  data?: AddressData;
   address: string;
 }
 
@@ -14,6 +14,8 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
   data,
   address,
 }) => {
+  const assetCount = data?.asset?.length ?? 0;
+
   const overviewList = [
     {
       label: "Address",
@@ -26,19 +28,11 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
     },
     {
       label: "ADA Balance",
-      value: <AdaWithTooltip data={data?.[0]?.balance ?? 0} />,
+      value: <AdaWithTooltip data={data?.balance ?? 0} />,
     },
     {
-      label: "Live Stake",
-      value: <AdaWithTooltip data={data?.[0]?.stake?.balance?.live ?? 0} />,
-    },
-    {
-      label: "Active Stake",
-      value: <AdaWithTooltip data={data?.[0]?.stake?.balance?.active ?? 0} />,
-    },
-    {
-      label: "Last Activity",
-      value: <DateCell time={data?.[0]?.activity?.recent} />,
+      label: "Assets",
+      value: <span>{assetCount}</span>,
     },
     {
       label: "Private name",
@@ -61,29 +55,22 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
     },
     {
       label: "Controlled Stake",
-      value: <AdaWithTooltip data={data[0]?.stake?.balance.live ?? 0} />,
+      value: <AdaWithTooltip data={0} />,
     },
     {
       label: "Rewards Available",
-      value: (
-        <AdaWithTooltip
-          data={
-            (data[0]?.stake?.reward.total ?? 0) -
-            (data[0]?.stake?.reward.withdrawn ?? 0)
-          }
-        />
-      ),
+      value: <AdaWithTooltip data={0} />,
     },
     {
       label: "Rewards Withdrawn",
-      value: <AdaWithTooltip data={data[0]?.stake?.reward.withdrawn ?? 0} />,
+      value: <AdaWithTooltip data={0} />,
     },
   ];
 
   const detail = [
     {
       label: "Type",
-      value: "-",
+      value: address.startsWith("addr") ? "Shelley" : "Byron",
     },
     {
       label: "Address",
@@ -101,14 +88,6 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
     {
       label: "Staking Credential",
       value: "-",
-    },
-    {
-      label: "Last Activity",
-      value: <DateCell time={data[0]?.activity?.recent ?? ""} />,
-    },
-    {
-      label: "First Discovery",
-      value: <DateCell time={data[0]?.activity?.first ?? ""} />,
     },
   ];
 

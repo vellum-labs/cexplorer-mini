@@ -28,7 +28,7 @@ export const AssetDetailPage: FC = () => {
     {
       key: "transactions",
       label: "Transactions",
-      content: <TxListPage tab />,
+      content: <TxListPage tab fingerprint={fingerprint} />,
       visible: true,
     },
     {

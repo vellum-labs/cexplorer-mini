@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import type { Column } from "@/components/global/TableList";
 
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
@@ -12,8 +12,6 @@ import {
   useFetchTxByIds,
   useFetchBlockByIds,
 } from "@/services/asset";
-import { useMemo } from "react";
-
 import { normalizeHash } from "@/utils/normalizeHash";
 
 interface AssetMintTabProps {

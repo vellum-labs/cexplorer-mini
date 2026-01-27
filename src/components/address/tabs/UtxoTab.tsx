@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useState, useMemo } from "react";
 
 import { TableList } from "@/components/global/TableList";
 
@@ -8,30 +9,29 @@ import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
 import { calculateMinUtxo } from "@/utils/calculateMinUtxo";
+import { useFetchAddressUtxo } from "@/services/address";
 
-export const UtxoTab: FC = () => {
-  const items = Array.from({ length: 20 }, () => ({
-    tx_hash: "8c773f12060a4e72b489ce709fa4aa1f2b94d666ac33793fc4d7a14b08c347ec",
-    tx_index: 1,
-    block_height: 12714378,
-    block_time: 1764477114,
-    value: 18571915041309,
-    datum_hash: null,
-    asset_list: [
-      {
-        name: "03438e15de1211a33a9a604292468f983f239879a011725497dcf1165245565552",
-        quantity: 1,
-      },
-      {
-        name: "10a1b74dec474a68607e7e93977d2709a9b0ef09ed49d10f8a8b3ba543617368657746",
-        quantity: 5,
-      },
-      {
-        name: "17e953e5995a2f54c38b4ae4fa5a110b36be36ff892a66c36a511598464841313030424c5545323634",
-        quantity: 1,
-      },
-    ],
-  }));
+interface UtxoTabProps {
+  address?: string;
+}
+
+const PAGE_SIZE = 20;
+
+export const UtxoTab: FC<UtxoTabProps> = ({ address }) => {
+  const { data, isLoading } = useFetchAddressUtxo(address ?? "");
+  const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
+
+  const utxoSet = data?.mini_utxo?.[0]?.utxo_list?.[0]?.utxo_set ?? [];
+
+  const items = useMemo(() => {
+    return utxoSet.slice(0, displayCount);
+  }, [utxoSet, displayCount]);
+
+  const hasNextPage = displayCount < utxoSet.length;
+
+  const fetchNextPage = () => {
+    setDisplayCount(prev => prev + PAGE_SIZE);
+  };
 
   const columns = [
     {
@@ -69,23 +69,27 @@ export const UtxoTab: FC = () => {
                 </div>
                 {!!item?.asset_list?.length && (
                   <div className='flex flex-col'>
-                    {item.asset_list.map((item, i) => (
+                    {item.asset_list.map((asset, i) => (
                       <div key={i} className='flex w-full items-center'>
                         <div className='flex min-w-[200px] items-center gap-1.5'>
-                          <Copy copyText={item.quantity} />
-                          <span>{item.quantity}</span>
+                          <Copy copyText={asset.quantity} />
+                          <span>{asset.quantity}</span>
                         </div>
                         <div className='flex items-center justify-start gap-1.5 overflow-hidden'>
-                          <Copy copyText={item.name} />
-                          <Link
-                            to='/asset/$fingerprint'
-                            params={{
-                              fingerprint: "fingerprint",
-                            }}
-                            className='text-primary'
-                          >
-                            <span>{formatString(item.name, "long")}</span>
-                          </Link>
+                          <Copy copyText={asset.name} />
+                          {asset.fingerprint ? (
+                            <Link
+                              to='/asset/$fingerprint'
+                              params={{
+                                fingerprint: asset.fingerprint,
+                              }}
+                              className='text-primary'
+                            >
+                              <span>{formatString(asset.name, "long")}</span>
+                            </Link>
+                          ) : (
+                            <span>{formatString(asset.name, "long")}</span>
+                          )}
                         </div>
                       </div>
                     ))}
@@ -97,9 +101,6 @@ export const UtxoTab: FC = () => {
             "-"
           )}
         </p>
-      ),
-      extraContent: (
-        <div className='h-[400px] w-full border border-border'></div>
       ),
       title: <p>Amount</p>,
       widthPx: 260,
@@ -129,6 +130,9 @@ export const UtxoTab: FC = () => {
       columns={columns}
       items={items}
       storeKey='utxo_list'
+      loading={isLoading}
+      showMoreButton={hasNextPage}
+      onFetch={fetchNextPage}
     />
   );
 };
