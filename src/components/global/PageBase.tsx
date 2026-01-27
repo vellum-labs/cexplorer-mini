@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import { Header, type HeaderProps } from "@vellumlabs/cexplorer-sdk/Header";
 
 import metadata from "../../../conf/en-metadata.json";
+import { useFetchMiscSearch } from "@/services/search";
 
 interface PageBaseInitProps {
   children: ReactNode;
@@ -89,6 +90,8 @@ export const PageBase: FC<PageBaseProps> = ({
           icon={icon}
           withoutSearch={withoutSearch}
           shareButton={false}
+          useFetchMiscSearch={useFetchMiscSearch}
+          locale="en"
         />
       )}
       {children}

@@ -132,7 +132,7 @@ export const UtxoTab: FC<UtxoTabProps> = ({ address }) => {
       storeKey='utxo_list'
       loading={isLoading}
       showMoreButton={hasNextPage}
-      onFetch={fetchNextPage}
+      onFetch={fetchNextPage as any}
     />
   );
 };
