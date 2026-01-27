@@ -6,7 +6,7 @@ import { Modal } from "@vellumlabs/cexplorer-sdk/Modal";
 import { createPortal } from "react-dom";
 
 interface MetadataCellProps {
-  metadata: any;
+  metadata: unknown;
 }
 
 export const MetadataCell: FC<MetadataCellProps> = ({ metadata }) => {
@@ -31,14 +31,11 @@ export const MetadataCell: FC<MetadataCellProps> = ({ metadata }) => {
             maxHeight='90vh'
             className='p-0'
           >
-            {JSON.stringify(metadata)}
-            {/* <JsonDisplay
-              data={metadata}
-              isLoading={false}
-              isError={false}
-              search
-              onClose={() => setOpen(false)}
-            /> */}
+            <div className='overflow-auto p-3'>
+              <pre className='whitespace-pre-wrap break-all font-mono text-text-xs'>
+                {JSON.stringify(metadata, null, 2)}
+              </pre>
+            </div>
           </Modal>,
           document.body,
         )}
