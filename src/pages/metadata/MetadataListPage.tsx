@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 
 import { PageBase } from "@/components/global/PageBase";
 import { TableList } from "@/components/global/TableList";
@@ -9,31 +9,28 @@ import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
 import { MetadataCell } from "@/components/global/MetadataCell";
+import { useFetchMetadataList } from "@/services/metadata";
 
 export const MetadataListPage: FC = () => {
-  const items = Array.from({ length: 20 }, () => ({
-    tx: {
-      hash: "5bc7189129cae1e4d4c108f184e1861181d4fa1456acf83256e4344aecd22bdf",
-    },
-    md: "{todo: true}",
-  }));
+  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchMetadataList(20);
+
+  const items = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flat();
+  }, [data]);
 
   const columns = [
     {
       key: "date",
-      render: () => {
-        return <DateCell time='2026-01-04T21:44:52' />;
-      },
+      render: item => <DateCell time={item.block_time} />,
       title: <p>Date</p>,
       widthPx: 60,
     },
     {
       key: "key",
-      render: () => {
-        return <p>612</p>;
-      },
-      title: <p>key</p>,
-      widthPx: 60,
+      render: item => <p>{item.key}</p>,
+      title: <p>Key</p>,
+      widthPx: 40,
     },
     {
       key: "hash",
@@ -41,33 +38,33 @@ export const MetadataListPage: FC = () => {
         <div className='flex items-center gap-1'>
           <Link
             to='/tx/$hash'
-            params={{
-              hash: item?.tx?.hash,
-            }}
-            title={String(item?.tx?.hash)}
+            params={{ hash: item.tx_hash }}
+            title={item.tx_hash}
             className='text-primary'
           >
-            {item?.tx?.hash ? formatString(item?.tx?.hash, "long") : "-"}
+            {item.tx_hash ? formatString(item.tx_hash, "long") : "-"}
           </Link>
-          {item?.tx?.hash && (
-            <Copy copyText={item?.tx?.hash} className='translate-y-[2px]' />
+          {item.tx_hash && (
+            <Copy copyText={item.tx_hash} className='translate-y-[2px]' />
           )}
         </div>
       ),
       title: <p>Hash</p>,
-      widthPx: 60,
+      widthPx: 80,
     },
     {
       key: "size",
-      render: () => <SizeCell maxSize={1231231323} size={123321} />,
+      render: item => (
+        <SizeCell maxSize={16384} size={item.size} />
+      ),
       title: <p className='w-full text-right'>Size</p>,
-      widthPx: 30,
+      widthPx: 50,
     },
     {
       key: "md",
-      render: item => <MetadataCell metadata={item.md} />,
+      render: item => <MetadataCell metadata={item.json} />,
       title: <p className='w-full text-right'>Metadata</p>,
-      widthPx: 60,
+      widthPx: 30,
     },
   ];
 
@@ -77,7 +74,13 @@ export const MetadataListPage: FC = () => {
       title='Metadata'
       breadcrumbItems={[{ label: "Metadata" }]}
     >
-      <TableList loading={false} items={items} columns={columns} />
+      <TableList
+        loading={isLoading}
+        items={items}
+        columns={columns}
+        showMoreButton={hasNextPage}
+        onFetch={fetchNextPage}
+      />
     </PageBase>
   );
 };
