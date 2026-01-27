@@ -1,164 +1,108 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 
 import { PageBase } from "@/components/global/PageBase";
 import { TableList } from "@/components/global/TableList";
 import { Link } from "@tanstack/react-router";
 
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
-import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
-import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
+import { SizeCell } from "@vellumlabs/cexplorer-sdk/SizeCell";
+import { HashCell } from "@/components/tx/HashCell";
+import { useFetchScriptList } from "@/services/script";
+
+const getTypeColor = (type: string): "blue" | "green" | "yellow" | "red" => {
+  switch (type) {
+    case "plutusV1":
+      return "blue";
+    case "plutusV2":
+      return "green";
+    case "plutusV3":
+      return "yellow";
+    case "timelock":
+      return "red";
+    default:
+      return "blue";
+  }
+};
 
 export const ScriptListPage: FC = () => {
-  const items = Array.from({ length: 20 }, () => ({
-    hash: "0237cc313756ebb5bcfc2728f7bdc6a8047b471220a305aa373b278a",
-    label: {
-      category: "Some",
-    },
-    stat: {
-      recent: {
-        tx_payment_cred: {
-          out: {
-            count: 10000,
-          },
-        },
-        redeemer: {
-          count: 1000,
-          sum: 1000000000,
-        },
-      },
-      previous: {
-        redeemer: {
-          count: 5000,
-        },
-      },
-    },
-  }));
+  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchScriptList(20);
+
+  const items = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap(page => page.mini_script_detail ?? []);
+  }, [data]);
 
   const columns = [
     {
-      key: "dapp",
+      key: "script_hash",
       render: item => {
-        if (!item?.hash && !item?.label?.label) {
+        if (!item?.script_hash) {
           return "-";
         }
 
         return (
-          <div className={`flex w-[calc(100%-40px)] flex-col`}>
-            {item?.label?.label && (
-              <Link
-                to='/script/$hash'
-                params={{ hash: item?.hash }}
-                className='w-fit text-primary'
-              >
-                {item?.label?.label}
-              </Link>
-            )}
+          <div className='flex w-[calc(100%-40px)] flex-col'>
             <div className='flex items-center gap-1/2'>
               <Link
                 to='/script/$hash'
-                params={{ hash: item?.hash }}
-                className={
-                  item?.label?.label
-                    ? "text-text-xs hover:text-grayTextPrimary"
-                    : "text-text-sm text-primary"
-                }
-                disabled={!!item?.label?.label}
+                params={{ hash: item?.script_hash }}
+                className='text-text-sm text-primary'
               >
-                {formatString(item?.hash, "long")}
+                {formatString(item?.script_hash, "long")}
               </Link>
-              <Copy copyText={item?.hash} size={item?.label?.label ? 10 : 13} />
+              <Copy copyText={item?.script_hash} size={13} />
             </div>
           </div>
         );
       },
-      title: "Hash",
+      title: "Script Hash",
       widthPx: 120,
     },
     {
-      key: "category",
+      key: "type",
       render: item => {
-        if (!item?.label?.category) {
+        if (!item?.type) {
           return <p className='text-center'>-</p>;
         }
 
         return (
-          <Badge color='blue' className='text-center'>
-            {item?.label?.category}
+          <Badge color={getTypeColor(item.type)} className='text-center'>
+            {item.type}
           </Badge>
         );
       },
-      title: <p className='text-center'>Category</p>,
+      title: <p className='text-center'>Type</p>,
       widthPx: 50,
     },
     {
-      key: "users",
+      key: "size",
       render: item => {
-        if (!item?.stat.recent?.tx_payment_cred?.out?.count) {
+        if (!item?.size) {
           return <p className='text-right'>-</p>;
         }
 
-        return (
-          <p className='text-right'>
-            {formatNumber(item?.stat.recent.tx_payment_cred.out.count)}
-          </p>
-        );
+        return <SizeCell size={item.size} maxSize={16384} />;
       },
-      title: <p className='w-full text-right'>Users</p>,
+      title: <p className='w-full text-right'>Size</p>,
       widthPx: 50,
     },
     {
-      key: "int_this_epoch",
+      key: "creation_tx",
       render: item => {
-        if (!item?.stat?.recent?.redeemer?.count) {
+        if (!item?.creation_tx_hash) {
           return <p className='text-right'>-</p>;
         }
 
         return (
-          <p className='text-right'>
-            {formatNumber(item?.stat.recent?.redeemer?.count)}
-          </p>
+          <div className='flex justify-end'>
+            <HashCell hash={item.creation_tx_hash} />
+          </div>
         );
       },
-      title: <p className='w-full text-right'>Interactions this epoch</p>,
-      widthPx: 80,
-    },
-    {
-      key: "activity_change",
-      render: item => {
-        if (
-          !item?.stat?.recent?.redeemer?.count ||
-          !item?.stat?.previous?.redeemer?.count
-        ) {
-          return <p className='text-right'>-</p>;
-        }
-
-        const percent = (
-          (item?.stat.recent.redeemer.count /
-            item?.stat.previous.redeemer.count) *
-          100
-        ).toFixed(2);
-
-        return <p className='text-right'>{percent}%</p>;
-      },
-      title: <p className='w-full text-right'>Activity change</p>,
-      widthPx: 80,
-    },
-    {
-      key: "epoch_volume",
-      render: item => {
-        if (!item?.stat?.recent?.redeemer?.sum) {
-          return <p className='text-right'>-</p>;
-        }
-
-        return (
-          <p className='text-right'>
-            <AdaWithTooltip data={item?.stat?.recent?.redeemer?.sum} />
-          </p>
-        );
-      },
-      title: <p className='w-full text-right'>Epoch volume</p>,
-      widthPx: 80,
+      title: <p className='w-full text-right'>Creation TX</p>,
+      widthPx: 100,
     },
   ];
 
@@ -168,7 +112,13 @@ export const ScriptListPage: FC = () => {
       title='Script List'
       breadcrumbItems={[{ label: "Script" }]}
     >
-      <TableList loading={false} items={items} columns={columns} />
+      <TableList
+        loading={isLoading}
+        items={items}
+        columns={columns}
+        showMoreButton={hasNextPage}
+        onFetch={fetchNextPage}
+      />
     </PageBase>
   );
 };
