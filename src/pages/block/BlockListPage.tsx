@@ -27,6 +27,7 @@ export const BlockListPage: FC<BlockListPageProps> = ({
     >
       <TableList
         title={tab ? "" : "All blocks"}
+        withPadding={!tab}
         storeKey='block_list'
         columns={columns}
         items={items}

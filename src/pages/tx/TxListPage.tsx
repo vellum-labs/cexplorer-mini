@@ -39,6 +39,7 @@ export const TxListPage: FC<TxListPageProps> = ({
     >
       <TableList
         title={tab ? "" : "Recent network transactions"}
+        withPadding={!tab}
         columns={columns}
         items={items}
         storeKey='tx_list'

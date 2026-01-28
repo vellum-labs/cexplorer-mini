@@ -14,7 +14,9 @@ interface RedeemersTabProps {
   scriptHash: string;
 }
 
-const getPurposeColor = (purpose: string): "blue" | "green" | "yellow" | "red" => {
+const getPurposeColor = (
+  purpose: string,
+): "blue" | "green" | "yellow" | "red" => {
   switch (purpose) {
     case "mint":
       return "blue";
@@ -32,7 +34,7 @@ const getPurposeColor = (purpose: string): "blue" | "green" | "yellow" | "red" =
 export const RedeemersTab: FC<RedeemersTabProps> = ({ scriptHash }) => {
   const { data, isLoading, fetchNextPage, hasNextPage } = useFetchRedeemerList(
     scriptHash,
-    20
+    20,
   );
 
   const items = useMemo(() => {
@@ -57,7 +59,10 @@ export const RedeemersTab: FC<RedeemersTabProps> = ({ scriptHash }) => {
       key: "block",
       render: item => (
         <div className='flex justify-end'>
-          <BlockCell hash={normalizeHash(item.block_hash)} no={item.block_height} />
+          <BlockCell
+            hash={normalizeHash(item.block_hash)}
+            no={item.block_height}
+          />
         </div>
       ),
       title: <p className='w-full text-right'>Block</p>,
@@ -107,6 +112,7 @@ export const RedeemersTab: FC<RedeemersTabProps> = ({ scriptHash }) => {
       loading={isLoading}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
+      withPadding={false}
     />
   );
 };

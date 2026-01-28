@@ -72,6 +72,7 @@ export const RewardsTab: FC<RewardsTabProps> = ({ stats, isLoading }) => {
       items={sortedStats}
       loading={isLoading}
       showMoreButton={false}
+      withPadding={false}
     />
   );
 };

@@ -63,6 +63,7 @@ export const DelegatorsTab: FC<DelegatorsTabProps> = ({ poolHash }) => {
       loading={isLoading}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
+      withPadding={false}
     />
   );
 };
