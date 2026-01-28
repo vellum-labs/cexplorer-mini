@@ -93,7 +93,6 @@ export const useTxList = (
 ): UseTxListReturn => {
   const { address, fingerprint } = options ?? {};
 
-  // Check if blockTxData was explicitly provided (even if null/empty)
   const isBlockTxDataProvided = blockTxData !== undefined;
 
   const generalQuery = useFetchTxList(20);
@@ -114,7 +113,6 @@ export const useTxList = (
   let items: any[] | undefined;
 
   if (isBlockTxDataProvided) {
-    // When blockTxData is explicitly provided, use it (even if null/empty)
     items = blockTxData ?? [];
   } else if (isAddressQuery) {
     items = addressQuery.data?.pages.flatMap(

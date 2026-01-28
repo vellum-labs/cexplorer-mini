@@ -39,8 +39,6 @@ export const useAssetList = (
 
   const assetNames = assetData?.map(a => a.asset_name).filter(Boolean) ?? [];
 
-  // asset_name from address is policy+name concatenated (policy is 56 hex chars)
-  // Extract policies to query mini_asset_detail
   const policies = assetNames
     .filter(name => name.length >= 56)
     .map(name => name.slice(0, 56));
@@ -52,16 +50,13 @@ export const useAssetList = (
     enabled: uniquePolicies.length > 0,
   });
 
-  // Create map by policy+name for lookup
   const assetDetailsByPolicyName = new Map(
     enrichedData?.mini_asset_detail?.map(a => [a.policy + a.name, a]) ?? []
   );
 
   const items = assetData
     ? assetData.map(asset => {
-        // asset_name is policy+name, so use it directly to lookup
         const details = assetDetailsByPolicyName.get(asset.asset_name);
-        // Extract just the name part (after 56 char policy)
         const nameOnly = asset.asset_name?.length > 56
           ? asset.asset_name.slice(56)
           : asset.asset_name;

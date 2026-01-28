@@ -156,7 +156,6 @@ export const useFetchPoolDelegators = (poolHash: string, limit: number) => {
   });
 };
 
-// Pool Delegators Count
 interface PoolDelegatorsCountResponse {
   mini_account_detail_aggregate: {
     aggregate: {
