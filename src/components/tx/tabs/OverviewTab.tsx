@@ -10,7 +10,7 @@ import { ReactFlow, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { Lock, LucideLockOpen } from "lucide-react";
 import type { FC } from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddressWithTxBadges } from "@/components/tx/AddressWithTxBadges";
 
 const selectItems = [
@@ -35,6 +35,8 @@ export const OverviewTab: FC<OverviewTabProps> = ({
   outputs,
   isLoading,
 }) => {
+  const [uniqueInputs, setUniqueInputs] = useState<TxUtxo[]>([]);
+  const [uniqueOutputs, setUniqueOutputs] = useState<TxUtxo[]>([]);
   const { theme } = useThemeStore();
   const [disabledControls, setDisabledControls] = useState(true);
   const [interacted, setInteracted] = useState(false);
@@ -53,26 +55,28 @@ export const OverviewTab: FC<OverviewTabProps> = ({
 
     if (!prevItem?.asset_list) return 0;
 
-    if (!Array.isArray(arr[index - 1 < 0 ? 0 : index - 1]?.asset_list)) return 1;
+    if (!Array.isArray(arr[index - 1 < 0 ? 0 : index - 1]?.asset_list))
+      return 1;
 
     return prevItem?.asset_list?.length ?? 0;
   };
 
-  const uniqueInputs = useMemo(() => {
-    return [...inputs].sort((a, b) =>
+  useEffect(() => {
+    const tempInputs = [...inputs].sort((a, b) =>
       sort === "value"
         ? Number(b.value) - Number(a.value)
-        : a.tx_index - b.tx_index
+        : a.tx_index - b.tx_index,
     );
-  }, [sort, inputs]);
+    const tempOutputs = [...outputs].sort((a, b) =>
+      sort === "value"
+        ? Number(b.value) - Number(a.value)
+        : a.tx_index - b.tx_index,
+    );
 
-  const uniqueOutputs = useMemo(() => {
-    return [...outputs].sort((a, b) =>
-      sort === "value"
-        ? Number(b.value) - Number(a.value)
-        : a.tx_index - b.tx_index
-    );
-  }, [sort, outputs]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setUniqueInputs(tempInputs);
+    setUniqueOutputs(tempOutputs);
+  }, [sort, inputs, outputs]);
 
   const stakeAddrToInputNodeIds = new Map();
   const stakeAddrToOutputNodeIds = new Map();
@@ -84,13 +88,13 @@ export const OverviewTab: FC<OverviewTabProps> = ({
 
   const maxInputAssets = Math.max(
     ...(uniqueInputs?.map(input =>
-      Math.min(5, input.asset_list?.length || 1)
-    ) || [1])
+      Math.min(5, input.asset_list?.length || 1),
+    ) || [1]),
   );
   const maxOutputAssets = Math.max(
     ...(uniqueOutputs?.map(output =>
-      Math.min(5, output.asset_list?.length || 1)
-    ) || [1])
+      Math.min(5, output.asset_list?.length || 1),
+    ) || [1]),
   );
   const maxNodeWidth = 300 + Math.max(maxInputAssets, maxOutputAssets) * 80;
 
@@ -273,7 +277,9 @@ export const OverviewTab: FC<OverviewTabProps> = ({
                 ) : (
                   <Lock size={15} />
                 )}{" "}
-                {disabledControls ? "Unlock interactivity" : "Lock interactivity"}
+                {disabledControls
+                  ? "Unlock interactivity"
+                  : "Lock interactivity"}
               </button>
               <GraphWatermark className='opacity-10' />
             </ReactFlow>
@@ -285,7 +291,7 @@ export const OverviewTab: FC<OverviewTabProps> = ({
 };
 
 const ViewportSetter = ({ nodes }: { nodes: Node[] }) => {
-  const { fitView } = useReactFlow();
+  const { fitView, getViewport, setViewport } = useReactFlow();
   const hasRun = useRef(false);
 
   useEffect(() => {
@@ -293,20 +299,19 @@ const ViewportSetter = ({ nodes }: { nodes: Node[] }) => {
 
     hasRun.current = true;
 
+    fitView({ padding: 0, includeHiddenNodes: true });
+
     setTimeout(() => {
-      fitView({ padding: 0.1, includeHiddenNodes: true, maxZoom: 0.8 });
-    }, 50);
-  }, [nodes, fitView]);
+      const minY = Math.min(...nodes.map(n => n.position.y));
+      const { zoom, x } = getViewport();
+      setViewport({ x: x + 20, y: minY + 20, zoom: zoom - 0.2 });
+    }, 300);
+  }, [nodes]);
 
   return null;
 };
 
-const NodeContent = ({
-  data,
-}: {
-  data: TxUtxo;
-  type: "input" | "output";
-}) => (
+const NodeContent = ({ data }: { data: TxUtxo; type: "input" | "output" }) => (
   <div className='pointer-events-auto flex h-full w-full flex-col justify-start'>
     <div className='mb-1/2 mr-1/2 max-w-fit rounded-s border border-border bg-background px-1 py-1/2 text-text-xs font-medium'>
       <AdaWithTooltip data={Number(data.value)} />
