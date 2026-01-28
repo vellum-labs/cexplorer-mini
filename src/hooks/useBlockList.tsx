@@ -68,7 +68,7 @@ export const useBlockList = (epochNo?: number): UseBlockListReturn => {
           return "-";
         }
 
-        return <BlockCell hash={item.hash} no={item.block_no} />;
+        return <BlockCell hash={normalizeHash(item.hash)} no={item.block_no} />;
       },
       title: <p className='w-full text-right'>Height</p>,
 
