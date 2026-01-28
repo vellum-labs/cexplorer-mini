@@ -23,7 +23,7 @@ export const StakeDetailPage: FC = () => {
     {
       key: "assets",
       label: "Assets",
-      content: <AssetListPage tab assetData={stakeDetail?.asset} loading={isLoading} />,
+      content: <AssetListPage tab assetData={stakeDetail ? (stakeDetail.asset ?? null) : undefined} loading={isLoading} />,
       visible: true,
     },
     {
