@@ -9,11 +9,13 @@ import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 interface PoolDetailOverviewProps {
   poolDetail: PoolDetailData | undefined;
   isLoading?: boolean;
+  delegatorsCount?: number;
 }
 
 export const PoolDetailOverview: FC<PoolDetailOverviewProps> = ({
   poolDetail,
   isLoading,
+  delegatorsCount,
 }) => {
   const hash = poolDetail?.encode || "";
   const view = poolDetail?.view || "";
@@ -60,7 +62,7 @@ export const PoolDetailOverview: FC<PoolDetailOverviewProps> = ({
       value: isLoading ? (
         <div className='h-5 w-16 animate-pulse rounded bg-border' />
       ) : (
-        formatNumber(latestStat?.number_of_delegators ?? 0)
+        formatNumber(delegatorsCount ?? 0)
       ),
     },
   ];

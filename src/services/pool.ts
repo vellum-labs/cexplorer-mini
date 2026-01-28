@@ -156,6 +156,38 @@ export const useFetchPoolDelegators = (poolHash: string, limit: number) => {
   });
 };
 
+// Pool Delegators Count
+interface PoolDelegatorsCountResponse {
+  mini_account_detail_aggregate: {
+    aggregate: {
+      count: number;
+    };
+  };
+}
+
+const POOL_DELEGATORS_COUNT_QUERY = `
+  query GetPoolDelegatorsCount($poolHash: String!) {
+    mini_account_detail_aggregate(where: {delegated_pool: {_eq: $poolHash}}) {
+      aggregate {
+        count
+      }
+    }
+  }
+`;
+
+export const useFetchPoolDelegatorsCount = (poolHash: string) => {
+  return useQuery<PoolDelegatorsCountResponse, Error>({
+    queryKey: ["poolDelegatorsCount", poolHash],
+    queryFn: () =>
+      gql<PoolDelegatorsCountResponse, { poolHash: string }>(
+        POOL_DELEGATORS_COUNT_QUERY,
+        { poolHash }
+      ),
+    enabled: !!poolHash,
+    refetchOnWindowFocus: true,
+  });
+};
+
 // Pool Relays
 export interface PoolRelay {
   id: number;
