@@ -87,11 +87,14 @@ const mapAssetTxData = (tx: AssetTxItem) => ({
 });
 
 export const useTxList = (
-  blockTxData?: any[],
+  blockTxData?: any[] | null,
   hideColumns: string[] = [],
   options?: UseTxListOptions,
 ): UseTxListReturn => {
   const { address, fingerprint } = options ?? {};
+
+  // Check if blockTxData was explicitly provided (even if null/empty)
+  const isBlockTxDataProvided = blockTxData !== undefined;
 
   const generalQuery = useFetchTxList(20);
   const addressQuery = useFetchAddressTxList(address ?? "", 20);
@@ -110,8 +113,9 @@ export const useTxList = (
 
   let items: any[] | undefined;
 
-  if (blockTxData) {
-    items = blockTxData;
+  if (isBlockTxDataProvided) {
+    // When blockTxData is explicitly provided, use it (even if null/empty)
+    items = blockTxData ?? [];
   } else if (isAddressQuery) {
     items = addressQuery.data?.pages.flatMap(
       page => page.mini_address_tx_list?.map(mapAddressTxData) ?? [],
@@ -188,12 +192,12 @@ export const useTxList = (
   const allHideColumns = [...hideColumns, ...(options?.hideColumns ?? [])];
 
   return {
-    loading: isLoading,
+    loading: isBlockTxDataProvided ? false : isLoading,
     items,
     columns: columns
       .filter(col => !allHideColumns.includes(col.key))
       .map(item => ({ ...item, visible: true })),
     fetchNextPage: fetchNextPage as any,
-    hasNextPage,
+    hasNextPage: isBlockTxDataProvided ? false : hasNextPage,
   };
 };
