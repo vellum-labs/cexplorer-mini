@@ -5,25 +5,12 @@ import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 
+import { decodeHexName } from "@/utils/decodeHexName";
+
 interface AssetDetailOverviewProps {
   assetDetail: AssetDetailData | undefined;
   isLoading?: boolean;
 }
-
-const decodeHexName = (name: string): string | null => {
-  try {
-    if (/^[0-9a-fA-F]+$/.test(name) && name.length % 2 === 0) {
-      const bytes = name.match(/.{2}/g)?.map(b => parseInt(b, 16)) ?? [];
-      const decoded = String.fromCharCode(...bytes);
-      if (/^[\x20-\x7E]+$/.test(decoded)) {
-        return decoded;
-      }
-    }
-  } catch {
-    return null;
-  }
-  return null;
-};
 
 export const AssetDetailOverview: FC<AssetDetailOverviewProps> = ({
   assetDetail,

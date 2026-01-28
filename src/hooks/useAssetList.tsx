@@ -14,6 +14,7 @@ import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { useQuery } from "@tanstack/react-query";
 
 import { useFetchAssetList, fetchAssetsByPolicies } from "@/services/asset";
+import { decodeHexName } from "@/utils/decodeHexName";
 
 interface UseAssetListReturn {
   items: any[] | undefined;
@@ -111,18 +112,7 @@ export const useAssetList = (
         const name = item?.name;
         if (!name) return <span className='text-grayTextSecondary'>-</span>;
 
-        let decodedName: string | null = null;
-        try {
-          if (/^[0-9a-fA-F]+$/.test(name) && name.length % 2 === 0) {
-            const bytes = name.match(/.{2}/g)?.map(b => parseInt(b, 16)) ?? [];
-            const decoded = String.fromCharCode(...bytes);
-            if (/^[\x20-\x7E]+$/.test(decoded)) {
-              decodedName = decoded;
-            }
-          }
-        } catch {
-          decodedName = null;
-        }
+        const decodedName = decodeHexName(name);
 
         return (
           <div className='flex flex-col' title={name}>
