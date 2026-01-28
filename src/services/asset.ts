@@ -363,3 +363,49 @@ export const useFetchTxOut = (txOutIds: number[]) => {
     refetchOnWindowFocus: true,
   });
 };
+
+type AssetsByNamesVars = {
+  names: string[];
+};
+
+const ASSETS_BY_NAMES_QUERY = `
+  query GetAssetsByNames($names: [String!]!) {
+    mini_asset_detail(where: {name: {_in: $names}}) {
+      fingerprint
+      name
+      policy
+    }
+  }
+`;
+
+export const fetchAssetsByNames = async (names: string[]): Promise<AssetListResponse> => {
+  return gql<AssetListResponse, AssetsByNamesVars>(ASSETS_BY_NAMES_QUERY, {
+    names,
+  });
+};
+
+export interface AssetByPolicyNameData {
+  fingerprint: string;
+  name: string;
+  policy: string;
+}
+
+export interface AssetByPolicyNameResponse {
+  mini_asset_detail: AssetByPolicyNameData[];
+}
+
+const ASSETS_BY_POLICIES_QUERY = `
+  query GetAssetsByPolicies($policies: [String!]!) {
+    mini_asset_detail(where: {policy: {_in: $policies}}) {
+      fingerprint
+      name
+      policy
+    }
+  }
+`;
+
+export const fetchAssetsByPolicies = async (policies: string[]): Promise<AssetByPolicyNameResponse> => {
+  return gql<AssetByPolicyNameResponse, { policies: string[] }>(ASSETS_BY_POLICIES_QUERY, {
+    policies,
+  });
+};

@@ -5,6 +5,8 @@ import { normalizeHash } from "@/utils/normalizeHash";
 export interface AddressAsset {
   quantity: number;
   asset_name: string;
+  fingerprint?: string;
+  policy?: string;
 }
 
 export interface AddressData {
