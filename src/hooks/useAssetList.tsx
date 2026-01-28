@@ -47,22 +47,23 @@ export const useAssetList = (
     .map(name => name.slice(0, 56));
   const uniquePolicies = [...new Set(policies)];
 
-  const { data: enrichedData, isLoading: isEnrichLoading } = useQuery({
+  const { data: enrichedData } = useQuery({
     queryKey: ["assetEnrichment", uniquePolicies],
     queryFn: () => fetchAssetsByPolicies(uniquePolicies),
     enabled: uniquePolicies.length > 0,
   });
 
   const assetDetailsByPolicyName = new Map(
-    enrichedData?.mini_asset_detail?.map(a => [a.policy + a.name, a]) ?? []
+    enrichedData?.mini_asset_detail?.map(a => [a.policy + a.name, a]) ?? [],
   );
 
   const items = isAssetDataProvided
     ? (assetData ?? []).map(asset => {
         const details = assetDetailsByPolicyName.get(asset.asset_name);
-        const nameOnly = asset.asset_name?.length > 56
-          ? asset.asset_name.slice(56)
-          : asset.asset_name;
+        const nameOnly =
+          asset.asset_name?.length > 56
+            ? asset.asset_name.slice(56)
+            : asset.asset_name;
         return {
           type: asset.quantity === 1 ? "NFT" : "FT",
           name: nameOnly,

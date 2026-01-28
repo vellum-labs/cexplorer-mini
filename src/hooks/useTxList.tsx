@@ -33,7 +33,10 @@ interface UseTxListReturn {
     options?: FetchNextPageOptions | undefined,
   ) => Promise<
     InfiniteQueryObserverResult<
-      InfiniteData<TxListData | AddressTxListResponse | AssetTxListResponse, unknown>,
+      InfiniteData<
+        TxListData | AddressTxListResponse | AssetTxListResponse,
+        unknown
+      >,
       Error
     >
   >;
@@ -49,7 +52,7 @@ interface UseTxListOptions {
 
 const mapTxData = (tx: MiniTxData) => ({
   hash: normalizeHash(tx.tx_hash),
-  time: tx.tx_timestamp ? new Date(tx.tx_timestamp * 1000) : null,
+  time: tx.tx_timestamp ? tx.tx_timestamp * 1000 : null,
   fee: tx.fee,
   size: tx.tx_size,
   out_sum: tx.total_output,
@@ -131,7 +134,7 @@ export const useTxList = (
   const columns = [
     {
       key: "date",
-      render: item => <DateCell time={item.time} />,
+      render: item => <DateCell withoutConvert time={item.time} />,
       title: "Date",
 
       widthPx: 50,
