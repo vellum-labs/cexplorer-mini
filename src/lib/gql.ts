@@ -16,7 +16,7 @@ export async function gql<
     method: "POST",
     headers: {
       "content-type": "application/json",
-      "x-hasura-admin-secret": adminSecret,
+      ...(adminSecret && { "x-hasura-admin-secret": adminSecret }),
       ...(options?.headers ?? {}),
     },
     body: JSON.stringify({ query, variables }),
