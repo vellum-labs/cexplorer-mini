@@ -143,6 +143,14 @@ export const TxDetailPage = () => {
               Epoch ({txDetail?.epoch_no ?? "-"})
             </span>
           ),
+          ...(txDetail?.epoch_no
+            ? {
+                link: "/epoch/$no",
+                params: {
+                  no: String(txDetail?.epoch_no) || "",
+                },
+              }
+            : {}),
         },
         {
           label: (
@@ -150,6 +158,14 @@ export const TxDetailPage = () => {
               Block ({txDetail?.block_height ?? "-"})
             </span>
           ),
+          ...(txDetail?.block_height
+            ? {
+                link: "/block/$hash",
+                params: {
+                  hash: String(txDetail?.block_height) || "",
+                },
+              }
+            : {}),
         },
         {
           label: <span className=''>{formatString(hash, "long")}</span>,
