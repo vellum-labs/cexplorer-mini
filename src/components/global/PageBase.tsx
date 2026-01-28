@@ -56,7 +56,6 @@ export const PageBase: FC<PageBaseProps> = ({
   showHeader = true,
   showMetadata = true,
   isHomepage,
-  homepageAd,
   customPage,
   withoutSearch = false,
 }) => {
@@ -85,13 +84,12 @@ export const PageBase: FC<PageBaseProps> = ({
           isHomepage={isHomepage}
           qrCode={qrCode}
           subTitle={subTitle}
-          homepageAd={homepageAd}
           customPage={customPage}
           icon={icon}
           withoutSearch={withoutSearch}
           shareButton={false}
           useFetchMiscSearch={useFetchMiscSearch}
-          locale="en"
+          locale='en'
         />
       )}
       {children}
