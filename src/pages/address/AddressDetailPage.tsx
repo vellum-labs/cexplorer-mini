@@ -27,7 +27,7 @@ export const AddressDetailPage: FC = () => {
     {
       key: "assets",
       label: "Assets",
-      content: <AssetListPage tab assetData={addressDetail?.asset} loading={isLoading} />,
+      content: <AssetListPage tab assetData={addressDetail ? (addressDetail.asset ?? null) : undefined} loading={isLoading} />,
       visible: true,
     },
     {

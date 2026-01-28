@@ -31,6 +31,8 @@ interface UseAssetListReturn {
 export const useAssetList = (
   assetData?: AddressAsset[] | null,
 ): UseAssetListReturn => {
+  const isAssetDataProvided = assetData !== undefined;
+
   const {
     data: fetchedData,
     isLoading,
@@ -55,8 +57,8 @@ export const useAssetList = (
     enrichedData?.mini_asset_detail?.map(a => [a.policy + a.name, a]) ?? []
   );
 
-  const items = assetData
-    ? assetData.map(asset => {
+  const items = isAssetDataProvided
+    ? (assetData ?? []).map(asset => {
         const details = assetDetailsByPolicyName.get(asset.asset_name);
         const nameOnly = asset.asset_name?.length > 56
           ? asset.asset_name.slice(56)
@@ -167,9 +169,9 @@ export const useAssetList = (
 
   return {
     items,
-    loading: assetData ? isEnrichLoading : isLoading,
+    loading: isAssetDataProvided ? false : isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
-    hasNextPage: assetData ? false : hasNextPage,
+    hasNextPage: isAssetDataProvided ? false : hasNextPage,
   };
 };
