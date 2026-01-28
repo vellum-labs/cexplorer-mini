@@ -11,8 +11,10 @@ import { Link } from "@tanstack/react-router";
 import { Badge } from "@vellumlabs/cexplorer-sdk/Badge";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
+import { useQuery } from "@tanstack/react-query";
 
-import { useFetchAssetList } from "@/services/asset";
+import { useFetchAssetList, fetchAssetsByPolicies } from "@/services/asset";
+import { decodeHexName } from "@/utils/decodeHexName";
 
 interface UseAssetListReturn {
   items: any[] | undefined;
@@ -29,6 +31,8 @@ interface UseAssetListReturn {
 export const useAssetList = (
   assetData?: AddressAsset[] | null,
 ): UseAssetListReturn => {
+  const isAssetDataProvided = assetData !== undefined;
+
   const {
     data: fetchedData,
     isLoading,
@@ -36,12 +40,37 @@ export const useAssetList = (
     hasNextPage,
   } = useFetchAssetList(20);
 
-  const items = assetData
-    ? assetData.map(asset => ({
-        type: asset.quantity === 1 ? "NFT" : "FT",
-        name: asset.asset_name,
-        quantity: asset.quantity,
-      }))
+  const assetNames = assetData?.map(a => a.asset_name).filter(Boolean) ?? [];
+
+  const policies = assetNames
+    .filter(name => name.length >= 56)
+    .map(name => name.slice(0, 56));
+  const uniquePolicies = [...new Set(policies)];
+
+  const { data: enrichedData, isLoading: isEnrichLoading } = useQuery({
+    queryKey: ["assetEnrichment", uniquePolicies],
+    queryFn: () => fetchAssetsByPolicies(uniquePolicies),
+    enabled: uniquePolicies.length > 0,
+  });
+
+  const assetDetailsByPolicyName = new Map(
+    enrichedData?.mini_asset_detail?.map(a => [a.policy + a.name, a]) ?? []
+  );
+
+  const items = isAssetDataProvided
+    ? (assetData ?? []).map(asset => {
+        const details = assetDetailsByPolicyName.get(asset.asset_name);
+        const nameOnly = asset.asset_name?.length > 56
+          ? asset.asset_name.slice(56)
+          : asset.asset_name;
+        return {
+          type: asset.quantity === 1 ? "NFT" : "FT",
+          name: nameOnly,
+          quantity: asset.quantity,
+          fingerprint: details?.fingerprint ?? asset.fingerprint,
+          policy: details?.policy ?? asset.policy,
+        };
+      })
     : fetchedData?.pages.flatMap(page => page.mini_asset_detail);
 
   const columns = [
@@ -85,25 +114,19 @@ export const useAssetList = (
         const name = item?.name;
         if (!name) return <span className='text-grayTextSecondary'>-</span>;
 
-        let decodedName = name;
-        try {
-          if (/^[0-9a-fA-F]+$/.test(name) && name.length % 2 === 0) {
-            const bytes = name.match(/.{2}/g)?.map(b => parseInt(b, 16)) ?? [];
-            const decoded = String.fromCharCode(...bytes);
-            if (/^[\x20-\x7E]+$/.test(decoded)) {
-              decodedName = decoded;
-            } else {
-              decodedName = formatString(name, "long");
-            }
-          }
-        } catch {
-          decodedName = formatString(name, "long");
-        }
+        const decodedName = decodeHexName(name);
 
         return (
-          <p className='text-grayTextPrimary' title={name}>
-            {decodedName}
-          </p>
+          <div className='flex flex-col' title={name}>
+            <p className='text-grayTextPrimary'>
+              {decodedName ?? formatString(name, "long")}
+            </p>
+            {decodedName && (
+              <p className='text-text-xs text-grayTextSecondary'>
+                {formatString(name, "long")}
+              </p>
+            )}
+          </div>
         );
       },
       title: <p>Name</p>,
@@ -146,9 +169,9 @@ export const useAssetList = (
 
   return {
     items,
-    loading: assetData ? false : isLoading,
+    loading: isAssetDataProvided ? false : isLoading,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
-    hasNextPage: assetData ? false : hasNextPage,
+    hasNextPage: isAssetDataProvided ? false : hasNextPage,
   };
 };

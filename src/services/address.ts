@@ -5,6 +5,8 @@ import { normalizeHash } from "@/utils/normalizeHash";
 export interface AddressAsset {
   quantity: number;
   asset_name: string;
+  fingerprint?: string;
+  policy?: string;
 }
 
 export interface AddressData {
@@ -125,12 +127,12 @@ export const useFetchStakeAddressList = (limit: number) => {
 };
 
 type StakeDetailVars = {
-  stakeView: string;
+  stakeAddress: string;
 };
 
 const STAKE_DETAIL_QUERY = `
-  query GetStakeDetail($stakeView: String!) {
-    mini_account_detail(where: {stake_view: {_eq: $stakeView}}) {
+  query GetStakeDetail($stakeAddress: String!) {
+    mini_account_detail(where: {_or: [{stake_view: {_eq: $stakeAddress}}, {stake_hash: {_eq: $stakeAddress}}]}) {
       stake_hash
       stake_view
       status
@@ -146,14 +148,14 @@ const STAKE_DETAIL_QUERY = `
   }
 `;
 
-export const useFetchStakeDetail = (stakeView: string) => {
+export const useFetchStakeDetail = (stakeAddress: string) => {
   return useQuery<StakeAddressListData, Error>({
-    queryKey: ["stakeDetail", stakeView],
+    queryKey: ["stakeDetail", stakeAddress],
     queryFn: () =>
       gql<StakeAddressListData, StakeDetailVars>(STAKE_DETAIL_QUERY, {
-        stakeView,
+        stakeAddress,
       }),
-    enabled: !!stakeView,
+    enabled: !!stakeAddress,
     refetchOnWindowFocus: true,
   });
 };

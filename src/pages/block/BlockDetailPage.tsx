@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 
 import {
   ChevronLeft,
@@ -13,6 +13,7 @@ import { PageBase } from "@/components/global/PageBase";
 import { normalizeHash } from "@/utils/normalizeHash";
 import { getRouteApi } from "@tanstack/react-router";
 
+import { AdaWithTooltip } from "@vellumlabs/cexplorer-sdk/AdaWithTooltip";
 import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { EpochCell } from "@vellumlabs/cexplorer-sdk/EpochCell";
 import { formatNumber } from "@vellumlabs/cexplorer-sdk/Format";
@@ -121,12 +122,38 @@ export const BlockDetailPage: FC = () => {
     },
   ];
 
+  const totalFees = useMemo(() => {
+    if (!blockDetail?.tx_data?.length) return 0;
+    return blockDetail.tx_data.reduce((sum, tx) => sum + (tx.fee ?? 0), 0);
+  }, [blockDetail?.tx_data]);
+
+  const totalOutput = useMemo(() => {
+    if (!blockDetail?.tx_data?.length) return 0;
+    return blockDetail.tx_data.reduce((sum, tx) => sum + (tx.out_sum ?? 0), 0);
+  }, [blockDetail?.tx_data]);
+
   const overviewTransactionsListItems = [
     {
       label: <span className='text-nowrap'>Total Transactions</span>,
       value: (
         <span className='text-text-sm font-medium text-text'>
           {blockDetail?.tx_count ?? "-"}
+        </span>
+      ),
+    },
+    {
+      label: <span className='text-nowrap'>Total Output</span>,
+      value: (
+        <span className='text-text-sm font-medium text-text'>
+          <AdaWithTooltip data={totalOutput} />
+        </span>
+      ),
+    },
+    {
+      label: <span className='text-nowrap'>Total Fees</span>,
+      value: (
+        <span className='text-text-sm font-medium text-text'>
+          <AdaWithTooltip data={totalFees} />
         </span>
       ),
     },

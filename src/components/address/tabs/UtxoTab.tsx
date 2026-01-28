@@ -9,6 +9,7 @@ import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { Link } from "@tanstack/react-router";
 import { calculateMinUtxo } from "@/utils/calculateMinUtxo";
+import { decodeHexName } from "@/utils/decodeHexName";
 import { useFetchAddressUtxo } from "@/services/address";
 
 interface UtxoTabProps {
@@ -69,30 +70,47 @@ export const UtxoTab: FC<UtxoTabProps> = ({ address }) => {
                 </div>
                 {!!item?.asset_list?.length && (
                   <div className='flex flex-col'>
-                    {item.asset_list.map((asset, i) => (
-                      <div key={i} className='flex w-full items-center'>
-                        <div className='flex min-w-[200px] items-center gap-1.5'>
-                          <Copy copyText={asset.quantity} />
-                          <span>{asset.quantity}</span>
+                    {item.asset_list.map((asset, i) => {
+                      const decodedName = asset.name ? decodeHexName(asset.name) : null;
+                      return (
+                        <div key={i} className='flex w-full items-center'>
+                          <div className='flex min-w-[200px] items-center gap-1.5'>
+                            <Copy copyText={asset.quantity} />
+                            <span>{asset.quantity}</span>
+                          </div>
+                          <div className='flex items-center justify-start gap-1.5 overflow-hidden'>
+                            <Copy copyText={asset.name} />
+                            {asset.fingerprint ? (
+                              <Link
+                                to='/asset/$fingerprint'
+                                params={{
+                                  fingerprint: asset.fingerprint,
+                                }}
+                                className='text-primary'
+                              >
+                                <div className='flex flex-col'>
+                                  <span>{decodedName ?? formatString(asset.name, "long")}</span>
+                                  {decodedName && (
+                                    <span className='text-text-xs text-grayTextSecondary'>
+                                      {formatString(asset.name, "long")}
+                                    </span>
+                                  )}
+                                </div>
+                              </Link>
+                            ) : (
+                              <div className='flex flex-col'>
+                                <span>{decodedName ?? formatString(asset.name, "long")}</span>
+                                {decodedName && (
+                                  <span className='text-text-xs text-grayTextSecondary'>
+                                    {formatString(asset.name, "long")}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <div className='flex items-center justify-start gap-1.5 overflow-hidden'>
-                          <Copy copyText={asset.name} />
-                          {asset.fingerprint ? (
-                            <Link
-                              to='/asset/$fingerprint'
-                              params={{
-                                fingerprint: asset.fingerprint,
-                              }}
-                              className='text-primary'
-                            >
-                              <span>{formatString(asset.name, "long")}</span>
-                            </Link>
-                          ) : (
-                            <span>{formatString(asset.name, "long")}</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </div>

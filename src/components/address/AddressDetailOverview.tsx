@@ -34,10 +34,6 @@ export const AddressDetailOverview: FC<AddressDetailOverviewProps> = ({
       label: "Assets",
       value: <span>{assetCount}</span>,
     },
-    {
-      label: "Private name",
-      value: "-",
-    },
   ];
 
   const delegationArr = [

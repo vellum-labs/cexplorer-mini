@@ -6,7 +6,7 @@ import { BlockListPage } from "../block/BlockListPage";
 import { RewardsTab } from "@/components/pool/tabs/RewardsTab";
 import { DelegatorsTab } from "@/components/pool/tabs/DelegatorsTab";
 import { AboutTab } from "@/components/pool/tabs/AboutTab";
-import { useFetchPoolDetail } from "@/services/pool";
+import { useFetchPoolDetail, useFetchPoolDelegatorsCount } from "@/services/pool";
 
 import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { HeaderBannerSubtitle } from "@vellumlabs/cexplorer-sdk/HeaderBannerSubtitle";
@@ -17,6 +17,10 @@ export const PoolDetailPage: FC = () => {
   const { id: hash } = useParams({ from: "/pool/$id" });
   const { data, isLoading } = useFetchPoolDetail(hash);
   const poolDetail = data?.mini_pool_detail?.[0];
+
+  const { data: delegatorsCountData } = useFetchPoolDelegatorsCount(hash);
+  const delegatorsCount =
+    delegatorsCountData?.mini_account_detail_aggregate?.aggregate?.count;
 
   const tabs = [
     {
@@ -92,7 +96,7 @@ export const PoolDetailPage: FC = () => {
       }
       homepageAd
     >
-      <PoolDetailOverview poolDetail={poolDetail} isLoading={isLoading} />
+      <PoolDetailOverview poolDetail={poolDetail} isLoading={isLoading} delegatorsCount={delegatorsCount} />
       <Tabs items={tabs} />
     </PageBase>
   );

@@ -37,10 +37,6 @@ export const StakeDetailOverview: FC<StakeDetailOverviewProps> = ({
       label: "UTXO balance",
       value: <AdaWithTooltip data={Number(data?.utxo ?? 0)} />,
     },
-    {
-      label: "Private name",
-      value: "-",
-    },
   ];
 
   const stakeKey = [

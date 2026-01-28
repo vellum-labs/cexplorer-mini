@@ -5,6 +5,8 @@ import { Copy } from "@vellumlabs/cexplorer-sdk/Copy";
 import { formatNumber, formatString } from "@vellumlabs/cexplorer-sdk/Format";
 import { OverviewCard } from "@vellumlabs/cexplorer-sdk/OverviewCard";
 
+import { decodeHexName } from "@/utils/decodeHexName";
+
 interface AssetDetailOverviewProps {
   assetDetail: AssetDetailData | undefined;
   isLoading?: boolean;
@@ -14,11 +16,13 @@ export const AssetDetailOverview: FC<AssetDetailOverviewProps> = ({
   assetDetail,
   isLoading,
 }) => {
-  const name = assetDetail?.name || "-";
+  const name = assetDetail?.name || "";
   const policy = assetDetail?.policy || "";
   const fingerprint = assetDetail?.fingerprint || "";
   const quantity = assetDetail?.quantity ?? 0;
   const mintCount = assetDetail?.mint?.length ?? 0;
+
+  const decodedName = name ? decodeHexName(name) : null;
 
   const overview = [
     {
@@ -26,9 +30,16 @@ export const AssetDetailOverview: FC<AssetDetailOverviewProps> = ({
       value: isLoading ? (
         <div className='h-5 w-32 animate-pulse rounded bg-border' />
       ) : (
-        <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
-          <p className='break-words break-all'>{name}</p>
-        </span>
+        <div className='flex flex-col'>
+          <span className='text-grayText overflow-hidden text-ellipsis whitespace-nowrap text-primary'>
+            <p className='break-words break-all'>{decodedName ?? (name || "-")}</p>
+          </span>
+          {decodedName && (
+            <p className='break-words break-all text-text-xs text-grayTextSecondary'>
+              {formatString(name, "long")}
+            </p>
+          )}
+        </div>
       ),
     },
     {
