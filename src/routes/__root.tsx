@@ -1,10 +1,11 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 
-import { useThemeStore } from "@vellumlabs/cexplorer-sdk/ThemeStore";
 import { Button } from "@vellumlabs/cexplorer-sdk/Button";
 import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 
 import { useEffect } from "react";
+import { useThemeStore } from "@vellumlabs/cexplorer-sdk/ThemeStore";
 
 const RootComponent = () => {
   const { theme } = useThemeStore();
@@ -34,6 +35,7 @@ const RootComponent = () => {
     <>
       <Navbar />
       <Outlet />
+      <Footer />
     </>
   );
 };
