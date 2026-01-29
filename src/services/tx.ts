@@ -101,7 +101,7 @@ const TX_LIST_QUERY = `
   }
 `;
 
-export const useFetchTxList = (limit: number) => {
+export const useFetchTxList = (limit: number, enabled: boolean = true) => {
   return useInfiniteQuery<TxListData, Error>({
     queryKey: ["tx", limit],
     initialPageParam: 0,
@@ -120,6 +120,7 @@ export const useFetchTxList = (limit: number) => {
       return allPages.length * limit;
     },
 
+    enabled,
     refetchOnWindowFocus: true,
     refetchInterval: 20000,
   });
