@@ -14,7 +14,10 @@
 ## Prereq
 - cardano-node (version compatible with your network)
 - cardano-db-sync (synced with the node)
+   -  config changes: https://github.com/vellum-labs/cexplorer-mini/blob/main/docs/db-sync-extra.md
+   -  imported views into postgresql: https://github.com/vellum-labs/cexplorer-mini/blob/main/docs/views.sql 
 - Hasura GraphQL Engine (v2.x or v3.x) – exposed at e.g. `http://localhost:8080/v1/graphql`
+   - docker install example: https://github.com/vellum-labs/cexplorer-mini/blob/main/docs/docker_hasura.md
 
 ## Quick Start
 
@@ -73,4 +76,5 @@ The software is provided **as-is**, without any warranties, express or implied. 
 Users must independently verify all blockchain data, transactions, addresses, and any other information with official Cardano nodes, multiple explorers, or trusted sources. No guarantees are made regarding uptime, correctness, security, or fitness for any particular purpose.
 
 Made with ❤️ for the Cardano community
+
 
