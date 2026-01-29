@@ -6,7 +6,7 @@ import { TableList } from "@/components/global/TableList";
 import { usePoolList } from "@/hooks/usePoolList";
 
 export const PoolListPage: FC = () => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } = usePoolList();
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } = usePoolList();
 
   return (
     <PageBase
@@ -22,6 +22,7 @@ export const PoolListPage: FC = () => {
         showMoreButton={hasNextPage}
         onFetch={fetchNextPage}
         loading={loading}
+        fetching={fetching}
       />
     </PageBase>
   );

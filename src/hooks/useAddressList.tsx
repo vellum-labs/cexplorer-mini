@@ -22,10 +22,11 @@ interface UseAddressListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 export const useAddressList = (): UseAddressListReturn => {
-  const { data, fetchNextPage, isLoading, hasNextPage } =
+  const { data, fetchNextPage, isLoading, isFetching, hasNextPage } =
     useFetchAddressList(20);
 
   const items = data?.pages.flatMap(page => page.mini_get_address);
@@ -78,6 +79,7 @@ export const useAddressList = (): UseAddressListReturn => {
   return {
     items,
     loading: isLoading,
+    fetching: isFetching,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

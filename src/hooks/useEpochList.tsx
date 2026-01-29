@@ -26,12 +26,14 @@ interface UseEpochListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 export const useEpochList = (): UseEpochListReturn => {
   const {
     data: epochData,
     isLoading,
+    isFetching,
     fetchNextPage,
     hasNextPage,
   } = useFetchEpochList(20);
@@ -147,6 +149,7 @@ export const useEpochList = (): UseEpochListReturn => {
   return {
     items,
     loading: isLoading,
+    fetching: isFetching,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

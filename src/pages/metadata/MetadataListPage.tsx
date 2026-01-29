@@ -12,7 +12,7 @@ import { MetadataCell } from "@/components/global/MetadataCell";
 import { useFetchMetadataList } from "@/services/metadata";
 
 export const MetadataListPage: FC = () => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchMetadataList(20);
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useFetchMetadataList(20);
 
   const items = useMemo(() => {
     if (!data?.pages) return [];
@@ -76,6 +76,7 @@ export const MetadataListPage: FC = () => {
     >
       <TableList
         loading={isLoading}
+        fetching={isFetching}
         items={items}
         columns={columns}
         showMoreButton={hasNextPage}

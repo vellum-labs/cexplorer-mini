@@ -27,7 +27,7 @@ const getTypeColor = (type: string): "blue" | "green" | "yellow" | "red" => {
 };
 
 export const ScriptListPage: FC = () => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchScriptList(20);
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useFetchScriptList(20);
 
   const items = useMemo(() => {
     if (!data?.pages) return [];
@@ -114,6 +114,7 @@ export const ScriptListPage: FC = () => {
     >
       <TableList
         loading={isLoading}
+        fetching={isFetching}
         items={items}
         columns={columns}
         showMoreButton={hasNextPage}

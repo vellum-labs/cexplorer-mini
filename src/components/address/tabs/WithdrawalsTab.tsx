@@ -15,7 +15,7 @@ interface WithdrawalsTabProps {
 }
 
 export const WithdrawalsTab: FC<WithdrawalsTabProps> = ({ stakeAddress }) => {
-  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchWithdrawals(
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } = useFetchWithdrawals(
     stakeAddress ?? "",
     20
   );
@@ -100,6 +100,7 @@ export const WithdrawalsTab: FC<WithdrawalsTabProps> = ({ stakeAddress }) => {
       items={items}
       storeKey='withdrawals_list'
       loading={isLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
     />

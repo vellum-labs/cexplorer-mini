@@ -32,7 +32,7 @@ const getPurposeColor = (
 };
 
 export const RedeemersTab: FC<RedeemersTabProps> = ({ scriptHash }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchRedeemerList(
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useFetchRedeemerList(
     scriptHash,
     20,
   );
@@ -110,6 +110,7 @@ export const RedeemersTab: FC<RedeemersTabProps> = ({ scriptHash }) => {
       items={items}
       storeKey='script_redeemers'
       loading={isLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
       withPadding={false}

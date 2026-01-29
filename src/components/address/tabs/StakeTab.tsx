@@ -5,7 +5,7 @@ import { TableList } from "@/components/global/TableList";
 import { useStakeList } from "@/hooks/useStakeList";
 
 export const StakeTab: FC = () => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } =
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } =
     useStakeList();
 
   return (
@@ -18,6 +18,7 @@ export const StakeTab: FC = () => {
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
       loading={loading}
+      fetching={fetching}
     />
   );
 };

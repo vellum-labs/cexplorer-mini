@@ -14,7 +14,7 @@ interface DelegatorsTabProps {
 }
 
 export const DelegatorsTab: FC<DelegatorsTabProps> = ({ poolHash }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } =
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } =
     useFetchPoolDelegators(poolHash ?? "", 20);
 
   const items = useMemo(() => {
@@ -61,6 +61,7 @@ export const DelegatorsTab: FC<DelegatorsTabProps> = ({ poolHash }) => {
       storeKey='pool_delegators_tab'
       items={items}
       loading={isLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
       withPadding={false}

@@ -72,7 +72,8 @@ const BLOCK_LIST_QUERY = `
 `;
 
 export const useFetchBlockList = (limit: number, epochNo?: number) => {
-  const where = epochNo !== undefined ? { epoch_no: { _eq: epochNo } } : undefined;
+  const where =
+    epochNo !== undefined ? { epoch_no: { _eq: epochNo } } : undefined;
 
   return useInfiniteQuery<BlockListData, Error>({
     queryKey: ["blocks", limit, epochNo],
@@ -93,7 +94,7 @@ export const useFetchBlockList = (limit: number, epochNo?: number) => {
       return allPages.length * limit;
     },
 
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -131,6 +132,6 @@ export const useFetchBlockDetail = (blockHash: string) => {
         blockHash: normalizedHash,
       }),
     enabled: !!normalizedHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };

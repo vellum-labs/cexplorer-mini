@@ -12,7 +12,7 @@ interface StakeRewardsTabProps {
 }
 
 export const StakeRewardsTab: FC<StakeRewardsTabProps> = ({ stakeAddress }) => {
-  const { data, isLoading, hasNextPage, fetchNextPage } = useFetchStakeRewards(
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } = useFetchStakeRewards(
     stakeAddress ?? "",
     20
   );
@@ -84,6 +84,7 @@ export const StakeRewardsTab: FC<StakeRewardsTabProps> = ({ stakeAddress }) => {
       storeKey='stake_rewards_tab'
       items={items}
       loading={isLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
       withPadding={false}

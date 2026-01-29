@@ -53,7 +53,7 @@ export const useFetchAssetList = (limit: number) => {
       return allPages.length * limit;
     },
 
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -83,7 +83,7 @@ export const useFetchAssetDetail = (fingerprint: string) => {
         fingerprint,
       }),
     enabled: !!fingerprint,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -135,7 +135,7 @@ export const useFetchAssetMints = (
       return allPages.length * limit;
     },
     enabled: !!assetId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -171,7 +171,7 @@ export const useFetchTxByIds = (txIds: number[]) => {
         txIds,
       }),
     enabled: txIds.length > 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -205,7 +205,7 @@ export const useFetchBlockByIds = (blockIds: number[]) => {
         blockIds,
       }),
     enabled: blockIds.length > 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -240,7 +240,7 @@ export const useFetchTxByHashes = (hashes: string[]) => {
         hashes: byteaHashes,
       }),
     enabled: hashes.length > 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -276,7 +276,7 @@ export const useFetchTxMetadata = (txIds: number[]) => {
         txIds,
       }),
     enabled: txIds.length > 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -324,7 +324,7 @@ export const useFetchMaTxOut = (assetId: number | undefined, limit: number) => {
       return allPages.length * limit;
     },
     enabled: !!assetId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -360,7 +360,7 @@ export const useFetchTxOut = (txOutIds: number[]) => {
         txOutIds,
       }),
     enabled: txOutIds.length > 0,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -378,7 +378,9 @@ const ASSETS_BY_NAMES_QUERY = `
   }
 `;
 
-export const fetchAssetsByNames = async (names: string[]): Promise<AssetListResponse> => {
+export const fetchAssetsByNames = async (
+  names: string[],
+): Promise<AssetListResponse> => {
   return gql<AssetListResponse, AssetsByNamesVars>(ASSETS_BY_NAMES_QUERY, {
     names,
   });
@@ -404,8 +406,13 @@ const ASSETS_BY_POLICIES_QUERY = `
   }
 `;
 
-export const fetchAssetsByPolicies = async (policies: string[]): Promise<AssetByPolicyNameResponse> => {
-  return gql<AssetByPolicyNameResponse, { policies: string[] }>(ASSETS_BY_POLICIES_QUERY, {
-    policies,
-  });
+export const fetchAssetsByPolicies = async (
+  policies: string[],
+): Promise<AssetByPolicyNameResponse> => {
+  return gql<AssetByPolicyNameResponse, { policies: string[] }>(
+    ASSETS_BY_POLICIES_QUERY,
+    {
+      policies,
+    },
+  );
 };

@@ -42,6 +42,7 @@ interface UseTxListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 interface UseTxListOptions {
@@ -112,7 +113,7 @@ export const useTxList = (
       ? assetQuery
       : generalQuery;
 
-  const { isLoading, fetchNextPage, hasNextPage } = activeQuery;
+  const { isLoading, isFetching, fetchNextPage, hasNextPage } = activeQuery;
 
   let items: any[] | undefined;
 
@@ -195,6 +196,7 @@ export const useTxList = (
 
   return {
     loading: isBlockTxDataProvided ? false : isLoading,
+    fetching: isBlockTxDataProvided ? false : isFetching,
     items,
     columns: columns
       .filter(col => !allHideColumns.includes(col.key))

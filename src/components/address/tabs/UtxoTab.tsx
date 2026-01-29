@@ -19,7 +19,7 @@ interface UtxoTabProps {
 const PAGE_SIZE = 20;
 
 export const UtxoTab: FC<UtxoTabProps> = ({ address }) => {
-  const { data, isLoading } = useFetchAddressUtxo(address ?? "");
+  const { data, isLoading, isFetching } = useFetchAddressUtxo(address ?? "");
   const [displayCount, setDisplayCount] = useState(PAGE_SIZE);
 
   const utxoSet = data?.mini_utxo?.[0]?.utxo_list?.[0]?.utxo_set ?? [];
@@ -149,6 +149,7 @@ export const UtxoTab: FC<UtxoTabProps> = ({ address }) => {
       items={items}
       storeKey='utxo_list'
       loading={isLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage as any}
     />

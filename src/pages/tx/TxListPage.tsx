@@ -23,7 +23,7 @@ export const TxListPage: FC<TxListPageProps> = ({
   address,
   fingerprint,
 }) => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } = useTxList(
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } = useTxList(
     txData,
     hideColumns,
     { address, fingerprint },
@@ -46,6 +46,7 @@ export const TxListPage: FC<TxListPageProps> = ({
         showMoreButton={showLoadMore && hasNextPage}
         onFetch={fetchNextPage}
         loading={loading}
+        fetching={fetching}
       />
     </PageBase>
   );

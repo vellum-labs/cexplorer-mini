@@ -14,7 +14,7 @@ export const BlockListPage: FC<BlockListPageProps> = ({
   tab = false,
   epochNo,
 }) => {
-  const { columns, items, hasNextPage, loading, fetchNextPage } =
+  const { columns, items, hasNextPage, loading, fetching, fetchNextPage } =
     useBlockList(epochNo);
 
   return (
@@ -34,6 +34,7 @@ export const BlockListPage: FC<BlockListPageProps> = ({
         showMoreButton={hasNextPage}
         onFetch={fetchNextPage}
         loading={loading}
+        fetching={fetching}
       />
     </PageBase>
   );

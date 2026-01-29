@@ -6,7 +6,7 @@ import { TableList } from "@/components/global/TableList";
 import { useEpochList } from "@/hooks/useEpochList";
 
 export const EpochListPage: FC = () => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } =
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } =
     useEpochList();
 
   return (
@@ -23,6 +23,7 @@ export const EpochListPage: FC = () => {
         showMoreButton={hasNextPage}
         onFetch={fetchNextPage}
         loading={loading}
+        fetching={fetching}
       />
     </PageBase>
   );

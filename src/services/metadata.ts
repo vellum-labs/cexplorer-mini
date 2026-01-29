@@ -90,7 +90,7 @@ export const useFetchMetadataList = (limit: number) => {
     queryFn: async ({ pageParam }) => {
       const metadataResult = await gql<TxMetadataResponse, MetadataListVars>(
         METADATA_LIST_QUERY,
-        { limit, offset: pageParam as number }
+        { limit, offset: pageParam as number },
       );
 
       const metadata = metadataResult.tx_metadata;
@@ -99,7 +99,7 @@ export const useFetchMetadataList = (limit: number) => {
       const txIds = [...new Set(metadata.map(m => m.tx_id))];
       const txResult = await gql<TxResponse, { txIds: number[] }>(
         TX_BY_IDS_QUERY,
-        { txIds }
+        { txIds },
       );
 
       const txMap = new Map(txResult.tx.map(t => [t.id, t]));
@@ -107,7 +107,7 @@ export const useFetchMetadataList = (limit: number) => {
       const blockIds = [...new Set(txResult.tx.map(t => t.block_id))];
       const blockResult = await gql<BlockResponse, { blockIds: number[] }>(
         BLOCK_BY_IDS_QUERY,
-        { blockIds }
+        { blockIds },
       );
 
       const blockMap = new Map(blockResult.block.map(b => [b.id, b]));
@@ -131,7 +131,7 @@ export const useFetchMetadataList = (limit: number) => {
       if (lastPage.length < limit) return undefined;
       return allPages.length * limit;
     },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };

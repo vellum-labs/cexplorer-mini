@@ -121,7 +121,7 @@ export const useFetchTxList = (limit: number, enabled: boolean = true) => {
     },
 
     enabled,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -165,7 +165,7 @@ export const useFetchTxDetail = (txHash: string) => {
         txHash,
       }),
     enabled: !!txHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -232,7 +232,7 @@ export const useFetchAddressTxList = (address: string, limit: number) => {
       return allPages.length * limit;
     },
     enabled: !!address,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -304,7 +304,7 @@ export const useFetchAssetTxList = (fingerprint: string, limit: number) => {
       return allPages.length * limit;
     },
     enabled: !!fingerprint,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };

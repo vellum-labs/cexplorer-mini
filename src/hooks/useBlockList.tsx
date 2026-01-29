@@ -28,12 +28,14 @@ interface UseBlockListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 export const useBlockList = (epochNo?: number): UseBlockListReturn => {
   const {
     data: blockData,
     isLoading,
+    isFetching,
     fetchNextPage,
     hasNextPage,
   } = useFetchBlockList(20, epochNo);
@@ -163,6 +165,7 @@ export const useBlockList = (epochNo?: number): UseBlockListReturn => {
   return {
     items,
     loading: isLoading,
+    fetching: isFetching,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

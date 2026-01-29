@@ -13,7 +13,7 @@ interface AssetListPageProps {
 }
 
 export const AssetListPage: FC<AssetListPageProps> = ({ tab = false, assetData, loading: externalLoading }) => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } = useAssetList(assetData);
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } = useAssetList(assetData);
 
   return (
     <PageBase
@@ -30,6 +30,7 @@ export const AssetListPage: FC<AssetListPageProps> = ({ tab = false, assetData, 
         storeKey='asset_list'
         withPadding={!tab}
         loading={externalLoading ?? loading}
+        fetching={fetching}
         showMoreButton={hasNextPage}
         onFetch={fetchNextPage}
       />

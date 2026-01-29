@@ -68,7 +68,7 @@ export const useFetchPoolList = (limit: number) => {
       return allPages.length * limit;
     },
 
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -99,7 +99,7 @@ export const useFetchPoolDetail = (poolHash: string) => {
         poolHash,
       }),
     enabled: !!poolHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -152,7 +152,7 @@ export const useFetchPoolDelegators = (poolHash: string, limit: number) => {
       return allPages.length * limit;
     },
     enabled: !!poolHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -180,10 +180,10 @@ export const useFetchPoolDelegatorsCount = (poolHash: string) => {
     queryFn: () =>
       gql<PoolDelegatorsCountResponse, { poolHash: string }>(
         POOL_DELEGATORS_COUNT_QUERY,
-        { poolHash }
+        { poolHash },
       ),
     enabled: !!poolHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -222,7 +222,7 @@ export const useFetchPoolRelays = (hashId: number | undefined) => {
         hashId: hashId!,
       }),
     enabled: !!hashId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -275,7 +275,7 @@ export const useFetchPoolUpdates = (hashId: number | undefined) => {
         hashId: hashId!,
       }),
     enabled: !!hashId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -308,6 +308,6 @@ export const useFetchPoolRetires = (hashId: number | undefined) => {
         hashId: hashId!,
       }),
     enabled: !!hashId,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };

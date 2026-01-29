@@ -165,7 +165,7 @@ export const useFetchEpochList = (limit: number, epochNo?: number) => {
       return allPages.length * limit;
     },
 
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -190,7 +190,8 @@ type EpochDetailVars = {
 };
 
 export const useFetchEpochDetail = (epochNo: string | number) => {
-  const epochNumber = typeof epochNo === "string" ? parseInt(epochNo, 10) : epochNo;
+  const epochNumber =
+    typeof epochNo === "string" ? parseInt(epochNo, 10) : epochNo;
 
   return useQuery<EpochDetailResponse, Error>({
     queryKey: ["epochDetail", epochNumber],
@@ -199,7 +200,7 @@ export const useFetchEpochDetail = (epochNo: string | number) => {
         epochNo: epochNumber,
       }),
     enabled: !isNaN(epochNumber),
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 

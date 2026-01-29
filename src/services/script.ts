@@ -50,7 +50,7 @@ export const useFetchScriptList = (limit: number) => {
       if (received < limit) return undefined;
       return allPages.length * limit;
     },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -81,7 +81,7 @@ export const useFetchScriptDetail = (scriptHash: string) => {
         scriptHash,
       }),
     enabled: !!scriptHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -117,11 +117,14 @@ export const useFetchScriptStats = (scriptHash: string) => {
   return useQuery<RedeemerAggregateResponse, Error>({
     queryKey: ["scriptStats", scriptHash],
     queryFn: () =>
-      gql<RedeemerAggregateResponse, RedeemerAggregateVars>(REDEEMER_AGGREGATE_QUERY, {
-        scriptHash: toByteaHash(scriptHash),
-      }),
+      gql<RedeemerAggregateResponse, RedeemerAggregateVars>(
+        REDEEMER_AGGREGATE_QUERY,
+        {
+          scriptHash: toByteaHash(scriptHash),
+        },
+      ),
     enabled: !!scriptHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -186,6 +189,6 @@ export const useFetchRedeemerList = (scriptHash: string, limit: number) => {
       return allPages.length * limit;
     },
     enabled: !!scriptHash,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };

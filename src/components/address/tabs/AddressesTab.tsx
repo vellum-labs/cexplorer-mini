@@ -5,7 +5,7 @@ import { TableList } from "@/components/global/TableList";
 import { useAddressList } from "@/hooks/useAddressList";
 
 export const AddressesTab: FC = () => {
-  const { columns, items, loading, hasNextPage, fetchNextPage } =
+  const { columns, items, loading, fetching, hasNextPage, fetchNextPage } =
     useAddressList();
 
   return (
@@ -18,6 +18,7 @@ export const AddressesTab: FC = () => {
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
       loading={loading}
+      fetching={fetching}
     />
   );
 };

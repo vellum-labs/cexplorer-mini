@@ -22,7 +22,7 @@ interface OwnerData {
 }
 
 export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchMaTxOut(
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useFetchMaTxOut(
     assetId,
     100,
   );
@@ -111,6 +111,7 @@ export const AssetOwnersTab: FC<AssetOwnersTabProps> = ({ assetId }) => {
       items={owners}
       storeKey='asset_owners_tab_list'
       loading={isLoading || txOutLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
     />

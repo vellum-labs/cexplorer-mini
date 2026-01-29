@@ -26,6 +26,7 @@ interface UseAssetListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 export const useAssetList = (
@@ -36,6 +37,7 @@ export const useAssetList = (
   const {
     data: fetchedData,
     isLoading,
+    isFetching,
     fetchNextPage,
     hasNextPage,
   } = useFetchAssetList(20);
@@ -171,6 +173,7 @@ export const useAssetList = (
   return {
     items,
     loading: isAssetDataProvided ? false : isLoading,
+    fetching: isAssetDataProvided ? false : isFetching,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage: isAssetDataProvided ? false : hasNextPage,

@@ -12,7 +12,7 @@ import { TableSettingsDropdown } from "@vellumlabs/cexplorer-sdk/TableSettingsDr
 import { Button } from "@vellumlabs/cexplorer-sdk/Button";
 
 import { useTableStore } from "@/stores/tableStore";
-import { Download } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 
 export type Column<T> = {
   key: string;
@@ -46,6 +46,7 @@ interface TableListProps {
   withPadding?: boolean;
   showMoreButton?: boolean;
   loading?: boolean;
+  fetching?: boolean;
   onFetch?: (
     options?: FetchNextPageOptions | undefined,
   ) => Promise<InfiniteQueryObserverResult<InfiniteData<any, unknown>, Error>>;
@@ -58,6 +59,7 @@ export const TableList: FC<TableListProps> = ({
   storeKey,
   withPadding = true,
   loading = true,
+  fetching = false,
   showMoreButton = true,
   onFetch,
 }) => {
@@ -149,8 +151,15 @@ export const TableList: FC<TableListProps> = ({
             size='md'
             variant='primary'
             label='Load more'
-            leftIcon={<Download size={15} />}
+            leftIcon={
+              fetching ? (
+                <Loader2 size={15} className='animate-spin' />
+              ) : (
+                <Download size={15} />
+              )
+            }
             onClick={onFetch}
+            disabled={fetching}
           />
         </div>
       )}

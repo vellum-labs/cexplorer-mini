@@ -47,7 +47,7 @@ export const useFetchAddressList = (limit: number) => {
       if (received < limit) return undefined;
       return allPages.length * limit;
     },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -74,7 +74,7 @@ export const useFetchAddressDetail = (address: string) => {
         address,
       }),
     enabled: !!address,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -121,7 +121,7 @@ export const useFetchStakeAddressList = (limit: number) => {
       if (received < limit) return undefined;
       return allPages.length * limit;
     },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -156,7 +156,7 @@ export const useFetchStakeDetail = (stakeAddress: string) => {
         stakeAddress,
       }),
     enabled: !!stakeAddress,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -212,7 +212,7 @@ export const useFetchAddressUtxo = (address: string) => {
         address,
       }),
     enabled: !!address,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
     refetchInterval: 20000,
   });
 };
@@ -278,10 +278,12 @@ const STAKE_ADDRESS_ID_QUERY = `
   }
 `;
 
-const fetchStakeAddressId = async (stakeView: string): Promise<number | null> => {
+const fetchStakeAddressId = async (
+  stakeView: string,
+): Promise<number | null> => {
   const result = await gql<StakeAddressIdResponse, { view: string }>(
     STAKE_ADDRESS_ID_QUERY,
-    { view: stakeView }
+    { view: stakeView },
   );
   return result.stake_address?.[0]?.id ?? null;
 };
@@ -371,7 +373,7 @@ export const useFetchAddressStake = (address: string) => {
     queryFn: async () => {
       const result = await gql<AddressStakeResponse, { address: string }>(
         ADDRESS_STAKE_QUERY,
-        { address }
+        { address },
       );
       return result.mini_address_tx_list?.[0]?.stake_address ?? null;
     },
@@ -380,7 +382,10 @@ export const useFetchAddressStake = (address: string) => {
   });
 };
 
-export const useFetchStakeRewards = (stakeAddress: string, limit: number = 20) => {
+export const useFetchStakeRewards = (
+  stakeAddress: string,
+  limit: number = 20,
+) => {
   return useInfiniteQuery<StakeRewardItem[], Error>({
     queryKey: ["stakeRewards", stakeAddress, limit],
     initialPageParam: 0,
@@ -388,10 +393,10 @@ export const useFetchStakeRewards = (stakeAddress: string, limit: number = 20) =
       const addrId = await fetchStakeAddressId(stakeAddress);
       if (!addrId) return [];
 
-      const rewardsResult = await gql<StakeRewardResponse, { addrId: number; limit: number; offset: number }>(
-        STAKE_REWARDS_QUERY,
-        { addrId, limit, offset: pageParam as number }
-      );
+      const rewardsResult = await gql<
+        StakeRewardResponse,
+        { addrId: number; limit: number; offset: number }
+      >(STAKE_REWARDS_QUERY, { addrId, limit, offset: pageParam as number });
 
       return rewardsResult.reward ?? [];
     },
@@ -400,11 +405,14 @@ export const useFetchStakeRewards = (stakeAddress: string, limit: number = 20) =
       return allPages.length * limit;
     },
     enabled: !!stakeAddress,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };
 
-export const useFetchWithdrawals = (stakeAddress: string, limit: number = 20) => {
+export const useFetchWithdrawals = (
+  stakeAddress: string,
+  limit: number = 20,
+) => {
   return useInfiniteQuery<WithdrawalWithDetails[], Error>({
     queryKey: ["withdrawals", stakeAddress, limit],
     initialPageParam: 0,
@@ -412,10 +420,10 @@ export const useFetchWithdrawals = (stakeAddress: string, limit: number = 20) =>
       const addrId = await fetchStakeAddressId(stakeAddress);
       if (!addrId) return [];
 
-      const withdrawalsResult = await gql<WithdrawalResponse, { addrId: number; limit: number; offset: number }>(
-        WITHDRAWAL_QUERY,
-        { addrId, limit, offset: pageParam as number }
-      );
+      const withdrawalsResult = await gql<
+        WithdrawalResponse,
+        { addrId: number; limit: number; offset: number }
+      >(WITHDRAWAL_QUERY, { addrId, limit, offset: pageParam as number });
 
       const withdrawals = withdrawalsResult.withdrawal;
       if (!withdrawals?.length) return [];
@@ -423,16 +431,16 @@ export const useFetchWithdrawals = (stakeAddress: string, limit: number = 20) =>
       const txIds = withdrawals.map(w => w.tx_id);
       const txResult = await gql<TxForWithdrawalResponse, { txIds: number[] }>(
         TX_BY_IDS_FOR_WITHDRAWAL_QUERY,
-        { txIds }
+        { txIds },
       );
 
       const txMap = new Map(txResult.tx.map(t => [t.id, t]));
 
       const blockIds = txResult.tx.map(t => t.block_id);
-      const blockResult = await gql<BlockForWithdrawalResponse, { blockIds: number[] }>(
-        BLOCK_BY_IDS_QUERY,
-        { blockIds }
-      );
+      const blockResult = await gql<
+        BlockForWithdrawalResponse,
+        { blockIds: number[] }
+      >(BLOCK_BY_IDS_QUERY, { blockIds });
 
       const blockMap = new Map(blockResult.block.map(b => [b.id, b]));
 
@@ -444,14 +452,14 @@ export const useFetchWithdrawals = (stakeAddress: string, limit: number = 20) =>
           id: w.id,
           amount: w.amount,
           tx: {
-            hash: normalizeHash(tx?.hash ?? ''),
-            fee: tx?.fee ?? '0',
+            hash: normalizeHash(tx?.hash ?? ""),
+            fee: tx?.fee ?? "0",
           },
           block: {
-            time: block?.time ?? '',
+            time: block?.time ?? "",
             epoch_no: block?.epoch_no ?? 0,
             no: block?.block_no ?? 0,
-            hash: normalizeHash(block?.hash ?? ''),
+            hash: normalizeHash(block?.hash ?? ""),
           },
         };
       });
@@ -461,6 +469,6 @@ export const useFetchWithdrawals = (stakeAddress: string, limit: number = 20) =>
       return allPages.length * limit;
     },
     enabled: !!stakeAddress,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 };

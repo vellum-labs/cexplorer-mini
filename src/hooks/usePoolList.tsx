@@ -23,12 +23,14 @@ interface UsePoolListReturn {
   >;
   hasNextPage: boolean;
   loading: boolean;
+  fetching: boolean;
 }
 
 export const usePoolList = (): UsePoolListReturn => {
   const {
     data: poolData,
     isLoading,
+    isFetching,
     fetchNextPage,
     hasNextPage,
   } = useFetchPoolList(20);
@@ -171,6 +173,7 @@ export const usePoolList = (): UsePoolListReturn => {
   return {
     items,
     loading: isLoading,
+    fetching: isFetching,
     columns: columns.map(item => ({ ...item, visible: true })),
     fetchNextPage,
     hasNextPage,

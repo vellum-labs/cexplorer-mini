@@ -26,7 +26,7 @@ interface EnrichedMint {
 }
 
 export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
-  const { data, isLoading, fetchNextPage, hasNextPage } = useFetchAssetMints(
+  const { data, isLoading, isFetching, fetchNextPage, hasNextPage } = useFetchAssetMints(
     assetId,
     20,
   );
@@ -132,6 +132,7 @@ export const AssetMintTab: FC<AssetMintTabProps> = ({ assetId }) => {
       items={enrichedMints}
       storeKey='asset_mint_tab'
       loading={isLoading || txLoading || blockLoading}
+      fetching={isFetching}
       showMoreButton={hasNextPage}
       onFetch={fetchNextPage}
     />
