@@ -12,7 +12,7 @@ export const Navbar: FC = () => {
       <nav className='flex h-[75px] w-full items-center justify-center border-b border-borderFaded bg-cardBg py-2 pr-2 lg:pr-0'>
         <div className='flex w-full max-w-desktop justify-between p-mobile md:px-desktop md:py-mobile'>
           <div className='flex items-center gap-1'>
-            <MainLogo className='-translate-x-[6px]' network='mainnet' />
+            <MainLogo className='-translate-x-[6px]' mini />
           </div>
           <div className='hidden items-center gap-2 xl:flex xl:h-[75px]'>
             <Dropdown
