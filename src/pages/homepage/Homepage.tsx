@@ -34,7 +34,11 @@ export const Homepage: FC = () => {
   ] as const;
 
   return (
-    <PageBase title='Explore Cardano blockchain' metadataTitle='homepage'>
+    <PageBase
+      title='Explore Cardano blockchain'
+      metadataTitle='homepage'
+      isHomepage
+    >
       <main className='flex w-full max-w-desktop items-center px-mobile py-3 md:px-desktop'>
         <div className='flex flex-wrap gap-3'>
           {widgets.map(({ link, linkTitle, title, columns, items }) => (
