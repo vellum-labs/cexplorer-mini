@@ -187,7 +187,8 @@ CREATE VIEW public.mini_asset_tx_list AS
     tx.out_sum
    FROM (((public.ma_tx_out mto
      LEFT JOIN public.multi_asset ma ON ((ma.id = mto.ident)))
-     LEFT JOIN public.tx ON ((tx.id = mto.tx_out_id)))
+ LEFT JOIN public.tx_out txo ON (txo.id=mto.tx_out_id)
+     LEFT JOIN public.tx ON ((tx.id = txo.tx_id)))
      LEFT JOIN public.block b ON ((b.id = tx.block_id)))
   ORDER BY mto.id DESC;
 
