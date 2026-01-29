@@ -98,12 +98,13 @@ export const useTxList = (
 
   const isBlockTxDataProvided = blockTxData !== undefined;
 
-  const generalQuery = useFetchTxList(20);
-  const addressQuery = useFetchAddressTxList(address ?? "", 20);
-  const assetQuery = useFetchAssetTxList(fingerprint ?? "", 20);
-
   const isAddressQuery = !!address;
   const isAssetQuery = !!fingerprint;
+  const needsGeneralQuery = !isBlockTxDataProvided && !isAddressQuery && !isAssetQuery;
+
+  const generalQuery = useFetchTxList(20, needsGeneralQuery);
+  const addressQuery = useFetchAddressTxList(address ?? "", 20);
+  const assetQuery = useFetchAssetTxList(fingerprint ?? "", 20);
 
   const activeQuery = isAddressQuery
     ? addressQuery
