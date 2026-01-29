@@ -15,8 +15,8 @@ importers:
         specifier: 1.144.0
         version: 1.144.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vellumlabs/cexplorer-sdk':
-        specifier: file:../cexplorer-sdk
-        version: file:../cexplorer-sdk(0a24ec914bd4da6f9c9d8b5e1d438149)
+        specifier: ^1.1.17
+        version: 1.1.17(0a24ec914bd4da6f9c9d8b5e1d438149)
       '@xyflow/react':
         specifier: ^12.10.0
         version: 12.10.0(@types/react@18.3.27)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1287,8 +1287,8 @@ packages:
     resolution: {integrity: sha512-VFlhGSl4opC0bprJiItPQ1RfUhGDIBokcPwaFH4yiBCaNPeld/9VeXbiPO1cLyorQi1G1vL+ecBk1x8o1axORA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@vellumlabs/cexplorer-sdk@file:../cexplorer-sdk':
-    resolution: {directory: ../cexplorer-sdk, type: directory}
+  '@vellumlabs/cexplorer-sdk@1.1.17':
+    resolution: {integrity: sha512-0ZYJ2qekb99veqpmYsKlD6M5M4uCfBv4BxuXS/eF4k1p+3LLHUH9LWI7HS1Z+lO7/BUrJEf3HA8/xrjMRlYx4w==}
     peerDependencies:
       '@date-fns/tz': ^1.4.1
       '@emurgo/cip14-js': ^3.0.1
@@ -3800,7 +3800,7 @@ snapshots:
       '@typescript-eslint/types': 8.54.0
       eslint-visitor-keys: 4.2.1
 
-  '@vellumlabs/cexplorer-sdk@file:../cexplorer-sdk(0a24ec914bd4da6f9c9d8b5e1d438149)':
+  '@vellumlabs/cexplorer-sdk@1.1.17(0a24ec914bd4da6f9c9d8b5e1d438149)':
     dependencies:
       '@date-fns/tz': 1.4.1
       '@emurgo/cip14-js': 3.0.1
