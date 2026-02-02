@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
 import { MainLogo } from "@vellumlabs/cexplorer-sdk/MainLogo";
 import { SettingsDropdown } from "../global/SettingsDropdown";
+import { BurgerMenu } from "../navbar/BurgerMenu";
 
 import { navigationOptions } from "@/constants/navigationOptions";
 
@@ -14,7 +15,7 @@ export const Navbar: FC = () => {
           <div className='flex items-center gap-1'>
             <MainLogo className='-translate-x-[6px]' mini />
           </div>
-          <div className='hidden items-center gap-2 xl:flex xl:h-[75px]'>
+          <div className='hidden items-center gap-2 md:flex md:h-[75px]'>
             <Dropdown
               id='blockchain'
               label='Blockchain'
@@ -46,6 +47,10 @@ export const Navbar: FC = () => {
           </div>
           <div className='hidden items-center gap-3 md:flex'>
             <SettingsDropdown />
+          </div>
+
+          <div className='flex items-center md:hidden'>
+            <BurgerMenu />
           </div>
         </div>
       </nav>
