@@ -3,7 +3,7 @@ import type { FC } from "react";
 import { Dropdown } from "@vellumlabs/cexplorer-sdk/Dropdown";
 import { MainLogo } from "@vellumlabs/cexplorer-sdk/MainLogo";
 import { SettingsDropdown } from "../global/SettingsDropdown";
-import { BurgerMenu } from "../navbar/BurgerMenu";
+import { BurgerMenu } from "../global/BurgerMenu";
 
 import { navigationOptions } from "@/constants/navigationOptions";
 

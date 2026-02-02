@@ -60,7 +60,7 @@ export const BurgerMenu: FC = () => {
       )}
 
       <div
-        className={`fixed left-0 top-0 z-[101] h-full w-[85%] max-w-[400px] transform bg-background p-5 shadow-lg transition-transform duration-300 ease-in-out ${
+        className={`fixed left-0 top-0 z-[101] h-full w-[85%] max-w-[400px] transform bg-background px-3 py-3 shadow-lg transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -81,7 +81,7 @@ export const BurgerMenu: FC = () => {
           }}
         />
 
-        <div className='flex flex-col'>
+        <div className='flex flex-col py-1'>
           {menuSections.map(section => (
             <div key={section.key}>
               <button
@@ -89,7 +89,9 @@ export const BurgerMenu: FC = () => {
                 onClick={() => toggleSection(section.key)}
               >
                 <span className='text-textSecondary'>{section.icon}</span>
-                <span className='flex-1 font-medium'>{section.label}</span>
+                <span className='flex-1 text-text-sm font-medium'>
+                  {section.label}
+                </span>
                 <ChevronDown
                   size={16}
                   className={`text-textSecondary transition-transform ${
@@ -99,13 +101,13 @@ export const BurgerMenu: FC = () => {
               </button>
 
               {expandedSection === section.key && (
-                <div className='flex flex-col pl-[52px]'>
+                <div className='flex flex-col'>
                   {navigationOptions[section.key].map(item => (
                     <Link
                       key={item.href}
                       to={item.href || "/"}
                       onClick={closeMenu}
-                      className='border-b border-borderFaded py-[6px] text-textSecondary hover:text-text'
+                      className='text-textSecondary border-b border-borderFaded py-[6px] text-text-xs hover:text-text'
                     >
                       {item.label}
                     </Link>
@@ -123,7 +125,7 @@ export const BurgerMenu: FC = () => {
               <span className='text-textSecondary'>
                 <Settings size={20} />
               </span>
-              <span className='flex-1 font-medium'>Settings</span>
+              <span className='flex-1 text-text-sm font-medium'>Settings</span>
               <ChevronDown
                 size={16}
                 className={`text-textSecondary transition-transform ${
@@ -133,9 +135,9 @@ export const BurgerMenu: FC = () => {
             </button>
 
             {expandedSection === "settings" && (
-              <div className='pl-[52px]'>
+              <div>
                 <button
-                  className='flex w-full items-center justify-between border-b border-borderFaded py-[6px] text-textSecondary hover:text-text'
+                  className='text-textSecondary flex w-full items-center justify-between border-b border-borderFaded py-[6px] text-text-xs hover:text-text'
                   onClick={toggleTheme}
                 >
                   <span>Theme</span>
