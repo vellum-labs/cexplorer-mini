@@ -88,7 +88,7 @@ export const useBlockList = (epochNo?: number): UseBlockListReturn => {
             hash={normalizeHash(item?.hash)}
             enableHover={false}
             formatType='short'
-            href='/block'
+            href='/block/$hash'
           />
         );
       },

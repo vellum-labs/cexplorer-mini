@@ -11,8 +11,14 @@
   "blockList": {
     "title": "Blocks | Cexplorer.io"
   },
+  "blockDetail": {
+    "title": "Block %block% | Cexplorer.io"
+  },
   "epochsList": {
     "title": "Epochs | Cexplorer.io"
+  },
+  "epochDetail": {
+    "title": "Epoch %epoch% | Cexplorer.io"
   },
   "poolList": {
     "title": "Pools | Cexplorer.io"
@@ -23,7 +29,25 @@
   "assetsList": {
     "title": "Assets | Cexplorer.io"
   },
+  "assetDetail": {
+    "title": "Asset %fingerprint% | Cexplorer.io"
+  },
   "addressList": {
     "title": "Addresses | Cexplorer.io"
+  },
+  "addressDetail": {
+    "title": "Address %address% | Cexplorer.io"
+  },
+  "stakeAddressDetail": {
+    "title": "Stake %address% | Cexplorer.io"
+  },
+  "scriptList": {
+    "title": "Scripts | Cexplorer.io"
+  },
+  "scriptDetail": {
+    "title": "Script %hash% | Cexplorer.io"
+  },
+  "metadata": {
+    "title": "Metadata | Cexplorer.io"
   }
 }

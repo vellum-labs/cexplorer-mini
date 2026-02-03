@@ -7,7 +7,7 @@ import type {
 
 import { getNodeText } from "@vellumlabs/cexplorer-sdk/GetNodeText";
 import { GlobalTable } from "@vellumlabs/cexplorer-sdk/GlobalTable";
-import { TableSearchInput } from "@vellumlabs/cexplorer-sdk/TableSearchInput";
+// import { TableSearchInput } from "@vellumlabs/cexplorer-sdk/TableSearchInput";
 import { TableSettingsDropdown } from "@vellumlabs/cexplorer-sdk/TableSettingsDropdown";
 import { Button } from "@vellumlabs/cexplorer-sdk/Button";
 
@@ -105,14 +105,14 @@ export const TableList: FC<TableListProps> = ({
 
         {storeKey && (
           <div className='flex gap-1'>
-            <TableSearchInput
+            {/* <TableSearchInput
               placeholder='Search by tx hash...'
               value=''
               onchange={val => console.log(val)}
               wrapperClassName='md:w-[320px] w-full'
               showSearchIcon
               showPrefixPopup={false}
-            />
+            /> */}
             <div className='hidden items-center gap-1 md:flex'>
               <TableSettingsDropdown
                 rows={rows}
