@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { TanStackRouterVite } from "@tanstack/router-vite-plugin";
 import { visualizer } from "rollup-plugin-visualizer";
+import compression from "vite-plugin-compression";
 
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -18,6 +19,10 @@ export default defineConfig({
       autoCodeSplitting: false,
     }),
     react(),
+    compression({
+      algorithm: "gzip",
+      threshold: 1024,
+    }),
     visualizer({
       open: true,
       gzipSize: true,
