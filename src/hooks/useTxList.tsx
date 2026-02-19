@@ -101,7 +101,8 @@ export const useTxList = (
 
   const isAddressQuery = !!address;
   const isAssetQuery = !!fingerprint;
-  const needsGeneralQuery = !isBlockTxDataProvided && !isAddressQuery && !isAssetQuery;
+  const needsGeneralQuery =
+    !isBlockTxDataProvided && !isAddressQuery && !isAssetQuery;
 
   const generalQuery = useFetchTxList(20, needsGeneralQuery);
   const addressQuery = useFetchAddressTxList(address ?? "", 20);

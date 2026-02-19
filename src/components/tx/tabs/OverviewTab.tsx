@@ -12,6 +12,8 @@ import { Lock, LucideLockOpen } from "lucide-react";
 import type { FC } from "react";
 import { useEffect, useRef, useState } from "react";
 import { AddressWithTxBadges } from "@/components/tx/AddressWithTxBadges";
+import { Link } from "@tanstack/react-router";
+import { formatString } from "@vellumlabs/cexplorer-sdk/Format";
 
 const selectItems = [
   {
@@ -127,7 +129,7 @@ export const OverviewTab: FC<OverviewTabProps> = ({
           x: -80 - maxNodeWidth,
           y: currentYPosition + cumulativeYOffset,
         },
-        data: { label: <NodeContent data={input} type='input' /> },
+        data: { label: <NodeContent data={input} /> },
         width: maxNodeWidth,
         targetPosition: "right" as Position,
         sourcePosition: "right" as Position,
@@ -177,7 +179,7 @@ export const OverviewTab: FC<OverviewTabProps> = ({
           x: 350,
           y: currentYPosition + cumulativeYOffset,
         },
-        data: { label: <NodeContent data={output} type='output' /> },
+        data: { label: <NodeContent data={output} /> },
         width: maxNodeWidth,
         targetPosition: "left" as Position,
         sourcePosition: "left" as Position,
@@ -311,15 +313,24 @@ const ViewportSetter = ({ nodes }: { nodes: Node[] }) => {
   return null;
 };
 
-const NodeContent = ({ data }: { data: TxUtxo; type: "input" | "output" }) => (
+const NodeContent = ({ data }: { data: TxUtxo }) => (
   <div className='pointer-events-auto flex h-full w-full flex-col justify-start'>
     <div className='mb-1/2 mr-1/2 max-w-fit rounded-s border border-border bg-background px-1 py-1/2 text-text-xs font-medium'>
       <AdaWithTooltip data={Number(data.value)} />
     </div>
     <AddressWithTxBadges utxo={data} />
     {data.asset_list && data.asset_list.length > 0 && (
-      <div className='mt-1 text-text-xs text-grayTextPrimary'>
-        +{data.asset_list.length} asset(s)
+      <div className='mt-1 flex w-full max-w-[690px] flex-wrap gap-1'>
+        {data.asset_list.map(asset => (
+          <Link
+            key={asset.fingerprint}
+            to='/asset/$fingerprint'
+            params={{ fingerprint: asset.fingerprint }}
+            className='flex w-fit max-w-full rounded-s border border-border bg-background px-1 py-[1px] text-text-xs font-medium text-primary'
+          >
+            {formatString(asset.fingerprint, "long")}
+          </Link>
+        ))}
       </div>
     )}
   </div>

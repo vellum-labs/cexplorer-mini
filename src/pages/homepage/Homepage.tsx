@@ -27,7 +27,7 @@ export const Homepage: FC = () => {
       linkTitle: "All tx",
       link: "/tx",
       columns: txColumns.filter(item =>
-        ["date", "hash", "block", "fee"].includes(item.key),
+        ["date", "hash", "block"].includes(item.key),
       ),
       items: txItems,
     },
