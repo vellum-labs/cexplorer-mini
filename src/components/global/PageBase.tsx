@@ -88,6 +88,7 @@ export const PageBase: FC<PageBaseProps> = ({
           icon={icon}
           withoutSearch={withoutSearch}
           shareButton={false}
+          bookmarkButton={false}
           useFetchMiscSearch={useFetchMiscSearch}
           locale='en'
         />
