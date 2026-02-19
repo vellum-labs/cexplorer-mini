@@ -60,7 +60,7 @@ export const TxDetailOverview: FC<TxDetailOverviewProps> = ({
       ) : (
         <div className='flex flex-wrap items-center gap-1/2 text-text-sm'>
           <span className='font-medium leading-none'>
-            <DateCell time={timestamp as unknown as string} />
+            <DateCell time={timestamp as unknown as string} withoutConvert />
           </span>
         </div>
       ),
